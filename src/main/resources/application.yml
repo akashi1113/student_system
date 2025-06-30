@@ -8,6 +8,11 @@ spring:
     name: student_system
   config:
     import: optional:file:.env[.properties]
+  task:
+    scheduling:
+      pool:
+        size: 5
+      thread-name-prefix: exam-booking-task-
 
   # 数据源配置
   datasource:
@@ -110,3 +115,19 @@ app:
     default-course-cover-url: https://students-sms.oss-cn-chengdu.aliyuncs.com/course-covers/defaultCourseCover.jpg
     # 你可以设置一个默认的视频URL，用于课程未上传视频时
     default-video-url: https://your-education-platform-bucket.oss-cn-hangzhou.aliyuncs.com/videos/default_video.mp4
+
+# 考试预约相关配置
+exam:
+  booking:
+    # 默认取消截止时间（小时）
+    default-cancel-deadline: 24
+    # 默认最大预约容量
+    default-max-capacity: 50
+    # 是否启用邮件通知
+    email-notification-enabled: true
+    # 是否启用短信通知
+    sms-notification-enabled: false
+    # 预约号前缀
+    booking-number-prefix: "BK"
+    # 通知保留天数
+    notification-retention-days: 30

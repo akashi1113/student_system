@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.ExamBookingMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="ExamTimeSlotResultMap" type="com.csu.sms.model.booking.ExamTimeSlot">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="exam_id" property="examId" jdbcType="BIGINT"/>
+        <result column="slot_date" property="slotDate" jdbcType="DATE"/>
+        <result column="start_time" property="startTime" jdbcType="TIME"/>
+        <result column="end_time" property="endTime" jdbcType="TIME"/>
+        <result column="exam_location" property="examLocation" jdbcType="VARCHAR"/>
+        <result column="exam_mode" property="examMode" jdbcType="VARCHAR"/>
+        <result column="max_capacity" property="maxCapacity" jdbcType="INTEGER"/>
+        <result column="current_bookings" property="currentBookings" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="booking_start_time" property="bookingStartTime" jdbcType="TIMESTAMP"/>
+        <result column="booking_end_time" property="bookingEndTime" jdbcType="TIMESTAMP"/>
+        <result column="allow_cancel" property="allowCancel" jdbcType="BOOLEAN"/>
+        <result column="cancel_deadline_hours" property="cancelDeadlineHours" jdbcType="INTEGER"/>
+        <result column="requirements" property="requirements" jdbcType="VARCHAR"/>
+        <result column="equipment_needed" property="equipmentNeeded" jdbcType="VARCHAR"/>
+        <result column="created_by" property="createdBy" jdbcType="BIGINT"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="ExamBookingResultMap" type="com.csu.sms.model.booking.ExamBooking">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="time_slot_id" property="timeSlotId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="booking_number" property="bookingNumber" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="booking_time" property="bookingTime" jdbcType="TIMESTAMP"/>
+        <result column="confirmed_time" property="confirmedTime" jdbcType="TIMESTAMP"/>
+        <result column="cancelled_time" property="cancelledTime" jdbcType="TIMESTAMP"/>
+        <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR"/>
+        <result column="contact_email" property="contactEmail" jdbcType="VARCHAR"/>
+        <result column="special_requirements" property="specialRequirements" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+        <result column="cancel_reason" property="cancelReason" jdbcType="VARCHAR"/>
+        <result column="cancelled_by" property="cancelledBy" jdbcType="BIGINT"/>
+        <result column="check_in_time" property="checkInTime" jdbcType="TIMESTAMP"/>
+        <result column="check_in_status" property="checkInStatus" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="ExamNotificationResultMap" type="com.csu.sms.model.booking.ExamNotification">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="booking_id" property="bookingId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="notification_type" property="notificationType" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="send_method" property="sendMethod" jdbcType="VARCHAR"/>
+        <result column="send_status" property="sendStatus" jdbcType="VARCHAR"/>
+        <result column="send_time" property="sendTime" jdbcType="TIMESTAMP"/>
+        <result column="read_time" property="readTime" jdbcType="TIMESTAMP"/>
+        <result column="scheduled_time" property="scheduledTime" jdbcType="TIMESTAMP"/>
+        <result column="priority" property="priority" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="BookingDetailsResultMap" type="com.csu.sms.dto.booking.BookingDetailsDTO">
+        <result column="booking_id" property="bookingId" jdbcType="BIGINT"/>
+        <result column="booking_number" property="bookingNumber" jdbcType="VARCHAR"/>
+        <result column="booking_status" property="bookingStatus" jdbcType="VARCHAR"/>
+        <result column="booking_time" property="bookingTime" jdbcType="TIMESTAMP"/>
+        <result column="check_in_status" property="checkInStatus" jdbcType="VARCHAR"/>
+        <result column="time_slot_id" property="timeSlotId" jdbcType="BIGINT"/>
+        <result column="slot_date" property="slotDate" jdbcType="DATE"/>
+        <result column="start_time" property="startTime" jdbcType="TIME"/>
+        <result column="end_time" property="endTime" jdbcType="TIME"/>
+        <result column="exam_location" property="examLocation" jdbcType="VARCHAR"/>
+        <result column="exam_mode" property="examMode" jdbcType="VARCHAR"/>
+        <result column="max_capacity" property="maxCapacity" jdbcType="INTEGER"/>
+        <result column="current_bookings" property="currentBookings" jdbcType="INTEGER"/>
+        <result column="exam_id" property="examId" jdbcType="BIGINT"/>
+        <result column="exam_title" property="examTitle" jdbcType="VARCHAR"/>
+        <result column="exam_description" property="examDescription" jdbcType="VARCHAR"/>
+        <result column="exam_duration" property="examDuration" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="student_name" property="studentName" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR"/>
+        <result column="contact_email" property="contactEmail" jdbcType="VARCHAR"/>
+        <result column="special_requirements" property="specialRequirements" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="timeSlotColumns">
+        id, exam_id, slot_date, start_time, end_time, exam_location, exam_mode,
+        max_capacity, current_bookings, status, booking_start_time, booking_end_time,
+        allow_cancel, cancel_deadline_hours, requirements, equipment_needed,
+        created_by, created_at, updated_at
+    </sql>
+
+    <sql id="bookingColumns">
+        id, time_slot_id, user_id, booking_number, status, booking_time, confirmed_time,
+        cancelled_time, contact_phone, contact_email, special_requirements, remarks,
+        cancel_reason, cancelled_by, check_in_time, check_in_status, created_at, updated_at
+    </sql>
+
+    <sql id="notificationColumns">
+        id, booking_id, user_id, notification_type, title, content, send_method,
+        send_status, send_time, read_time, scheduled_time, priority, created_at
+    </sql>
+
+    <!-- ============================== 考试时间段相关 ============================== -->
+
+    <!-- 查询考试的所有时间段 -->
+    <select id="findTimeSlotsByExamId" parameterType="long" resultMap="ExamTimeSlotResultMap">
+        SELECT <include refid="timeSlotColumns"/>
+        FROM exam_time_slots
+        WHERE exam_id = #{examId}
+        ORDER BY slot_date ASC, start_time ASC
+    </select>
+
+    <!-- 查询可预约的时间段 -->
+    <select id="findAvailableTimeSlots" parameterType="long" resultMap="ExamTimeSlotResultMap">
+        SELECT <include refid="timeSlotColumns"/>
+        FROM exam_time_slots
+        WHERE exam_id = #{examId}
+        AND status = 'AVAILABLE'
+        AND current_bookings &lt; max_capacity
+        AND booking_end_time &gt; NOW()
+        ORDER BY slot_date ASC, start_time ASC
+    </select>
+
+    <!-- 根据ID查询时间段 -->
+    <select id="findTimeSlotById" parameterType="long" resultMap="ExamTimeSlotResultMap">
+        SELECT <include refid="timeSlotColumns"/>
+        FROM exam_time_slots
+        WHERE id = #{id}
+    </select>
+
+    <!-- 查询指定日期的时间段 -->
+    <select id="findTimeSlotsByDate" resultMap="ExamTimeSlotResultMap">
+        SELECT <include refid="timeSlotColumns"/>
+        FROM exam_time_slots
+        WHERE slot_date = #{date}
+        <if test="examMode != null">
+            AND exam_mode = #{examMode}
+        </if>
+        ORDER BY start_time ASC
+    </select>
+
+    <!-- 插入时间段 -->
+    <insert id="insertTimeSlot" parameterType="com.csu.sms.model.booking.ExamTimeSlot" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO exam_time_slots (
+            exam_id, slot_date, start_time, end_time, exam_location, exam_mode,
+            max_capacity, booking_start_time, booking_end_time, allow_cancel,
+            cancel_deadline_hours, requirements, equipment_needed, created_by
+        ) VALUES (
+                     #{examId}, #{slotDate}, #{startTime}, #{endTime}, #{examLocation}, #{examMode},
+                     #{maxCapacity}, #{bookingStartTime}, #{bookingEndTime}, #{allowCancel},
+                     #{cancelDeadlineHours}, #{requirements}, #{equipmentNeeded}, #{createdBy}
+                 )
+    </insert>
+
+    <!-- 批量插入时间段 -->
+    <insert id="batchInsertTimeSlots">
+        INSERT INTO exam_time_slots (
+        exam_id, slot_date, start_time, end_time, exam_location, exam_mode,
+        max_capacity, booking_start_time, booking_end_time, allow_cancel,
+        cancel_deadline_hours, requirements, equipment_needed, created_by
+        ) VALUES
+        <foreach collection="timeSlots" item="slot" separator=",">
+            (
+            #{slot.examId}, #{slot.slotDate}, #{slot.startTime}, #{slot.endTime},
+            #{slot.examLocation}, #{slot.examMode}, #{slot.maxCapacity},
+            #{slot.bookingStartTime}, #{slot.bookingEndTime}, #{slot.allowCancel},
+            #{slot.cancelDeadlineHours}, #{slot.requirements}, #{slot.equipmentNeeded}, #{slot.createdBy}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 更新时间段 -->
+    <update id="updateTimeSlot" parameterType="com.csu.sms.model.booking.ExamTimeSlot">
+        UPDATE exam_time_slots
+        <set>
+            <if test="slotDate != null">slot_date = #{slotDate},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="examLocation != null">exam_location = #{examLocation},</if>
+            <if test="examMode != null">exam_mode = #{examMode},</if>
+            <if test="maxCapacity != null">max_capacity = #{maxCapacity},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="bookingStartTime != null">booking_start_time = #{bookingStartTime},</if>
+            <if test="bookingEndTime != null">booking_end_time = #{bookingEndTime},</if>
+            <if test="allowCancel != null">allow_cancel = #{allowCancel},</if>
+            <if test="cancelDeadlineHours != null">cancel_deadline_hours = #{cancelDeadlineHours},</if>
+            <if test="requirements != null">requirements = #{requirements},</if>
+            <if test="equipmentNeeded != null">equipment_needed = #{equipmentNeeded},</if>
+            updated_at = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 更新时间段预约人数 -->
+    <update id="updateTimeSlotBookingCount">
+        UPDATE exam_time_slots
+        SET current_bookings = #{count}
+        WHERE id = #{timeSlotId}
+    </update>
+
+    <!-- 删除时间段 -->
+    <delete id="deleteTimeSlot" parameterType="long">
+        DELETE FROM exam_time_slots WHERE id = #{id}
+    </delete>
+
+    <!-- ============================== 考试预约相关 ============================== -->
+
+    <!-- 根据ID查询预约 -->
+    <select id="findBookingById" parameterType="long" resultMap="ExamBookingResultMap">
+        SELECT <include refid="bookingColumns"/>
+        FROM exam_bookings
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据预约号查询预约 -->
+    <select id="findBookingByNumber" parameterType="string" resultMap="ExamBookingResultMap">
+        SELECT <include refid="bookingColumns"/>
+        FROM exam_bookings
+        WHERE booking_number = #{bookingNumber}
+    </select>
+
+    <!-- 查询用户的所有预约 -->
+    <select id="findBookingsByUserId" parameterType="long" resultMap="ExamBookingResultMap">
+        SELECT <include refid="bookingColumns"/>
+        FROM exam_bookings
+        WHERE user_id = #{userId}
+        ORDER BY booking_time DESC
+    </select>
+
+    <!-- 查询时间段的所有预约 -->
+    <select id="findBookingsByTimeSlotId" parameterType="long" resultMap="ExamBookingResultMap">
+        SELECT <include refid="bookingColumns"/>
+        FROM exam_bookings
+        WHERE time_slot_id = #{timeSlotId}
+        ORDER BY booking_time ASC
+    </select>
+
+    <!-- 查询用户在指定时间段的预约 -->
+    <select id="findBookingByUserAndTimeSlot" resultMap="ExamBookingResultMap">
+        SELECT <include refid="bookingColumns"/>
+        FROM exam_bookings
+        WHERE time_slot_id = #{timeSlotId} AND user_id = #{userId}
+        AND status != 'CANCELLED'
+        LIMIT 1
+    </select>
+
+    <!-- 查询预约详情（关联查询） -->
+    <select id="findBookingDetails" parameterType="long" resultMap="BookingDetailsResultMap">
+        SELECT
+            eb.id as booking_id, eb.booking_number, eb.status as booking_status,
+            eb.booking_time, eb.check_in_status, eb.contact_phone, eb.contact_email,
+            eb.special_requirements, eb.remarks,
+
+            ets.id as time_slot_id, ets.slot_date, ets.start_time, ets.end_time,
+            ets.exam_location, ets.exam_mode, ets.max_capacity, ets.current_bookings,
+
+            e.id as exam_id, e.title as exam_title, e.description as exam_description,
+            e.duration as exam_duration,
+
+            u.id as user_id, u.username, u.real_name as student_name,
+            u.email, u.phone
+
+        FROM exam_bookings eb
+                 JOIN exam_time_slots ets ON eb.time_slot_id = ets.id
+                 JOIN exams e ON ets.exam_id = e.id
+                 JOIN users u ON eb.user_id = u.id
+        WHERE eb.id = #{bookingId}
+    </select>
+
+    <!-- 查询用户的预约详情列表 -->
+    <select id="findUserBookingDetails" parameterType="long" resultMap="BookingDetailsResultMap">
+        SELECT
+        eb.id as booking_id, eb.booking_number, eb.status as booking_status,
+        eb.booking_time, eb.check_in_status, eb.contact_phone, eb.contact_email,
+        eb.special_requirements, eb.remarks,
+
+        ets.id as time_slot_id, ets.slot_date, ets.start_time, ets.end_time,
+        ets.exam_location, ets.exam_mode, ets.max_capacity, ets.current_bookings,
+
+        e.id as exam_id, e.title as exam_title, e.description as exam_description,
+        e.duration as exam_duration,
+
+        u.id as user_id, u.username, u.real_name as student_name,
+        u.email, u.phone
+
+        FROM exam_bookings eb
+        JOIN exam_time_slots ets ON eb.time_slot_id = ets.id
+        JOIN exams e ON ets.exam_id = e.id
+        JOIN users u ON eb.user_id = u.id
+        WHERE eb.user_id = #{userId}
+        <if test="status != null">
+            AND eb.status = #{status}
+        </if>
+        ORDER BY eb.booking_time DESC
+    </select>
+
+    <!-- 插入预约记录 -->
+    <insert id="insertBooking" parameterType="com.csu.sms.model.booking.ExamBooking" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO exam_bookings (
+            time_slot_id, user_id, booking_number, contact_phone, contact_email,
+            special_requirements, remarks
+        ) VALUES (
+                     #{timeSlotId}, #{userId}, #{bookingNumber}, #{contactPhone}, #{contactEmail},
+                     #{specialRequirements}, #{remarks}
+                 )
+    </insert>
+
+    <!-- 更新预约状态 -->
+    <update id="updateBookingStatus">
+        UPDATE exam_bookings
+        SET status = #{status}
+        <if test="status == 'CONFIRMED'">
+            , confirmed_time = NOW()
+        </if>
+        <if test="status == 'CANCELLED'">
+            , cancelled_time = NOW()
+            <if test="cancelReason != null">
+                , cancel_reason = #{cancelReason}
+            </if>
+            <if test="cancelledBy != null">
+                , cancelled_by = #{cancelledBy}
+            </if>
+        </if>
+        WHERE id = #{bookingId}
+    </update>
+
+    <!-- 更新预约信息 -->
+    <update id="updateBooking" parameterType="com.csu.sms.model.booking.ExamBooking">
+        UPDATE exam_bookings
+        <set>
+            <if test="status != null">status = #{status},</if>
+            <if test="confirmedTime != null">confirmed_time = #{confirmedTime},</if>
+            <if test="cancelledTime != null">cancelled_time = #{cancelledTime},</if>
+            <if test="contactPhone != null">contact_phone = #{contactPhone},</if>
+            <if test="contactEmail != null">contact_email = #{contactEmail},</if>
+            <if test="specialRequirements != null">special_requirements = #{specialRequirements},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="cancelReason != null">cancel_reason = #{cancelReason},</if>
+            <if test="cancelledBy != null">cancelled_by = #{cancelledBy},</if>
+            <if test="checkInTime != null">check_in_time = #{checkInTime},</if>
+            <if test="checkInStatus != null">check_in_status = #{checkInStatus},</if>
+            updated_at = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 签到 -->
+    <update id="checkIn">
+        UPDATE exam_bookings
+        SET check_in_time = NOW(),
+            check_in_status = #{checkInStatus}
+        WHERE id = #{bookingId}
+    </update>
+
+    <!-- 删除预约 -->
+    <delete id="deleteBooking" parameterType="long">
+        DELETE FROM exam_bookings WHERE id = #{id}
+    </delete>
+
+    <!-- ============================== 通知相关 ============================== -->
+
+    <!-- 查询用户通知列表 -->
+    <select id="findNotificationsByUserId" parameterType="long" resultMap="ExamNotificationResultMap">
+        SELECT <include refid="notificationColumns"/>
+        FROM exam_notifications
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 查询未读通知 -->
+    <select id="findUnreadNotifications" parameterType="long" resultMap="ExamNotificationResultMap">
+        SELECT <include refid="notificationColumns"/>
+        FROM exam_notifications
+        WHERE user_id = #{userId} AND send_status != 'READ'
+        ORDER BY priority DESC, created_at DESC
+    </select>
+
+    <!-- 查询待发送通知 -->
+    <select id="findPendingNotifications" resultMap="ExamNotificationResultMap">
+        SELECT <include refid="notificationColumns"/>
+        FROM exam_notifications
+        WHERE send_status = 'PENDING'
+        AND (scheduled_time IS NULL OR scheduled_time &lt;= NOW())
+        ORDER BY priority DESC, created_at ASC
+    </select>
+
+    <!-- 插入通知 -->
+    <insert id="insertNotification" parameterType="com.csu.sms.model.booking.ExamNotification" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO exam_notifications (
+            booking_id, user_id, notification_type, title, content,
+            send_method, scheduled_time, priority
+        ) VALUES (
+                     #{bookingId}, #{userId}, #{notificationType}, #{title}, #{content},
+                     #{sendMethod}, #{scheduledTime}, #{priority}
+                 )
+    </insert>
+
+    <!-- 批量插入通知 -->
+    <insert id="batchInsertNotifications">
+        INSERT INTO exam_notifications (
+        booking_id, user_id, notification_type, title, content, send_method, priority
+        ) VALUES
+        <foreach collection="notifications" item="notification" separator=",">
+            (
+            #{notification.bookingId}, #{notification.userId}, #{notification.notificationType},
+            #{notification.title}, #{notification.content}, #{notification.sendMethod}, #{notification.priority}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 更新通知状态 -->
+    <update id="updateNotificationStatus">
+        UPDATE exam_notifications
+        SET send_status = #{status}
+        <if test="status == 'SENT'">
+            , send_time = NOW()
+        </if>
+        <if test="status == 'READ'">
+            , read_time = NOW()
+        </if>
+        WHERE id = #{notificationId}
+    </update>
+
+    <!-- 标记通知为已读 -->
+    <update id="markNotificationAsRead" parameterType="long">
+        UPDATE exam_notifications
+        SET send_status = 'READ', read_time = NOW()
+        WHERE id = #{notificationId}
+    </update>
+
+    <!-- 批量标记为已读 -->
+    <update id="batchMarkAsRead">
+        UPDATE exam_notifications
+        SET send_status = 'read', read_time = NOW()
+        WHERE user_id = #{userId}
+        AND id IN
+        <foreach collection="notificationIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <!-- 删除通知 -->
+    <delete id="deleteNotification" parameterType="long">
+        DELETE FROM exam_notifications WHERE id = #{id}
+    </delete>
+
+    <!-- 删除过期通知 -->
+    <delete id="deleteExpiredNotifications">
+        DELETE FROM exam_notifications
+        WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL #{days} DAY)
+          AND send_status = 'READ'
+    </delete>
+
+    <!-- ============================== 统计查询 ============================== -->
+
+    <!-- 统计时间段预约情况 -->
+    <select id="getTimeSlotBookingStats" parameterType="long" resultType="java.util.Map">
+        SELECT
+            COUNT(*) as total_bookings,
+            SUM(CASE WHEN status = 'BOOKED' THEN 1 ELSE 0 END) as booked_count,
+            SUM(CASE WHEN status = 'CONFIRMED' THEN 1 ELSE 0 END) as confirmed_count,
+            SUM(CASE WHEN status = 'CANCELLED' THEN 1 ELSE 0 END) as cancelled_count,
+            SUM(CASE WHEN check_in_status = 'CHECKED_IN' THEN 1 ELSE 0 END) as checked_in_count,
+            SUM(CASE WHEN check_in_status = 'ABSENT' THEN 1 ELSE 0 END) as absent_count
+        FROM exam_bookings
+        WHERE time_slot_id = #{timeSlotId}
+    </select>
+
+    <!-- 统计用户预约情况 -->
+    <select id="getUserBookingStats" parameterType="long" resultType="java.util.Map">
+        SELECT
+            COUNT(*) as total_bookings,
+            SUM(CASE WHEN status = 'BOOKED' THEN 1 ELSE 0 END) as active_bookings,
+            SUM(CASE WHEN status = 'COMPLETED' THEN 1 ELSE 0 END) as completed_bookings,
+            SUM(CASE WHEN status = 'CANCELLED' THEN 1 ELSE 0 END) as cancelled_bookings,
+            SUM(CASE WHEN check_in_status = 'ABSENT' THEN 1 ELSE 0 END) as absent_count
+        FROM exam_bookings
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 调用存储过程预约考试 -->
+    <select id="bookExam" statementType="CALLABLE" resultType="java.util.Map">
+        {CALL BookExam(
+                #{timeSlotId, mode=IN, jdbcType=BIGINT},
+                #{userId, mode=IN, jdbcType=BIGINT},
+                #{contactPhone, mode=IN, jdbcType=VARCHAR},
+                #{contactEmail, mode=IN, jdbcType=VARCHAR},
+                #{specialRequirements, mode=IN, jdbcType=VARCHAR},
+                #{bookingId, mode=OUT, jdbcType=BIGINT},
+                #{bookingNumber, mode=OUT, jdbcType=VARCHAR},
+                #{resultCode, mode=OUT, jdbcType=INTEGER},
+                #{resultMessage, mode=OUT, jdbcType=VARCHAR}
+              )}
+    </select>
+
+    <!-- 调用存储过程取消预约 -->
+    <select id="cancelBooking" statementType="CALLABLE" resultType="java.util.Map">
+        {CALL CancelBooking(
+                #{bookingId, mode=IN, jdbcType=BIGINT},
+                #{userId, mode=IN, jdbcType=BIGINT},
+                #{cancelReason, mode=IN, jdbcType=VARCHAR},
+                #{resultCode, mode=OUT, jdbcType=INTEGER},
+                #{resultMessage, mode=OUT, jdbcType=VARCHAR}
+              )}
+    </select>
+
+</mapper>
