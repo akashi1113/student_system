@@ -95,8 +95,8 @@ alibaba:
 aliyun:
   oss:
     endpoint: oss-cn-chengdu.aliyuncs.com # 例如: oss-cn-hangzhou.aliyuncs.com
-    # accessKeyId: LTAI5tKgRwKcKb6cwFZe3Zh5 # 你的 AccessKey ID
-    # accessKeySecret: AfTSU9z1cNc0PfziJJXLErFsOuibWi # 你的 AccessKey Secret
+    accessKeyId: ${ALIYUN_ACCESS_KEY_ID}
+    accessKeySecret: ${ALIYUN_ACCESS_KEY_SECRET}
     bucketName: students-sms # 你的 OSS Bucket 名称
 
 app:
