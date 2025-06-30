@@ -68,7 +68,7 @@ spring:
 # MyBatis配置
 mybatis:
   mapper-locations: classpath:mappers/*.xml
-  type-aliases-package: com.csu.sms.domain
+  type-aliases-package: com.csu.sms.model
   configuration:
     lazy-loading-enabled: false
     map-underscore-to-camel-case: true
@@ -90,3 +90,24 @@ alibaba:
   dashscope:
     api-key: sk-cc3666c2e5df4a31851c611908eb5275
     model: qwen-turbo
+
+# 阿里云 OSS 配置
+aliyun:
+  oss:
+    endpoint: oss-cn-chengdu.aliyuncs.com # 例如: oss-cn-hangzhou.aliyuncs.com
+    # accessKeyId: LTAI5tKgRwKcKb6cwFZe3Zh5 # 你的 AccessKey ID
+    # accessKeySecret: AfTSU9z1cNc0PfziJJXLErFsOuibWi # 你的 AccessKey Secret
+    bucketName: students-sms # 你的 OSS Bucket 名称
+
+app:
+  upload:
+    # 定义不同类型文件在 OSS 存储桶中的子文件夹
+    avatar-folder: avatars/
+    course-cover-folder: course-covers/
+    video-folder: videos/
+    # 你可以设置一个默认的头像URL，用于用户未上传头像时
+    default-avatar-url: https://students-sms.oss-cn-chengdu.aliyuncs.com/avatars/defaultAvatar.png
+    # 你可以设置一个默认的课程封面URL，用于课程未上传封面时
+    default-course-cover-url: https://students-sms.oss-cn-chengdu.aliyuncs.com/course-covers/defaultCourseCover.jpg
+    # 你可以设置一个默认的视频URL，用于课程未上传视频时
+    default-video-url: https://your-education-platform-bucket.oss-cn-hangzhou.aliyuncs.com/videos/default_video.mp4
