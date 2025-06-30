@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.QuestionMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="QuestionResultMap" type="com.csu.sms.model.question.Question">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="exam_id" property="examId" jdbcType="BIGINT"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="INTEGER"/>
+        <result column="order_num" property="orderNum" jdbcType="INTEGER"/>
+        <result column="analysis" property="analysis" jdbcType="VARCHAR"/>
+        <result column="difficulty" property="difficulty" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+        <collection property="options" ofType="com.csu.sms.model.question.QuestionOption">
+            <id column="option_id" property="id" jdbcType="BIGINT"/>
+            <result column="option_question_id" property="questionId" jdbcType="BIGINT"/>
+            <result column="option_content" property="content" jdbcType="VARCHAR"/>
+            <result column="is_correct" property="isCorrect" jdbcType="BOOLEAN"/>
+            <result column="option_label" property="optionLabel" jdbcType="VARCHAR"/>
+            <result column="option_order_num" property="orderNum" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="QuestionOptionResultMap" type="com.csu.sms.model.question.QuestionOption">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="question_id" property="questionId" jdbcType="BIGINT"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="is_correct" property="isCorrect" jdbcType="BOOLEAN"/>
+        <result column="option_label" property="optionLabel" jdbcType="VARCHAR"/>
+        <result column="order_num" property="orderNum" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="AnswerRecordResultMap" type="com.csu.sms.model.question.AnswerRecord">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="exam_record_id" property="examRecordId" jdbcType="BIGINT"/>
+        <result column="question_id" property="questionId" jdbcType="BIGINT"/>
+        <result column="answer" property="answer" jdbcType="VARCHAR"/>
+        <result column="correct_answer" property="correctAnswer" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="INTEGER"/>
+        <result column="is_correct" property="isCorrect" jdbcType="BOOLEAN"/>
+        <result column="answered_at" property="answeredAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="AnswerStatisticsResultMap" type="com.csu.sms.model.question.AnswerStatistics">
+        <result column="exam_record_id" property="examRecordId" jdbcType="BIGINT"/>
+        <result column="total_questions" property="totalQuestions" jdbcType="INTEGER"/>
+        <result column="answered_questions" property="answeredQuestions" jdbcType="INTEGER"/>
+        <result column="correct_answers" property="correctAnswers" jdbcType="INTEGER"/>
+        <result column="total_score" property="totalScore" jdbcType="INTEGER"/>
+        <result column="earned_score" property="earnedScore" jdbcType="INTEGER"/>
+        <result column="accuracy" property="accuracy" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="questionColumns">
+        id, exam_id, content, type, score, order_num, analysis, difficulty, created_at, updated_at
+    </sql>
+
+    <sql id="questionOptionColumns">
+        id, question_id, content, is_correct, option_label, order_num
+    </sql>
+
+    <sql id="answerRecordColumns">
+        id, exam_record_id, question_id, answer, correct_answer, score, is_correct, answered_at
+    </sql>
+
+    <!-- 根据考试ID查询所有题目 -->
+    <select id="findByExamId" parameterType="long" resultMap="QuestionResultMap">
+        SELECT
+            q.id, q.exam_id, q.content, q.type, q.score, q.order_num, q.analysis, q.difficulty, q.created_at, q.updated_at,
+            qo.id as option_id, qo.question_id as option_question_id, qo.content as option_content,
+            qo.is_correct, qo.option_label, qo.order_num as option_order_num
+        FROM questions q
+                 LEFT JOIN question_options qo ON q.id = qo.question_id
+        WHERE q.exam_id = #{examId}
+        ORDER BY q.order_num ASC, qo.order_num ASC
+    </select>
+
+    <!-- 根据题目ID查询题目 -->
+    <select id="findById" parameterType="long" resultMap="QuestionResultMap">
+        SELECT
+            q.id, q.exam_id, q.content, q.type, q.score, q.order_num, q.analysis, q.difficulty, q.created_at, q.updated_at,
+            qo.id as option_id, qo.question_id as option_question_id, qo.content as option_content,
+            qo.is_correct, qo.option_label, qo.order_num as option_order_num
+        FROM questions q
+                 LEFT JOIN question_options qo ON q.id = qo.question_id
+        WHERE q.id = #{id}
+        ORDER BY qo.order_num ASC
+    </select>
+
+    <!-- 根据题目类型查询题目 -->
+    <select id="findByType" parameterType="string" resultType="com.csu.sms.model.question.Question">
+        SELECT <include refid="questionColumns"/>
+        FROM questions
+        WHERE type = #{type}
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 根据难度查询题目 -->
+    <select id="findByDifficulty" parameterType="string" resultType="com.csu.sms.model.question.Question">
+        SELECT <include refid="questionColumns"/>
+        FROM questions
+        WHERE difficulty = #{difficulty}
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 获取考试的题目总数 -->
+    <select id="countByExamId" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM questions WHERE exam_id = #{examId}
+    </select>
+
+    <!-- 获取考试的总分 -->
+    <select id="getTotalScoreByExamId" parameterType="long" resultType="int">
+        SELECT COALESCE(SUM(score), 0) FROM questions WHERE exam_id = #{examId}
+    </select>
+
+    <!-- 获取题目的最大排序号 -->
+    <select id="getMaxOrderNumByExamId" parameterType="long" resultType="int">
+        SELECT COALESCE(MAX(order_num), 0) FROM questions WHERE exam_id = #{examId}
+    </select>
+
+    <!-- ========== 题目增删改 ========== -->
+
+    <!-- 插入题目 -->
+    <insert id="insert" parameterType="com.csu.sms.model.question.Question" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO questions (exam_id, content, type, score, order_num, analysis, difficulty, created_at)
+        VALUES (#{examId}, #{content}, #{type}, #{score}, #{orderNum}, #{analysis}, #{difficulty}, NOW())
+    </insert>
+
+    <!-- 批量插入题目 -->
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO questions (exam_id, content, type, score, order_num, analysis, difficulty, created_at)
+        VALUES
+        <foreach collection="questions" item="question" separator=",">
+            (#{question.examId}, #{question.content}, #{question.type}, #{question.score},
+            #{question.orderNum}, #{question.analysis}, #{question.difficulty}, NOW())
+        </foreach>
+    </insert>
+
+    <!-- 更新题目 -->
+    <update id="update" parameterType="com.csu.sms.model.question.Question">
+        UPDATE questions
+        SET content = #{content},
+            type = #{type},
+            score = #{score},
+            order_num = #{orderNum},
+            analysis = #{analysis},
+            difficulty = #{difficulty},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 更新题目排序 -->
+    <update id="updateOrderNum">
+        UPDATE questions SET order_num = #{orderNum} WHERE id = #{id}
+    </update>
+
+    <!-- 删除题目 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM questions WHERE id = #{id}
+    </delete>
+
+    <!-- 根据考试ID删除所有题目 -->
+    <delete id="deleteByExamId" parameterType="long">
+        DELETE FROM questions WHERE exam_id = #{examId}
+    </delete>
+
+    <!-- 批量删除题目 -->
+    <delete id="batchDelete">
+        DELETE FROM questions WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- ========== 题目选项相关操作 ========== -->
+
+    <!-- 根据题目ID查询所有选项 -->
+    <select id="findOptionsByQuestionId" parameterType="long" resultMap="QuestionOptionResultMap">
+        SELECT <include refid="questionOptionColumns"/>
+        FROM question_options
+        WHERE question_id = #{questionId}
+        ORDER BY order_num ASC
+    </select>
+
+    <!-- 根据题目ID列表批量查询选项 -->
+    <select id="findOptionsByQuestionIds" resultMap="QuestionOptionResultMap">
+        SELECT <include refid="questionOptionColumns"/>
+        FROM question_options
+        WHERE question_id IN
+        <foreach collection="questionIds" item="questionId" open="(" separator="," close=")">
+            #{questionId}
+        </foreach>
+        ORDER BY question_id, order_num ASC
+    </select>
+
+    <!-- 插入题目选项 -->
+    <insert id="insertOption" parameterType="com.csu.sms.model.question.QuestionOption" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO question_options (question_id, content, is_correct, option_label, order_num)
+        VALUES (#{questionId}, #{content}, #{isCorrect}, #{optionLabel}, #{orderNum})
+    </insert>
+
+    <!-- 批量插入题目选项 -->
+    <insert id="batchInsertOptions" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO question_options (question_id, content, is_correct, option_label, order_num)
+        VALUES
+        <foreach collection="options" item="option" separator=",">
+            (#{option.questionId}, #{option.content}, #{option.isCorrect}, #{option.optionLabel}, #{option.orderNum})
+        </foreach>
+    </insert>
+
+    <!-- 更新题目选项 -->
+    <update id="updateOption" parameterType="com.csu.sms.model.question.QuestionOption">
+        UPDATE question_options
+        SET content = #{content},
+            is_correct = #{isCorrect},
+            option_label = #{optionLabel},
+            order_num = #{orderNum}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除题目选项 -->
+    <delete id="deleteOptionById" parameterType="long">
+        DELETE FROM question_options WHERE id = #{id}
+    </delete>
+
+    <!-- 根据题目ID删除所有选项 -->
+    <delete id="deleteOptionsByQuestionId" parameterType="long">
+        DELETE FROM question_options WHERE question_id = #{questionId}
+    </delete>
+
+    <!-- 根据题目ID列表批量删除选项 -->
+    <delete id="deleteOptionsByQuestionIds">
+        DELETE FROM question_options WHERE question_id IN
+        <foreach collection="questionIds" item="questionId" open="(" separator="," close=")">
+            #{questionId}
+        </foreach>
+    </delete>
+
+    <!-- 获取题目的正确答案 -->
+    <select id="getCorrectAnswersByQuestionId" parameterType="long" resultType="string">
+        SELECT
+            CASE
+                WHEN q.type = 'JUDGE' THEN
+                    (SELECT content FROM question_options
+                     WHERE question_id = #{questionId} AND is_correct = true LIMIT 1)
+            ELSE
+                (SELECT GROUP_CONCAT(id ORDER BY id)
+                 FROM question_options
+                 WHERE question_id = #{questionId} AND is_correct = true)
+        END
+        FROM questions q
+    WHERE q.id = #{questionId}
+    </select>
+
+    <!-- 获取单选题或判断题的正确选项ID -->
+    <select id="getSingleCorrectOptionId" parameterType="long" resultType="long">
+        SELECT id
+        FROM question_options
+        WHERE question_id = #{questionId} AND is_correct = true
+            LIMIT 1
+    </select>
+
+    <!-- 获取多选题的正确选项ID列表 -->
+    <select id="getMultipleCorrectOptionIds" parameterType="long" resultType="long">
+        SELECT id
+        FROM question_options
+        WHERE question_id = #{questionId} AND is_correct = true
+        ORDER BY id
+    </select>
+
+    <!-- ========== 答题记录相关操作 ========== -->
+
+    <!-- 插入答题记录 -->
+    <insert id="insertAnswerRecord" parameterType="com.csu.sms.model.question.AnswerRecord" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO answer_records (exam_record_id, question_id, answer, correct_answer, score, is_correct, answered_at)
+        VALUES (#{examRecordId}, #{questionId}, #{answer}, #{correctAnswer}, #{score}, #{isCorrect}, NOW())
+    </insert>
+
+    <!-- 批量插入答题记录 -->
+    <insert id="batchInsertAnswerRecords" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO answer_records (exam_record_id, question_id, answer, correct_answer, score, is_correct, answered_at)
+        VALUES
+        <foreach collection="records" item="record" separator=",">
+            (#{record.examRecordId}, #{record.questionId}, #{record.answer}, #{record.correctAnswer},
+            #{record.score}, #{record.isCorrect}, NOW())
+        </foreach>
+    </insert>
+
+    <!-- 根据考试记录ID查询答题记录 -->
+    <select id="findAnswerRecordsByExamRecordId" parameterType="long" resultMap="AnswerRecordResultMap">
+        SELECT <include refid="answerRecordColumns"/>
+        FROM answer_records
+        WHERE exam_record_id = #{examRecordId}
+        ORDER BY question_id
+    </select>
+
+    <!-- 根据考试记录ID和题目ID查询答题记录 -->
+    <select id="findAnswerRecord" resultMap="AnswerRecordResultMap">
+        SELECT <include refid="answerRecordColumns"/>
+        FROM answer_records
+        WHERE exam_record_id = #{examRecordId} AND question_id = #{questionId}
+    </select>
+
+    <!-- 更新答题记录 -->
+    <update id="updateAnswerRecord" parameterType="com.csu.sms.model.question.AnswerRecord">
+        UPDATE answer_records
+        SET answer = #{answer},
+            correct_answer = #{correctAnswer},
+            score = #{score},
+            is_correct = #{isCorrect}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除答题记录 -->
+    <delete id="deleteAnswerRecord" parameterType="long">
+        DELETE FROM answer_records WHERE id = #{id}
+    </delete>
+
+    <!-- 根据考试记录ID删除所有答题记录 -->
+    <delete id="deleteAnswerRecordsByExamRecordId" parameterType="long">
+        DELETE FROM answer_records WHERE exam_record_id = #{examRecordId}
+    </delete>
+
+    <!-- 计算考试记录的总分 -->
+    <select id="calculateTotalScore" parameterType="long" resultType="int">
+        SELECT COALESCE(SUM(score), 0)
+        FROM answer_records
+        WHERE exam_record_id = #{examRecordId}
+    </select>
+
+    <!-- 统计答对的题目数量 -->
+    <select id="countCorrectAnswers" parameterType="long" resultType="int">
+        SELECT COUNT(*)
+        FROM answer_records
+        WHERE exam_record_id = #{examRecordId} AND is_correct = true
+    </select>
+
+    <!-- 统计答题记录 -->
+    <select id="getAnswerStatistics" parameterType="long" resultMap="AnswerStatisticsResultMap">
+        SELECT
+            #{examRecordId} as exam_record_id,
+            (SELECT COUNT(*) FROM questions q
+                                      JOIN exam_records er ON q.exam_id = er.exam_id
+             WHERE er.id = #{examRecordId}) as total_questions,
+            COUNT(*) as answered_questions,
+            SUM(CASE WHEN is_correct = true THEN 1 ELSE 0 END) as correct_answers,
+            (SELECT SUM(score) FROM questions q
+                                        JOIN exam_records er ON q.exam_id = er.exam_id
+             WHERE er.id = #{examRecordId}) as total_score,
+            SUM(score) as earned_score,
+            ROUND(
+                    SUM(CASE WHEN is_correct = true THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2
+            ) as accuracy
+        FROM answer_records
+        WHERE exam_record_id = #{examRecordId}
+    </select>
+
+    <!-- 计算考试记录的总分 -->
+    <select id="calculateTotalScoreBasic" parameterType="long" resultType="int">
+        SELECT COALESCE(SUM(score), 0)
+        FROM answer_records
+        WHERE exam_record_id = #{examRecordId}
+    </select>
+
+    <!-- 计算考试记录的详细分数信息 -->
+    <select id="calculateDetailedScore" parameterType="long" resultType="map">
+        SELECT
+            COALESCE(SUM(ar.score), 0) as total_score,
+            COUNT(ar.id) as answered_count,
+            SUM(CASE WHEN ar.is_correct = true THEN 1 ELSE 0 END) as correct_count,
+            (SELECT COUNT(*) FROM questions q
+                                      JOIN exam_records er ON q.exam_id = er.exam_id
+             WHERE er.id = #{examRecordId}) as total_questions,
+            (SELECT SUM(q.score) FROM questions q
+                                          JOIN exam_records er ON q.exam_id = er.exam_id
+             WHERE er.id = #{examRecordId}) as max_possible_score
+        FROM answer_records ar
+        WHERE ar.exam_record_id = #{examRecordId}
+    </select>
+
+    <!-- 按题目类型统计分数 -->
+    <select id="calculateScoreByType" parameterType="long" resultType="map">
+        SELECT
+            q.type,
+            COALESCE(SUM(ar.score), 0) as earned_score,
+            SUM(q.score) as max_score,
+            COUNT(ar.id) as answered_count,
+            SUM(CASE WHEN ar.is_correct = true THEN 1 ELSE 0 END) as correct_count
+        FROM questions q
+                 JOIN exam_records er ON q.exam_id = er.exam_id
+                 LEFT JOIN answer_records ar ON q.id = ar.question_id AND ar.exam_record_id = #{examRecordId}
+        WHERE er.id = #{examRecordId}
+        GROUP BY q.type
+        ORDER BY q.type
+    </select>
+</mapper>
