@@ -1,5 +1,6 @@
 package com.csu.sms.service.impl;
 
+import com.csu.sms.model.course.Course;
 import com.csu.sms.model.course.StudyRecord;
 import com.csu.sms.vo.CourseVO;
 import com.csu.sms.common.PageResult;

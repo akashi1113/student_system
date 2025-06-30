@@ -1,6 +1,7 @@
 package com.csu.sms.service;
 
 import com.csu.sms.common.PageResult;
+import com.csu.sms.model.course.Course;
 import com.csu.sms.vo.CourseVO;
 import org.springframework.web.multipart.MultipartFile; // 导入 MultipartFile
 

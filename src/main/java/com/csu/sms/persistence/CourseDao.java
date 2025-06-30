@@ -1,5 +1,6 @@
 package com.csu.sms.persistence;
 
+import com.csu.sms.model.course.Course;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
