@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.ForumPostDao">
+    <select id="countPosts" resultType="int">
+        SELECT COUNT(*) FROM forum_post
+        <where>
+            <if test="category != null and category != ''">
+                AND category = #{category}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND title LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="postStatus != null">
+                AND status = #{postStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="findPostsByPage" resultType="com.csu.sms.model.post.ForumPost">
+        SELECT * FROM forum_post
+        <where>
+            <if test="category!= null and category!= ''">
+                AND category = #{category}
+            </if>
+            <if test="keyword!= null and keyword!= ''">
+                AND title LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="postStatus != null">
+                AND status = #{postStatus}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="findById" resultType="com.csu.sms.model.post.ForumPost">
+        SELECT * FROM forum_post WHERE id = #{id}
+    </select>
+
+    <update id="updatePost">
+        UPDATE forum_post
+        SET title = #{title},
+            content = #{content},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updatePostStatus">
+        UPDATE forum_post
+        SET status = #{postStatus}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="insertPost" parameterType="com.csu.sms.model.post.ForumPost">
+        INSERT INTO forum_post (
+            title, content, category, user_id, status, create_time, update_time, like_count, view_count
+        ) VALUES (
+                     #{title}, #{content}, #{category}, #{userId}, #{status}, NOW(), NOW(), 0, 0
+                 )
+    </insert>
+
+    <update id="incrementLikeCount">
+        UPDATE forum_post
+        SET like_count = like_count + 1
+        WHERE id = #{postId}
+    </update>
+
+    <update id="decrementLikeCount">
+        UPDATE forum_post
+        SET like_count = like_count - 1
+        WHERE id = #{postId}
+    </update>
+
+    <update id="updateViewCount">
+        UPDATE forum_post
+        SET view_count = #{viewCount}
+        WHERE id = #{postId}
+    </update>
+
+</mapper>

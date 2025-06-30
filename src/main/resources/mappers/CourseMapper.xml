@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.CourseDao">
+    <select id="findById" resultType="com.csu.sms.model.course.Course">
+        SELECT * FROM course WHERE id = #{id}
+    </select>
+
+    <select id="findCoursesByPage" resultType="com.csu.sms.model.course.Course">
+        SELECT * FROM course
+        WHERE status = 0
+        ORDER BY create_time DESC
+            LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="countCourses" resultType="int">
+        SELECT COUNT(*) FROM course WHERE status = 0
+    </select>
+
+    <update id="updateCourse" parameterType="com.csu.sms.model.course.Course">
+        UPDATE course
+        SET title = #{title},
+            description = #{description},
+            cover_img = #{coverImg},
+            teacher_name = #{teacherName},
+            status = #{status},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <insert id="insertCourse" parameterType="com.csu.sms.model.course.Course">
+        INSERT INTO course (
+            title, description, cover_img, teacher_name, status, create_time, update_time
+        ) VALUES (
+                     #{title}, #{description}, #{coverImg}, #{teacherName}, 0, NOW(), NOW()
+                 )
+    </insert>
+
+    <update id="deleteCourse">
+        UPDATE course SET status = 1, update_time = NOW() WHERE id = #{id}
+    </update>
+
+</mapper>

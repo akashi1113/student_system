@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.StudyRecordDao">
+    <select id="getStudyRecordByUserIdAndVideoId" resultType="com.csu.sms.model.course.StudyRecord">
+        SELECT * FROM study_record
+        WHERE user_id = #{userId} AND video_id = #{videoId}
+    </select>
+
+    <insert id="insertStudyRecord" parameterType="com.csu.sms.model.course.StudyRecord">
+        INSERT INTO study_record (
+            user_id, video_id, progress, duration,
+            completed, last_study_time, create_time, update_time
+        )
+        VALUES (
+                   #{userId}, #{videoId}, #{progress}, #{duration},
+                   #{completed}, #{lastStudyTime}, #{createTime}, #{updateTime}
+               )
+    </insert>
+
+    <select id="findByUserIdAndVideoIds" resultType="com.csu.sms.model.course.StudyRecord">
+        SELECT * FROM study_record
+        WHERE user_id = #{userId}
+        AND video_id IN
+        <foreach collection="videoIds" item="videoId" open="(" separator="," close=")">
+            #{videoId}
+        </foreach>
+    </select>
+
+    <select id="countCompletedVideosByUserIdAndVideoIds" resultType="int">
+        SELECT COUNT(*)
+        FROM study_record
+        WHERE user_id = #{userId}
+        AND video_id IN
+        <foreach collection="videoIds" item="videoId" open="(" separator="," close=")">
+            #{videoId}
+        </foreach>
+        AND completed = 1
+    </select>
+
+    <update id="updateStudyRecord" parameterType="com.csu.sms.model.course.StudyRecord">
+        UPDATE study_record
+        SET progress = #{progress},
+            duration = #{duration},
+            completed = #{completed},
+            last_study_time = #{lastStudyTime},
+            update_time = #{updateTime}
+        WHERE user_id = #{userId} AND video_id = #{videoId}
+    </update>
+
+</mapper>

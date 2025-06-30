@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.ForumCommentDao">
+
+    <select id="countCommentsByPostId" resultType="int">
+        SELECT COUNT(*) FROM forum_comment WHERE post_id = #{postId} AND status = 0  AND (parent_id IS NULL OR parent_id = 0)
+    </select>
+
+    <select id="findCommentsByPostId" resultType="com.csu.sms.model.post.ForumComment">
+        SELECT * FROM forum_comment WHERE post_id = #{postId} AND status = 0 AND (parent_id IS NULL OR parent_id = 0)
+        ORDER BY create_time DESC
+            LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="findById" resultType="com.csu.sms.model.post.ForumComment">
+        SELECT * FROM forum_comment WHERE id = #{id}
+    </select>
+
+    <insert id="insertComment" parameterType="com.csu.sms.model.post.ForumComment">
+        INSERT INTO forum_comment (
+        post_id, content, user_id, parent_id, status, create_time, update_time, like_count
+        ) VALUES (
+        #{postId}, #{content}, #{userId}, #{parentId}, #{status}, #{createTime}, #{updateTime}, #{likeCount}
+        )
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateCommentStatus">
+        UPDATE forum_comment
+        SET status = #{status}
+        WHERE id = #{commentId}
+    </update>
+
+    <update id="updateComment" parameterType="com.csu.sms.model.post.ForumComment">
+        UPDATE forum_comment
+        SET content = #{content},
+            update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="incrementLikeCount">
+        UPDATE forum_comment
+        SET like_count = like_count + 1
+        WHERE id = #{commentId}
+    </update>
+
+    <update id="decrementLikeCount">
+        UPDATE forum_comment
+        SET like_count = like_count - 1
+        WHERE id = #{commentId}
+    </update>
+
+    <!-- 新增：查询某个父评论下的回复总数 -->
+    <select id="countRepliesByParentId" resultType="int">
+        SELECT COUNT(*) FROM forum_comment
+        WHERE parent_id = #{parentId} AND status = 0
+    </select>
+
+    <!-- 新增：查询某个父评论下的回复列表 -->
+    <select id="findRepliesByParentId" resultType="com.csu.sms.model.post.ForumComment">
+        SELECT * FROM forum_comment
+        WHERE parent_id = #{parentId} AND status = 0
+        ORDER BY create_time ASC <!-- 回复通常按时间升序排列，更符合对话顺序 -->
+        LIMIT #{offset}, #{size}
+    </select>
+
+</mapper>

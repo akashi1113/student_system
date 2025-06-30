@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.NotificationDao">
+    <insert id="insertNotification" parameterType="com.csu.sms.model.user.UserNotification"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_notification (
+            user_id, title, content, type, status, related_id, create_time
+        ) VALUES (
+                     #{userId}, #{title}, #{content}, #{type}, #{status}, #{relatedId}, #{createTime}
+                 )
+    </insert>
+
+    <select id="findByUserId" resultType="com.csu.sms.model.user.UserNotification">
+        SELECT * FROM user_notification
+        WHERE user_id = #{userId}
+        ORDER BY create_time DESC
+            LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="countUnreadByUserId" resultType="int">
+        SELECT COUNT(*) FROM user_notification
+        WHERE user_id = #{userId} AND status = 0
+    </select>
+
+    <update id="markAsRead">
+        UPDATE user_notification SET status = 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="markAllAsRead">
+        UPDATE user_notification SET status = 1
+        WHERE user_id = #{userId} AND status = 0
+    </update>
+</mapper>

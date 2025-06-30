@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.PostReportDao">
+    <insert id="insertPostReport" parameterType="com.csu.sms.model.post.PostReport">
+        INSERT INTO post_report (post_id, reporter_id, reason, create_time)
+        VALUES (#{postId}, #{userId}, #{reason}, NOW())
+    </insert>
+
+    <update id="updateReportStatus" parameterType="com.csu.sms.model.post.PostReport">
+        UPDATE post_report
+        SET status = #{reportStatus}, handler_id = #{adminId}, handle_time = #{now}
+        WHERE id = #{reportId}
+    </update>
+
+    <select id="getPostIdByReportId" parameterType="long" resultType="long">
+        SELECT post_id FROM post_report WHERE id = #{reportId}
+    </select>
+
+    <select id="findReportByReportId" parameterType="long" resultType="com.csu.sms.model.post.PostReport">
+        SELECT * FROM post_report WHERE id = #{reportId}
+    </select>
+
+</mapper>
