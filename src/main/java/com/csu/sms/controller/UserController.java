@@ -1,142 +1,255 @@
 package com.csu.sms.controller;
 
-import com.csu.sms.common.ApiResponse;
+import com.csu.sms.common.ApiControllerResponse;
 import com.csu.sms.common.PageResult;
 import com.csu.sms.dto.UserDTO;
+import com.csu.sms.common.ServiceException;
 import com.csu.sms.service.UserService;
 import com.csu.sms.vo.UserVO;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated; // 用于对 @RequestParam 参数进行校验
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile; // 引入 MultipartFile
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Slf4j
+@Validated//确保@RequestParam 上的校验注解也能生效
 public class UserController {
     private final UserService userService;
 
+    // 获取用户详情
     @GetMapping("/{id}")
-    public ApiResponse<UserVO> getUserById(@PathVariable Long id) {
-        UserVO userVO = userService.getUserById(id);
-        if (userVO == null) {
-            return ApiResponse.error(404, "用户不存在");
+    public ApiControllerResponse<UserVO> getUserById(@PathVariable Long id) {
+        try {
+            UserVO userVO = userService.getUserById(id);
+            if (userVO == null) {
+                return ApiControllerResponse.error(404, "用户不存在。");
+            }
+            return ApiControllerResponse.success(userVO);
+        } catch (ServiceException e) {
+            log.warn("Failed to get user by id {}: {}", id, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while getting user by id {}: {}", id, e.getMessage(), e);
+            return ApiControllerResponse.error(500, "服务器内部错误，获取用户失败。");
         }
-        return ApiResponse.success(userVO);
     }
 
+    // 用户登录
     @PostMapping("/login")
-    public ApiResponse<UserVO> login(
+    public ApiControllerResponse<UserVO> login(
             @RequestParam String username,
             @RequestParam String password
     ) {
-        UserVO userVO = userService.login(username, password);
-        if (userVO == null) {
-            return ApiResponse.error(401, "用户名或密码错误");
+        try {
+            UserVO userVO = userService.login(username, password);
+            if (userVO == null) {
+                return ApiControllerResponse.error(401, "用户名或密码错误。");
+            }
+            return ApiControllerResponse.success(userVO);
+        } catch (ServiceException e) {
+            log.warn("Login failed for user {}: {}", username, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred during login for user {}: {}", username, e.getMessage(), e);
+            return ApiControllerResponse.error(500, "服务器内部错误，登录失败，请稍后再试。");
         }
-        return ApiResponse.success(userVO);
     }
 
+    // 用户注册 (支持头像上传)
+    // 注意：同时接收表单数据和文件，不能用 @RequestBody UserDTO
+    // 前端请求 Content-Type 必须是 multipart/form-data
     @PostMapping("/register")
-    public ApiResponse<Long> register(@RequestBody @Valid UserDTO userDTO) {
-        Long userId = userService.register(userDTO);
-        if (userId == null) {
-            return ApiResponse.error(500, "注册失败，请稍后再试");
-        }
-        return ApiResponse.success("注册成功！", userId);
-    }
+    public ApiControllerResponse<Long> register(
+            @NotBlank(message = "用户名不能为空")
+            @Size(min = 3, max = 20, message = "用户名长度需在3到20字符之间")
+            @RequestParam String username,
 
-    @PutMapping("/{id}")
-    public ApiResponse<Boolean> updateProfile(
-            @PathVariable Long id,
-            @RequestBody @Valid UserDTO userDTO
+            @NotBlank(message = "密码不能为空")
+            @Size(min = 6, max = 20, message = "密码长度需在6到20字符之间")
+            @RequestParam String password,
+
+            @NotBlank(message = "邮箱不能为空")
+            @Email(message = "邮箱格式不正确")
+            @RequestParam String email,
+
+            // 接收头像文件，可选
+            @RequestParam(value = "avatarFile", required = false) MultipartFile avatarFile
     ) {
-        userDTO.setId(id);
-        boolean success = userService.updateUserProfile(userDTO);
-        if (!success) {
-            return ApiResponse.error(500, "更新个人信息失败");
+        try {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUsername(username);
+            userDTO.setPassword(password);
+            userDTO.setEmail(email);
+
+            Long userId = userService.register(userDTO, avatarFile); // 传递文件
+            return ApiControllerResponse.success("注册成功！", userId);
+        } catch (ServiceException e) {
+            log.warn("Registration failed for user {}: {}", username, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred during registration for user {}: {}", username, e.getMessage(), e);
+            return ApiControllerResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误，注册失败，请稍后再试。");
         }
-        return ApiResponse.success(true);
     }
 
+    // 更新个人信息 (支持头像上传/清除)
+    // 同样，同时接收表单数据和文件，不能用 @RequestBody UserDTO
+    // 前端请求 Content-Type 必须是 multipart/form-data
+    @PutMapping("/{id}")
+    public ApiControllerResponse<Boolean> updateProfile(
+            @PathVariable Long id,
+            @NotBlank(message = "用户名不能为空")
+            @Size(min = 3, max = 20, message = "用户名长度需在3到20字符之间")
+            @RequestParam String username, // 用户名也允许更新
+
+            @NotBlank(message = "邮箱不能为空")
+            @Email(message = "邮箱格式不正确")
+            @RequestParam String email, // 邮箱也允许更新
+
+            // 接收头像文件，可选
+            @RequestParam(value = "avatarFile", required = false) MultipartFile avatarFile,
+            // 接收avatar字符串，用于清除操作。如果前端明确传空字符串，Service层会处理清除逻辑
+            @RequestParam(value = "avatar", required = false) String avatarStringFromForm
+    ) {
+        try {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(id);
+            userDTO.setUsername(username);
+            userDTO.setEmail(email);
+            userDTO.setAvatar(avatarStringFromForm); // 将前端传来的avatar字符串设置到DTO，Service层会根据此判断是否清除
+
+            boolean success = userService.updateUserProfile(userDTO, avatarFile); // 传递文件
+            return ApiControllerResponse.success(success);
+        } catch (ServiceException e) {
+            log.warn("Failed to update profile for user {}: {}", id, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred during profile update for user {}: {}", id, e.getMessage(), e);
+            return ApiControllerResponse.error(500, "服务器内部错误，更新个人信息失败。");
+        }
+    }
+
+    // 修改密码
     @PutMapping("/{id}/password")
-    public ApiResponse<Boolean> changePassword(
+    public ApiControllerResponse<Boolean> changePassword(
             @PathVariable Long id,
             @RequestParam String oldPassword,
             @RequestParam String newPassword
     ) {
-        boolean success = userService.changePassword(id, oldPassword, newPassword);
-        if (!success) {
-            return ApiResponse.error(500, "修改密码失败，请确认旧密码是否正确");
+        try {
+            boolean success = userService.changePassword(id, oldPassword, newPassword);
+            return ApiControllerResponse.success(success);
+        } catch (ServiceException e) {
+            log.warn("Failed to change password for user {}: {}", id, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred during password change for user {}: {}", id, e.getMessage(), e);
+            return ApiControllerResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误，修改密码失败。");
         }
-        return ApiResponse.success(true);
     }
 
-    // 管理员接口
+    // 管理员接口：获取用户列表
     @GetMapping("/admin/list")
-    public ApiResponse<PageResult<UserVO>> listUsers(
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Integer status,
+    public ApiControllerResponse<PageResult<UserVO>> listUsers(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
-            @RequestParam Long adminId,
-            @RequestParam Integer role
+            @RequestParam Long adminId
     ) {
-        if(!userService.isAdminRole(adminId, role)){
-            return ApiResponse.error(403, "没有权限");
+        try {
+            if (!userService.isAdminRole(adminId)) {
+                return ApiControllerResponse.error(401, "没有权限。");
+            }
+            PageResult<UserVO> result = userService.listUsers(page, size);
+            return ApiControllerResponse.success(result);
+        } catch (ServiceException e) {
+            log.warn("Admin failed to list users: {}", e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while admin listing users: {}", e.getMessage(), e);
+            return ApiControllerResponse.error(500, "服务器内部错误，获取用户列表失败。");
         }
-        PageResult<UserVO> result = userService.listUsers(keyword, status, page, size);
-        return ApiResponse.success(result);
     }
 
+    // 管理员接口：启用用户
     @PutMapping("/admin/{id}/enable")
-    public ApiResponse<Boolean> enableUser(
+    public ApiControllerResponse<Boolean> enableUser(
             @PathVariable Long id,
             @RequestParam Long adminId
     ) {
-        boolean success = userService.enableUser(id, adminId);
-        if (!success) {
-            return ApiResponse.error(500, "启用用户失败");
+        try {
+            boolean success = userService.enableUser(id, adminId);
+            return ApiControllerResponse.success(success);
+        } catch (ServiceException e) {
+            log.warn("Admin failed to enable user {}: {}", id, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while admin enabling user {}: {}", id, e.getMessage(), e);
+            return ApiControllerResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误，启用用户失败。");
         }
-        return ApiResponse.success(true);
     }
 
+    // 管理员接口：禁用用户
     @PutMapping("/admin/{id}/disable")
-    public ApiResponse<Boolean> disableUser(
+    public ApiControllerResponse<Boolean> disableUser(
             @PathVariable Long id,
             @RequestParam Long adminId
     ) {
-        boolean success = userService.disableUser(id, adminId);
-        if (!success) {
-            return ApiResponse.error(500, "禁用用户失败");
+        try {
+            boolean success = userService.disableUser(id, adminId);
+            return ApiControllerResponse.success(success);
+        } catch (ServiceException e) {
+            log.warn("Admin failed to disable user {}: {}", id, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while admin disabling user {}: {}", id, e.getMessage(), e);
+            return ApiControllerResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误，禁用用户失败。");
         }
-        return ApiResponse.success(true);
     }
 
+    // 管理员接口：设置用户角色
     @PutMapping("/admin/{id}/role")
-    public ApiResponse<Boolean> setUserRole(
+    public ApiControllerResponse<Boolean> setUserRole(
             @PathVariable Long id,
             @RequestParam Integer role,
             @RequestParam Long adminId
     ) {
-        boolean success = userService.setUserRole(id, role, adminId);
-        if (!success) {
-            return ApiResponse.error(500, "设置用户角色失败");
+        try {
+            boolean success = userService.setUserRole(id, role, adminId);
+            return ApiControllerResponse.success(success);
+        } catch (ServiceException e) {
+            log.warn("Admin failed to set role for user {}: {}", id, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while admin setting role for user {}: {}", id, e.getMessage(), e);
+            return ApiControllerResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误，设置用户角色失败。");
         }
-        return ApiResponse.success(true);
     }
 
+    // 管理员接口：重置密码
     @PutMapping("/admin/{id}/password")
-    public ApiResponse<Boolean> resetPassword(
+    public ApiControllerResponse<Boolean> resetPassword(
             @PathVariable Long id,
             @RequestParam Long adminId
     ) {
-        boolean success = userService.resetPassword(id, adminId);
-        if (!success) {
-            return ApiResponse.error(500, "重置密码失败");
+        try {
+            boolean success = userService.resetPassword(id, adminId);
+            return ApiControllerResponse.success(success);
+        } catch (ServiceException e) {
+            log.warn("Admin failed to reset password for user {}: {}", id, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while admin resetting password for user {}: {}", id, e.getMessage(), e);
+            return ApiControllerResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误，重置密码失败。");
         }
-        return ApiResponse.success(true);
     }
 }
