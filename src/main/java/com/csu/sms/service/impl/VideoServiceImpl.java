@@ -1,7 +1,6 @@
 package com.csu.sms.service.impl;
 
 import com.csu.sms.common.ServiceException; // 引入自定义异常
-import com.csu.sms.model.course.Course;
 import com.csu.sms.model.course.CourseVideo;
 import com.csu.sms.model.course.StudyRecord;
 import com.csu.sms.persistence.CourseDao;

@@ -1,4 +1,4 @@
-package com.csu.sms.config;
+package com.csu.sms.common;
 
 import com.csu.sms.dto.ApiResponse;
 import jakarta.validation.ConstraintViolationException;
@@ -41,5 +41,25 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ApiResponse<String> handleException(Exception e) {
         return ApiResponse.error("系统异常: " + e.getMessage(), "SYSTEM_ERROR");
+    }
+
+
+    /**
+     * 处理用户上下文异常
+     */
+    @ExceptionHandler(IllegalStateException.class)
+    public com.csu.sms.common.ApiResponse<String> handleIllegalStateException(IllegalStateException e) {
+        if (e.getMessage() != null && e.getMessage().contains("当前用户ID不存在")) {
+            return com.csu.sms.common.ApiResponse.error(401, "请先登录");
+        }
+        return com.csu.sms.common.ApiResponse.error(400, e.getMessage());
+    }
+
+    /**
+     * 处理参数验证异常
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public com.csu.sms.common.ApiResponse<String> handleIllegalArgumentException(IllegalArgumentException e) {
+        return com.csu.sms.common.ApiResponse.error(400, e.getMessage());
     }
 }

@@ -3,7 +3,6 @@ package com.csu.sms.controller;
 import com.csu.sms.common.ApiControllerResponse;
 import com.csu.sms.common.PageResult;
 import com.csu.sms.common.ServiceException; // 引入ServiceException
-import com.csu.sms.model.course.Course;
 import com.csu.sms.service.CourseService;
 import com.csu.sms.vo.CourseVO;
 import lombok.RequiredArgsConstructor;

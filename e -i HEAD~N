@@ -1,0 +1,280 @@
+[33mcommit 8c37b8c01c810baa954ce947849cc03dda1e59d7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Merge: 6e2aaf0 96dc63a
+Author: akashi <1428188606@qq.com>
+Date:   Mon Jun 30 17:17:11 2025 +0800
+
+    Merge remote-tracking branch 'origin/main'
+
+[33mcommit 6e2aaf044e70fe5d3f075c4e97a5249597f7b0c3[m
+Author: akashi <1428188606@qq.com>
+Date:   Mon Jun 30 17:14:37 2025 +0800
+
+    修改bug
+
+[33mcommit 7ce47a98a676f28c5d5afe8c417f150c71a964d6[m
+Author: akashi <1428188606@qq.com>
+Date:   Mon Jun 30 17:12:07 2025 +0800
+
+    修改bug
+
+[33mcommit 96dc63a383f9184eedb4b59f3697920039b3fb46[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: akashi <150006400+akashi1113@users.noreply.github.com>
+Date:   Mon Jun 30 16:44:49 2025 +0800
+
+    Add files via upload
+
+[33mcommit 6609b296f55b2e93e8e824ae79e5b7ea5369757f[m
+Author: akashi <1428188606@qq.com>
+Date:   Mon Jun 30 16:40:24 2025 +0800
+
+    修改配置文件和GlobalExceptionHandler
+
+[33mcommit 75928f393bf5fd239d471765c6e67d3762a7526b[m
+Author: 逐数 <693786619@qq.com>
+Date:   Mon Jun 30 14:37:27 2025 +0800
+
+    阿里云密钥处理
+
+[33mcommit c7d4b4ebe96d82adf8e7a51cee8dc89cddcddc5f[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:28:27 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 7d400d3926ee49009bef71a088e124847ebc1fe5[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:17:51 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 883b2394cb73ad0f107a5ea469bee546a20a55ff[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:11:21 2025 +0800
+
+    Update application.yml
+
+[33mcommit a1b6c08466808ba9547d83b842dd430adb00c6bf[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:09:34 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 186e729f4c467d5ea86f742af67a7095bc07c6bd[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:08:39 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 644e74b41c98899e53750a893ee9a530bfc1f2e8[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:06:27 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit f473241446761bedae4e63f472de26a0d295d61c[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:05:45 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 4b12dfcc1b6121ba0129e7ef0acad661334e94d2[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:05:04 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit df6a90e8809d6afd87495107ad2cda2f841cd7e4[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:04:01 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 7987d284ffcf3682e988e8798dc3d7f28e63a75c[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:02:56 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit dd3c1a580ac5c73f89f62140c745854319790e96[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:02:09 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit d2214e493109a57e46f5ac312975306fb9a7dc2a[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 14:01:09 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 9bfec6638091663e9a2acbd999f5a9702d0330bd[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:59:59 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit acd6419b79cbb72da5a39e10e1cf2a43b2fd301e[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:58:28 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 1c788a7629ad937aacd45ce2832a0a263c8e9081[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:57:57 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 3962fbbebbff20b5b9650e9114a26a03406747fb[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:56:33 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit c32698aa1077ed53f4f2ba108d96db1cafa7760e[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:56:06 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 2809d6ed1ba75a2e3c886722e0455fe5bf562029[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:54:23 2025 +0800
+
+    Delete src/main/java/com/csu/sms/model/course
+
+[33mcommit d015e18cd73585f3b2ccbcde2a22de64122ad7ef[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:53:26 2025 +0800
+
+    Create course
+
+[33mcommit eb8dcddcd88d3769f6fbdd90b3eebcfee6295b6a[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:52:06 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit 2cf28a1bd029623b4480bdb6ca860d197f409b4f[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:50:15 2025 +0800
+
+    课程，视频，用户，通知，帖子
+
+[33mcommit fe06aedec996235b09922b2dd482bfd3206c2294[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:49:14 2025 +0800
+
+    Add files via upload
+    
+    课程，视频，用户，通知，帖子
+
+[33mcommit de0f5237dca6f4a4ace4a2ad67342375d50dd408[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:47:59 2025 +0800
+
+    Update UserController.java
+    
+    课程，视频，用户，通知，帖子
+
+[33mcommit 05443e7907c00b7e2589958f0124c819858c13b1[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:47:02 2025 +0800
+
+    Add files via upload
+    
+    课程，视频，用户，通知，帖子
+
+[33mcommit 6fcbb486aa3acfc65f6ba5ef9261bdaa831348c9[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:45:09 2025 +0800
+
+    Update SecurityConfig.java
+    
+    课程，视频，用户，通知，帖子
+
+[33mcommit b9a1efd9a6a9154322fd8dbd134dae31b0cf9719[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:35:55 2025 +0800
+
+    Add files via upload
+    
+    课程，视频，用户，通知，帖子
+
+[33mcommit 3a0f6676c284f4707fa8d250e84596f269366aab[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:33:19 2025 +0800
+
+    Update RedisConfig.java
+    
+    课程，视频，用户，通知，帖子
+
+[33mcommit 8ab32d8ef8971e016df826bd71f7a9778c05a19b[m
+Author: MATH-finding <693786619@qq.com>
+Date:   Mon Jun 30 13:30:31 2025 +0800
+
+    Add files via upload
+    
+    课程，视频，用户，通知，帖子
+
+[33mcommit f4619f2368f13f61cdbfb25404e0d03b5cc8c5f8[m
+Author: akashi <150006400+akashi1113@users.noreply.github.com>
+Date:   Mon Jun 30 11:21:57 2025 +0800
+
+    Delete src/main/resources/application.properties
+
+[33mcommit 54661520ee8b4f8b76ee78170130c337aa4a9f49[m
+Author: akashi <150006400+akashi1113@users.noreply.github.com>
+Date:   Mon Jun 30 11:20:40 2025 +0800
+
+    数据库
+
+[33mcommit 98e2334c7748956fb387d48ecc18c37c00281df0[m
+Author: akashi <150006400+akashi1113@users.noreply.github.com>
+Date:   Mon Jun 30 11:20:15 2025 +0800
+
+    Delete student_knowledge_system2.sql
+
+[33mcommit 791ec15c99e801a5b549d78d4c1c678bab01ed63[m
+Author: akashi <1428188606@qq.com>
+Date:   Mon Jun 30 11:13:38 2025 +0800
+
+    修改homeworkmapper
+
+[33mcommit afb63283fde03e52cb769ad449578723defbd77e[m
+Merge: aa84d84 2c87101
+Author: akashi <1428188606@qq.com>
+Date:   Mon Jun 30 11:04:08 2025 +0800
+
+    jwt and email
+
+[33mcommit 2c87101010290cfbdb3b1a248707a39714192a7a[m
+Merge: 90228fa 8a10987
+Author: skjxww <893404254@qq.com>
+Date:   Mon Jun 30 10:45:16 2025 +0800
+
+    fix: 解决 main 分支合并冲突，合并依赖和配置
+
+[33mcommit aa84d84d9fa8084275b946ddfb57e63a4bb5435a[m
+Author: akashi <1428188606@qq.com>
+Date:   Mon Jun 30 10:43:58 2025 +0800
+
+    jwt and email
+
+[33mcommit 90228fa8742bb78a94d71cef783fea94d1e50ce9[m
+Author: skjxww <893404254@qq.com>
+Date:   Mon Jun 30 10:32:16 2025 +0800
+
+    成绩管理，学习分析，知识库
+
+[33mcommit 8a109878fcc8cb246bf39417b473183fc4a8a49a[m
+Author: akashi <1428188606@qq.com>
+Date:   Mon Jun 30 10:16:27 2025 +0800
+
+    exam and homework
+
+[33mcommit bfd78194e4a3b78990fcea9a41d7e006bf5bb1db[m
+Author: skjxww <893404254@qq.com>
+Date:   Thu Jun 26 08:26:02 2025 +0800
+
+ 
