@@ -1,6 +1,14 @@
 package com.csu.sms.persistence;
 
+<<<<<<< HEAD
 import com.csu.sms.model.user.User;
+=======
+<<<<<<< HEAD
+import com.csu.sms.model.User;
+=======
+import com.csu.sms.model.user.User;
+>>>>>>> 8a109878fcc8cb246bf39417b473183fc4a8a49a
+>>>>>>> 2c87101010290cfbdb3b1a248707a39714192a7a
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -31,4 +39,14 @@ public interface UserDao {
     );
 
     int countUsers(@Param("keyword") String keyword, @Param("status") Integer status);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+    List<User> findUsersByIds(List<Long> userIds);
+
+    List<User> findUsersByRole(int code);
+=======
+>>>>>>> 8a109878fcc8cb246bf39417b473183fc4a8a49a
+>>>>>>> 2c87101010290cfbdb3b1a248707a39714192a7a
 }

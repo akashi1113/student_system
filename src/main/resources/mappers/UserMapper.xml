@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<<<<<<< HEAD
 <mapper namespace="com.csu.demo.education.persistence.UserDao">
     <select id="findById" resultType="com.csu.sms.model.user.User">
         SELECT * FROM user WHERE id = #{id}
@@ -15,6 +16,22 @@
     </select>
 
     <insert id="insertUser" parameterType="com.csu.sms.model.user.User"
+=======
+<mapper namespace="com.csu.sms.persistence.UserDao">
+    <select id="findById" resultType="com.csu.sms.model.User">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <select id="findByUsername" resultType="com.csu.sms.model.User">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+    <select id="findByEmail" resultType="com.csu.sms.model.User">
+        SELECT * FROM user WHERE email = #{email}
+    </select>
+
+    <insert id="insertUser" parameterType="com.csu.sms.model.User"
+>>>>>>> 2c87101010290cfbdb3b1a248707a39714192a7a
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user (
             username, password, email, avatar, status, role, create_time, update_time
@@ -23,7 +40,11 @@
                  )
     </insert>
 
+<<<<<<< HEAD
     <update id="updateUser" parameterType="com.csu.sms.model.user.User">
+=======
+    <update id="updateUser" parameterType="com.csu.sms.model.User">
+>>>>>>> 2c87101010290cfbdb3b1a248707a39714192a7a
         UPDATE user
         SET username = #{username},
             email = #{email},
@@ -44,7 +65,11 @@
         UPDATE user SET password = #{password}, update_time = NOW() WHERE id = #{id}
     </update>
 
+<<<<<<< HEAD
     <select id="findUsersByPage" resultType="com.csu.sms.model.user.User">
+=======
+    <select id="findUsersByPage" resultType="com.csu.sms.model.User">
+>>>>>>> 2c87101010290cfbdb3b1a248707a39714192a7a
         SELECT * FROM user
         <where>
             <if test="keyword != null and keyword != ''">
@@ -69,4 +94,19 @@
             </if>
         </where>
     </select>
+<<<<<<< HEAD
+=======
+
+    <select id="findUsersByIds" resultType="com.csu.sms.model.User">
+        SELECT * FROM user WHERE id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="findUsersByRole" resultType="com.csu.sms.model.User">
+        SELECT * FROM user WHERE role = #{role}
+    </select>
+
+>>>>>>> 2c87101010290cfbdb3b1a248707a39714192a7a
 </mapper>

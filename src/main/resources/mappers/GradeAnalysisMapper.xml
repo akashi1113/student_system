@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.GradeAnalysisMapper">
+    
+    <!-- 统计用户考试记录总数 -->
+    <select id="countUserExamRecords" resultType="long">
+        SELECT COUNT(*)
+        FROM exam_records
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND start_time >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND start_time &lt;= #{endDate}
+        </if>
+    </select>
+
+    <!-- 分页获取用户考试记录 -->
+    <select id="getUserExamRecordsWithPaging" resultType="com.csu.sms.dto.ExamRecordDTO">
+        SELECT 
+            er.id,
+            er.user_id,
+            er.exam_id,
+            e.title as exam_title,
+            e.description as exam_description,
+            e.duration as exam_duration,
+            e.total_score,
+            e.passing_score,
+            e.exam_type,
+            er.score,
+            er.is_passed,
+            er.start_time,
+            er.submit_time,
+            er.duration,
+            er.status,
+            er.violation_count,
+            er.attempt_number,
+            er.rank_position
+        FROM exam_records er
+        LEFT JOIN exams e ON er.exam_id = e.id
+        WHERE er.user_id = #{userId}
+        <if test="startDate != null">
+            AND er.start_time >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND er.start_time &lt;= #{endDate}
+        </if>
+        ORDER BY er.start_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 获取用户学习记录列表 (带分页) -->
+    <select id="getUserStudyRecordsWithPaging" resultType="com.csu.sms.dto.StudyRecordDTO">
+        SELECT sr.id, sr.user_id, sr.video_id, cv.title AS video_title,
+               cv.course_id, c.title AS course_title, sr.progress, sr.duration, sr.completed, sr.last_study_time, cv.duration AS video_duration
+        FROM study_record sr
+        LEFT JOIN course_video cv ON sr.video_id = cv.id
+        LEFT JOIN course c ON cv.course_id = c.id
+        WHERE sr.user_id = #{userId}
+        <if test="startDate != null">
+            AND sr.last_study_time &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND sr.last_study_time &lt;= #{endDate}
+        </if>
+        ORDER BY sr.last_study_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 计算用户学习记录总数 -->
+    <select id="countUserStudyRecords" resultType="long">
+        SELECT COUNT(*) FROM study_record sr
+        WHERE sr.user_id = #{userId}
+        <if test="startDate != null">
+            AND sr.last_study_time &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND sr.last_study_time &lt;= #{endDate}
+        </if>
+    </select>
+
+    <!-- 获取用户考试统计数据 -->
+    <select id="getUserExamStats" resultType="java.util.Map">
+        SELECT 
+            COUNT(*) as totalExams,
+            IFNULL(SUM(CASE WHEN is_passed = 1 THEN 1 ELSE 0 END), 0) as passedExams,
+            IFNULL(AVG(score), 0) as averageScore,
+            IFNULL(MAX(score), 0) as maxScore,
+            IFNULL(MIN(score), 0) as minScore
+        FROM exam_records
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND start_time >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND start_time &lt;= #{endDate}
+        </if>
+    </select>
+
+    <!-- 获取用户学习统计数据 -->
+    <select id="getUserStudyStats" resultType="java.util.Map">
+        SELECT 
+            COUNT(DISTINCT DATE(last_study_time)) as totalStudyDays,
+            IFNULL(SUM(duration), 0) as totalStudyDuration,
+            IFNULL(AVG(duration), 0) as averageDailyDuration,
+            COUNT(*) as totalVideos,
+            IFNULL(SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END), 0) as completedVideos
+        FROM study_record
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 获取用户考试表现数据 -->
+    <select id="getUserCoursePerformances" resultType="java.util.Map">
+        SELECT 
+            e.id as examId,
+            e.title as examTitle,
+            AVG(er.score) as averageScore,
+            COUNT(DISTINCT er.id) as attemptCount,
+            MAX(er.score) as highestScore,
+            MIN(er.score) as lowestScore,
+            SUM(CASE WHEN er.is_passed = 1 THEN 1 ELSE 0 END) as passedAttempts
+        FROM exams e
+        LEFT JOIN exam_records er ON e.id = er.exam_id AND er.user_id = #{userId}
+        WHERE er.id IS NOT NULL
+        <if test="startDate != null">
+            AND er.start_time >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND er.start_time &lt;= #{endDate}
+        </if>
+        GROUP BY e.id, e.title
+    </select>
+
+    <!-- 计算指定考试的记录总数 -->
+    <select id="countExamRecordsByExam" resultType="long">
+        SELECT COUNT(*) FROM exam_records WHERE exam_id = #{examId}
+    </select>
+
+    <!-- 根据考试ID获取考试记录 (带分页) -->
+    <select id="getExamRecordsByExamWithPaging" resultType="com.csu.sms.dto.ExamRecordDTO">
+        SELECT er.id, er.user_id, er.exam_id, er.start_time, er.submit_time, er.duration, er.score, er.max_score, er.status, er.violation_count, er.attempt_number, er.is_passed, er.rank_position
+        FROM exam_records er
+        WHERE er.exam_id = #{examId}
+        ORDER BY er.submit_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 获取用户每日学习数据 (用于折线图) -->
+    <select id="getUserDailyStudyData" resultType="java.util.Map">
+        SELECT 
+            DATE(last_study_time) as studyDate,
+            SUM(duration) as totalDuration,
+            COUNT(*) as videoCount,
+            SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completedVideos
+        FROM study_record
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND last_study_time >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND last_study_time &lt;= #{endDate}
+        </if>
+        GROUP BY DATE(last_study_time)
+        ORDER BY studyDate ASC
+    </select>
+
+    <!-- 获取用户考试成绩趋势 (用于折线图) -->
+    <select id="getUserExamTrend" resultType="java.util.Map">
+        SELECT 
+            DATE(start_time) as examDate,
+            AVG(score) as averageScore,
+            COUNT(*) as examCount,
+            SUM(CASE WHEN is_passed = 1 THEN 1 ELSE 0 END) as passedCount
+        FROM exam_records
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND start_time >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND start_time &lt;= #{endDate}
+        </if>
+        GROUP BY DATE(start_time)
+        ORDER BY examDate ASC
+    </select>
+</mapper>
