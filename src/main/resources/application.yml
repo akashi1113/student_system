@@ -6,6 +6,8 @@ server:
 spring:
   application:
     name: student_system
+  config:
+    import: optional:file:.env[.properties]
 
   # 数据源配置
   datasource:
