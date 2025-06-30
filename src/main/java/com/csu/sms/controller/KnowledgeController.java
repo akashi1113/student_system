@@ -1,13 +1,13 @@
 package com.csu.sms.controller;
 
-import com.csu.sms.domain.KnowledgeBase;
+import com.csu.sms.model.KnowledgeBase;
 import com.csu.sms.service.KnowledgeBaseService;
 import com.csu.sms.util.PageResult;
-import com.csu.sms.util.Result;
+import com.csu.sms.common.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -31,16 +31,18 @@ public class KnowledgeController {
      * @return 分页结果
      */
     @GetMapping("/books")
-    public Result<PageResult<KnowledgeBase>> getKnowledgeList(
+    public ApiResponse<PageResult<KnowledgeBase>> getKnowledgeList(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "1") Integer current,
             @RequestParam(defaultValue = "10") Integer size) {
         try {
             PageResult<KnowledgeBase> result = knowledgeBaseService.getKnowledgeList(keyword, category, current, size);
-            return Result.success("查询成功", result);
+            return ApiResponse.success("查询成功", result);
+        } catch (IllegalArgumentException e) {
+            return ApiResponse.error(e.getMessage(), "400");
         } catch (Exception e) {
-            return Result.error("查询失败：" + e.getMessage());
+            return ApiResponse.error("查询失败：" + e.getMessage());
         }
     }
 
@@ -50,17 +52,17 @@ public class KnowledgeController {
      * @return 知识库详情
      */
     @GetMapping("/book/detail/{id}")
-    public Result<KnowledgeBase> getKnowledgeDetail(@PathVariable Long id) {
+    public ApiResponse<KnowledgeBase> getKnowledgeDetail(@PathVariable Long id) {
         try {
             KnowledgeBase knowledge = knowledgeBaseService.getKnowledgeDetail(id);
             if (knowledge == null) {
-                return Result.error("知识库资源不存在");
+                return ApiResponse.error("知识库资源不存在", "404");
             }
-            return Result.success("查询成功", knowledge);
+            return ApiResponse.success("查询成功", knowledge);
         } catch (IllegalArgumentException e) {
-            return Result.error(400, e.getMessage());
+            return ApiResponse.error(e.getMessage(), "400");
         } catch (Exception e) {
-            return Result.error("查询失败：" + e.getMessage());
+            return ApiResponse.error("查询失败：" + e.getMessage());
         }
     }
 
@@ -69,12 +71,12 @@ public class KnowledgeController {
      * @return 分类列表
      */
     @GetMapping("/categories")
-    public Result<List<String>> getAllCategories() {
+    public ApiResponse<List<String>> getAllCategories() {
         try {
             List<String> categories = knowledgeBaseService.getAllCategories();
-            return Result.success("查询成功", categories);
+            return ApiResponse.success("查询成功", categories);
         } catch (Exception e) {
-            return Result.error("查询失败：" + e.getMessage());
+            return ApiResponse.error("查询失败：" + e.getMessage());
         }
     }
 
@@ -83,12 +85,12 @@ public class KnowledgeController {
      * @return 分类统计数据
      */
     @GetMapping("/categories/statistics")
-    public Result<List<Map<String, Object>>> getCategoryStatistics() {
+    public ApiResponse<List<Map<String, Object>>> getCategoryStatistics() {
         try {
             List<Map<String, Object>> statistics = knowledgeBaseService.getCategoryStatistics();
-            return Result.success("查询成功", statistics);
+            return ApiResponse.success("查询成功", statistics);
         } catch (Exception e) {
-            return Result.error("查询失败：" + e.getMessage());
+            return ApiResponse.error("查询失败：" + e.getMessage());
         }
     }
 
@@ -98,12 +100,14 @@ public class KnowledgeController {
      * @return 热门书籍列表
      */
     @GetMapping("/books/popular")
-    public Result<List<KnowledgeBase>> getPopularBooks(@RequestParam(defaultValue = "10") Integer limit) {
+    public ApiResponse<List<KnowledgeBase>> getPopularBooks(@RequestParam(defaultValue = "10") Integer limit) {
         try {
             List<KnowledgeBase> books = knowledgeBaseService.getPopularBooks(limit);
-            return Result.success("查询成功", books);
+            return ApiResponse.success("查询成功", books);
+        } catch (IllegalArgumentException e) {
+            return ApiResponse.error(e.getMessage(), "400");
         } catch (Exception e) {
-            return Result.error("查询失败：" + e.getMessage());
+            return ApiResponse.error("查询失败：" + e.getMessage());
         }
     }
 
@@ -113,18 +117,18 @@ public class KnowledgeController {
      * @return 操作结果
      */
     @PostMapping("/book")
-    public Result<String> addKnowledge(@Valid @RequestBody KnowledgeBase knowledgeBase) {
+    public ApiResponse<String> addKnowledge(@Valid @RequestBody KnowledgeBase knowledgeBase) {
         try {
             boolean success = knowledgeBaseService.addKnowledge(knowledgeBase);
             if (success) {
-                return Result.success("添加成功", null);
+                return ApiResponse.success("添加成功", null);
             } else {
-                return Result.error("添加失败");
+                return ApiResponse.error("添加失败", "500");
             }
         } catch (IllegalArgumentException e) {
-            return Result.error(400, e.getMessage());
+            return ApiResponse.error(e.getMessage(), "400");
         } catch (Exception e) {
-            return Result.error("添加失败：" + e.getMessage());
+            return ApiResponse.error("添加失败：" + e.getMessage());
         }
     }
 
@@ -134,18 +138,18 @@ public class KnowledgeController {
      * @return 操作结果
      */
     @PostMapping("/books/batch")
-    public Result<String> batchAddKnowledge(@Valid @RequestBody List<KnowledgeBase> knowledgeList) {
+    public ApiResponse<String> batchAddKnowledge(@Valid @RequestBody List<KnowledgeBase> knowledgeList) {
         try {
             boolean success = knowledgeBaseService.batchAddKnowledge(knowledgeList);
             if (success) {
-                return Result.success("批量添加成功", null);
+                return ApiResponse.success("批量添加成功", null);
             } else {
-                return Result.error("批量添加失败");
+                return ApiResponse.error("批量添加失败", "500");
             }
         } catch (IllegalArgumentException e) {
-            return Result.error(400, e.getMessage());
+            return ApiResponse.error(e.getMessage(), "400");
         } catch (Exception e) {
-            return Result.error("批量添加失败：" + e.getMessage());
+            return ApiResponse.error("批量添加失败：" + e.getMessage());
         }
     }
 
@@ -155,18 +159,18 @@ public class KnowledgeController {
      * @return 操作结果
      */
     @PutMapping("/book")
-    public Result<String> updateKnowledge(@Valid @RequestBody KnowledgeBase knowledgeBase) {
+    public ApiResponse<String> updateKnowledge(@Valid @RequestBody KnowledgeBase knowledgeBase) {
         try {
             boolean success = knowledgeBaseService.updateKnowledge(knowledgeBase);
             if (success) {
-                return Result.success("更新成功", null);
+                return ApiResponse.success("更新成功", null);
             } else {
-                return Result.error("更新失败");
+                return ApiResponse.error("更新失败", "500");
             }
         } catch (IllegalArgumentException e) {
-            return Result.error(400, e.getMessage());
+            return ApiResponse.error(e.getMessage(), "400");
         } catch (Exception e) {
-            return Result.error("更新失败：" + e.getMessage());
+            return ApiResponse.error("更新失败：" + e.getMessage());
         }
     }
 
@@ -176,18 +180,18 @@ public class KnowledgeController {
      * @return 操作结果
      */
     @DeleteMapping("/book/{id}")
-    public Result<String> deleteKnowledge(@PathVariable Long id) {
+    public ApiResponse<String> deleteKnowledge(@PathVariable Long id) {
         try {
             boolean success = knowledgeBaseService.deleteKnowledge(id);
             if (success) {
-                return Result.success("删除成功", null);
+                return ApiResponse.success("删除成功", null);
             } else {
-                return Result.error("删除失败");
+                return ApiResponse.error("删除失败，可能资源不存在", "404");
             }
         } catch (IllegalArgumentException e) {
-            return Result.error(400, e.getMessage());
+            return ApiResponse.error(e.getMessage(), "400");
         } catch (Exception e) {
-            return Result.error("删除失败：" + e.getMessage());
+            return ApiResponse.error("删除失败：" + e.getMessage());
         }
     }
 }

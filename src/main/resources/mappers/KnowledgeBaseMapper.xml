@@ -3,11 +3,11 @@
 <mapper namespace="com.csu.sms.persistence.KnowledgeBaseMapper">
 
     <!-- 结果映射 -->
-    <resultMap id="BaseResultMap" type="com.csu.sms.domain.KnowledgeBase">
+    <resultMap id="BaseResultMap" type="com.csu.sms.model.KnowledgeBase">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="book_name" property="bookName" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="author" property="author" jdbcType="VARCHAR"/>
-        <result column="description" property="description" jdbcType="LONGVARCHAR"/>
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
         <result column="image_path" property="imagePath" jdbcType="VARCHAR"/>
         <result column="link_url" property="linkUrl" jdbcType="VARCHAR"/>
         <result column="category" property="category" jdbcType="VARCHAR"/>
@@ -23,10 +23,10 @@
             status = 1
             <if test="keyword != null and keyword != ''">
                 AND (
-                book_name LIKE CONCAT('%', #{keyword}, '%')
+                title LIKE CONCAT('%', #{keyword}, '%')
                 OR author LIKE CONCAT('%', #{keyword}, '%')
                 OR tags LIKE CONCAT('%', #{keyword}, '%')
-                OR description LIKE CONCAT('%', #{keyword}, '%')
+                OR content LIKE CONCAT('%', #{keyword}, '%')
                 )
             </if>
             <if test="category != null and category != ''">
@@ -38,7 +38,7 @@
     <!-- 根据ID查询 -->
     <select id="selectById" resultMap="BaseResultMap">
         SELECT
-            id, book_name, author, description, image_path,
+            id, title, author, content, image_path,
             link_url, category, tags, create_time, update_time, status
         FROM knowledge_base
         WHERE id = #{id} AND status = 1
@@ -47,7 +47,7 @@
     <!-- 分页查询知识库列表 -->
     <select id="selectKnowledgePage" resultMap="BaseResultMap">
         SELECT
-        id, book_name, author, description, image_path,
+        id, title, author, content, image_path,
         link_url, category, tags, create_time, update_time, status
         FROM knowledge_base
         <include refid="whereCondition"/>
@@ -63,12 +63,12 @@
     </select>
 
     <!-- 插入知识库记录 -->
-    <insert id="insert" parameterType="com.csu.sms.domain.KnowledgeBase" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.csu.sms.model.KnowledgeBase" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO knowledge_base (
-            book_name, author, description, image_path,
+            title, author, content, image_path,
             link_url, category, tags, create_time, update_time, status
         ) VALUES (
-                     #{bookName}, #{author}, #{description}, #{imagePath},
+                     #{title}, #{author}, #{content}, #{imagePath},
                      #{linkUrl}, #{category}, #{tags}, #{createTime}, #{updateTime}, #{status}
                  )
     </insert>
@@ -76,29 +76,29 @@
     <!-- 批量插入知识库记录 -->
     <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO knowledge_base (
-        book_name, author, description, image_path,
+        title, author, content, image_path,
         link_url, category, tags, create_time, update_time, status
         ) VALUES
         <foreach collection="list" item="item" separator=",">
             (
-            #{item.bookName}, #{item.author}, #{item.description}, #{item.imagePath},
+            #{item.title}, #{item.author}, #{item.content}, #{item.imagePath},
             #{item.linkUrl}, #{item.category}, #{item.tags}, #{item.createTime}, #{item.updateTime}, #{item.status}
             )
         </foreach>
     </insert>
 
     <!-- 更新知识库记录 -->
-    <update id="updateById" parameterType="com.csu.sms.domain.KnowledgeBase">
+    <update id="updateById" parameterType="com.csu.sms.model.KnowledgeBase">
         UPDATE knowledge_base
         <set>
-            <if test="bookName != null and bookName != ''">
-                book_name = #{bookName},
+            <if test="title != null and title != ''">
+                title = #{title},
             </if>
             <if test="author != null">
                 author = #{author},
             </if>
-            <if test="description != null">
-                description = #{description},
+            <if test="content != null">
+                content = #{content},
             </if>
             <if test="imagePath != null">
                 image_path = #{imagePath},
@@ -151,12 +151,38 @@
     <!-- 查询热门书籍 -->
     <select id="selectPopularBooks" resultMap="BaseResultMap">
         SELECT
-            id, book_name, author, description, image_path,
+            id, title, author, content, image_path,
             link_url, category, tags, create_time, update_time, status
         FROM knowledge_base
         WHERE status = 1
         ORDER BY create_time DESC
         LIMIT #{limit}
+    </select>
+
+    <select id="selectKnowledgeList" resultType="com.csu.sms.model.KnowledgeBase">
+        SELECT * FROM knowledge_base
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="category != null and category != ''">
+                AND category = #{category}
+            </if>
+        </where>
+        ORDER BY id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countKnowledgeList" resultType="int">
+        SELECT COUNT(*) FROM knowledge_base
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="category != null and category != ''">
+                AND category = #{category}
+            </if>
+        </where>
     </select>
 
 </mapper>

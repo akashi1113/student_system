@@ -1,4 +1,4 @@
-package com.csu.sms.domain;
+package com.csu.sms.model;
 
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -17,7 +17,7 @@ public class KnowledgeBase {
     /**
      * 书名
      */
-    private String bookName;
+    private String title;
 
     /**
      * 作者
@@ -27,7 +27,7 @@ public class KnowledgeBase {
     /**
      * 简介描述
      */
-    private String description;
+    private String content;
 
     /**
      * 图片路径

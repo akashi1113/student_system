@@ -1,6 +1,6 @@
 package com.csu.sms.persistence;
 
-import com.csu.sms.domain.KnowledgeBase;
+import com.csu.sms.model.KnowledgeBase;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -71,4 +71,14 @@ public interface KnowledgeBaseMapper {
      * 查询热门书籍
      */
     List<KnowledgeBase> selectPopularBooks(@Param("limit") Integer limit);
+
+    /**
+     * 查询知识库列表
+     */
+    List<KnowledgeBase> selectKnowledgeList(@Param("keyword") String keyword, @Param("category") String category, @Param("offset") int offset, @Param("size") int size);
+
+    /**
+     * 查询知识库列表总数
+     */
+    int countKnowledgeList(@Param("keyword") String keyword, @Param("category") String category);
 }
