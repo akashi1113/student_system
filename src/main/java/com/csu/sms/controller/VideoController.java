@@ -1,6 +1,7 @@
 package com.csu.sms.controller;
 
 import com.csu.sms.common.ApiControllerResponse;
+import com.csu.sms.common.PageResult;
 import com.csu.sms.common.ServiceException; // 引入ServiceException
 import com.csu.sms.model.course.CourseVideo;
 import com.csu.sms.service.VideoService;
@@ -87,6 +88,21 @@ public class VideoController {
         } catch (Exception e) {
             log.error("An unexpected error occurred during video creation for course {}: {}", courseId, e.getMessage(), e);
             return ApiControllerResponse.error(500, "服务器内部错误，视频添加失败，请稍后再试。");
+        }
+    }
+
+    //视频列表（管理员接口）
+    @GetMapping("/admin/videos")
+    public ApiControllerResponse<PageResult<VideoVO>> listAdminVideos(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize
+    ){
+        try {
+            return ApiControllerResponse.success(videoService.listVideos(pageNum, pageSize));
+        }
+        catch (ServiceException e) {
+            log.warn("Failed to list videos: {}", e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
         }
     }
 

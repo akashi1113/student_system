@@ -109,9 +109,15 @@
         
         <!-- AI SDK -->
         <dependency>
-            <groupId>com.alibaba.dashscope</groupId>
+            <groupId>com.alibaba</groupId>
             <artifactId>dashscope-sdk-java</artifactId>
             <version>${dashscope.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         
         <!-- HTTP 相关 -->

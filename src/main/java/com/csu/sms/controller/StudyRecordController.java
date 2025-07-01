@@ -38,7 +38,7 @@ public class StudyRecordController {
         if (studyRecord != null) {
             return ApiControllerResponse.success(studyRecord);
         } else {
-            return ApiControllerResponse.success(null);
+            return ApiControllerResponse.success("未找到学习记录", null);
         }
     }
 }

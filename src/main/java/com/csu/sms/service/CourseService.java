@@ -13,9 +13,4 @@ public interface CourseService {
     Long createCourse(Course course, MultipartFile coverImageFile);
     boolean updateCourse(Course course, MultipartFile coverImageFile);
     boolean deleteCourse(Long id);
-
-    void clearCoursesListCache();
-    void clearCourseDetailCache(Long courseId);
-    void clearUserCourseDetailCache(Long courseId, Long userId);
-    void onStudyRecordUpdated(Long userId, Long videoId);
 }

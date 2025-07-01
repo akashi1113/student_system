@@ -46,4 +46,15 @@
     <delete id="deleteVideosByCourseId">
         DELETE FROM course_video WHERE course_id = #{courseId}
     </delete>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM course_video
+    </select>
+
+    <select id="findVideosByPage" resultType="com.csu.sms.model.course.CourseVideo">
+        SELECT * FROM course_video
+        ORDER BY course_id ASC, create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
 </mapper>

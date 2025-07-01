@@ -20,4 +20,6 @@ public interface CourseDao {
     int deleteCourse(@Param("id") Long id);
 
     int countCourses();
+
+    List<Course> findByIds(@Param("list") List<Long> distinctCourseIds);
 }
