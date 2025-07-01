@@ -21,6 +21,7 @@ public class BookingRequestDTO {
 
     private String specialRequirements;
     private String remarks;
+    private Long examId;
 
     public BookingRequestDTO() {}
 
@@ -42,4 +43,7 @@ public class BookingRequestDTO {
 
     public String getRemarks() { return remarks; }
     public void setRemarks(String remarks) { this.remarks = remarks; }
+
+    public Long getExamId() { return examId; }
+    public void setExamId(Long examId) { this.examId = examId; }
 }

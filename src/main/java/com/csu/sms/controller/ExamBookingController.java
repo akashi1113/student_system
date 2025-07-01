@@ -177,7 +177,7 @@ public class ExamBookingController {
      * 查询用户通知列表
      */
     @GetMapping("/notifications/{userId}")
-    public ApiResponse<List<ExamNotification>> getUserNotifications(@PathVariable Long userId) {
+    public ApiResponse<List<ExamNotification>> getUserNotifications(@PathVariable("userId") Long userId) {
         return examBookingService.getUserNotifications(userId);
     }
 
@@ -193,7 +193,7 @@ public class ExamBookingController {
      * 标记通知为已读
      */
     @PostMapping("/notifications/{notificationId}/read")
-    public ApiResponse<Void> markNotificationAsRead(@PathVariable Long notificationId) {
+    public ApiResponse<Void> markNotificationAsRead(@PathVariable("notificationId") Long notificationId) {
         return examBookingService.markNotificationAsRead(notificationId);
     }
 

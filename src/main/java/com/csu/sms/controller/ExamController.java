@@ -66,7 +66,7 @@ public class ExamController {
 
     private Long getUserIdFromAuth(Authentication auth) {
         // 从JWT token中获取用户ID
-        return 3L; // 简化处理
+        return 2L; // 简化处理
     }
 
     // 提交考试答案
