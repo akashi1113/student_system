@@ -241,4 +241,7 @@ public interface ExamBookingMapper {
                        @Param("startDate") LocalDate startDate,
                        @Param("endDate") LocalDate endDate);
 
+    // 切换时间段状态
+    int toggleTimeSlotStatus(@Param("timeSlotId") Long timeSlotId);
+
 }

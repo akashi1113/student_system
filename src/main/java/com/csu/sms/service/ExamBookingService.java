@@ -599,4 +599,35 @@ public class ExamBookingService {
             return ApiResponse.error("获取统计数据失败: " + e.getMessage());
         }
     }
+
+    // 获取考试时间段列表
+    public ApiResponse<List<ExamTimeSlot>> getTimeSlots(Long examId) {
+        try {
+            List<ExamTimeSlot> timeSlots = examBookingMapper.findTimeSlotsByExamId(examId);
+
+            // 计算是否活跃状态（前端用 isActive 字段）
+            timeSlots.forEach(slot -> {
+                slot.setIsActive("AVAILABLE".equals(slot.getStatus()));
+                slot.setAvailableSlots(slot.getMaxCapacity() - slot.getCurrentBookings());
+            });
+
+            return ApiResponse.success(timeSlots);
+        } catch (Exception e) {
+            return ApiResponse.error("获取时间段失败: " + e.getMessage());
+        }
+    }
+
+    // 切换时间段状态
+    public ApiResponse<Void> toggleTimeSlotStatus(Long timeSlotId) {
+        try {
+            int rows = examBookingMapper.toggleTimeSlotStatus(timeSlotId);
+            if (rows > 0) {
+                return ApiResponse.success("状态切换成功",null);
+            } else {
+                return ApiResponse.error("时间段不存在或更新失败");
+            }
+        } catch (Exception e) {
+            return ApiResponse.error("状态切换失败: " + e.getMessage());
+        }
+    }
 }

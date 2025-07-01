@@ -245,4 +245,18 @@ public class ExamBookingController {
         return examBookingService.getBookingStats(startDate, endDate);
     }
 
+    // 获取考试时间段列表
+    @GetMapping("/{examId}/time-slots")
+    public ApiResponse<List<ExamTimeSlot>> getTimeSlots(
+            @PathVariable("examId") Long examId) {
+        return examBookingService.getTimeSlots(examId);
+    }
+
+    // 切换时间段状态
+    @PostMapping("/time-slots/{timeSlotId}/toggle-status")
+    public ApiResponse<Void> toggleTimeSlotStatus(
+            @PathVariable("timeSlotId") Long timeSlotId) {
+        return examBookingService.toggleTimeSlotStatus(timeSlotId);
+    }
+
 }

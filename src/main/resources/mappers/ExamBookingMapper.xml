@@ -581,4 +581,15 @@
             </if>
         </where>
     </select>
+
+    <!-- 切换时间段状态 -->
+    <update id="toggleTimeSlotStatus">
+        UPDATE exam_time_slots
+        SET status = CASE
+                         WHEN status = 'AVAILABLE' THEN 'DISABLED'
+                         ELSE 'AVAILABLE'
+            END,
+            updated_at = NOW()
+        WHERE id = #{timeSlotId}
+    </update>
 </mapper>
