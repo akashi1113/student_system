@@ -11,7 +11,7 @@
  Target Server Version : 80019 (8.0.19)
  File Encoding         : 65001
 
- Date: 30/06/2025 11:19:35
+ Date: 01/07/2025 19:30:31
 */
 
 SET NAMES utf8mb4;
@@ -86,6 +86,102 @@ CREATE TABLE `course_video`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_course_id`(`course_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for exam_bookings
+-- ----------------------------
+DROP TABLE IF EXISTS `exam_bookings`;
+CREATE TABLE `exam_bookings`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '预约ID',
+  `time_slot_id` bigint NOT NULL COMMENT '时间段ID',
+  `user_id` bigint NOT NULL COMMENT '学生ID',
+  `booking_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '预约号',
+  `status` enum('BOOKED','CONFIRMED','CANCELLED','COMPLETED','NO_SHOW') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'BOOKED' COMMENT '预约状态',
+  `booking_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '预约时间',
+  `confirmed_time` timestamp NULL DEFAULT NULL COMMENT '确认时间',
+  `cancelled_time` timestamp NULL DEFAULT NULL COMMENT '取消时间',
+  `contact_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `contact_email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '联系邮箱',
+  `special_requirements` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '特殊需求',
+  `remarks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '备注信息',
+  `cancel_reason` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '取消原因',
+  `cancelled_by` bigint NULL DEFAULT NULL COMMENT '取消操作人ID',
+  `check_in_time` timestamp NULL DEFAULT NULL COMMENT '签到时间',
+  `check_in_status` enum('NOT_CHECKED','CHECKED_IN','LATE','ABSENT') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'NOT_CHECKED' COMMENT '签到状态',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `booking_number`(`booking_number` ASC) USING BTREE,
+  UNIQUE INDEX `uk_time_slot_user`(`time_slot_id` ASC, `user_id` ASC) USING BTREE,
+  INDEX `idx_time_slot_id`(`time_slot_id` ASC) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
+  INDEX `idx_status`(`status` ASC) USING BTREE,
+  INDEX `idx_booking_number`(`booking_number` ASC) USING BTREE,
+  INDEX `idx_booking_time`(`booking_time` ASC) USING BTREE,
+  INDEX `idx_check_in_status`(`check_in_status` ASC) USING BTREE,
+  INDEX `cancelled_by`(`cancelled_by` ASC) USING BTREE,
+  CONSTRAINT `exam_bookings_ibfk_1` FOREIGN KEY (`time_slot_id`) REFERENCES `exam_time_slots` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `exam_bookings_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `exam_bookings_ibfk_3` FOREIGN KEY (`cancelled_by`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '考试预约表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for exam_locations
+-- ----------------------------
+DROP TABLE IF EXISTS `exam_locations`;
+CREATE TABLE `exam_locations`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '地点ID',
+  `location_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '地点名称',
+  `location_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '地点编码',
+  `address` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '详细地址',
+  `building` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '建筑物',
+  `room_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '房间号',
+  `floor_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '楼层',
+  `capacity` int NULL DEFAULT 50 COMMENT '容量',
+  `seat_layout` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '座位布局',
+  `equipment` json NULL COMMENT '设备信息',
+  `wifi_available` tinyint(1) NULL DEFAULT 1 COMMENT '是否有WiFi',
+  `power_outlets` tinyint(1) NULL DEFAULT 1 COMMENT '是否有电源插座',
+  `contact_person` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '联系人',
+  `contact_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `status` enum('AVAILABLE','MAINTENANCE','UNAVAILABLE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'AVAILABLE' COMMENT '状态',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `location_code`(`location_code` ASC) USING BTREE,
+  INDEX `idx_location_code`(`location_code` ASC) USING BTREE,
+  INDEX `idx_status`(`status` ASC) USING BTREE,
+  INDEX `idx_capacity`(`capacity` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '考试地点表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for exam_notifications
+-- ----------------------------
+DROP TABLE IF EXISTS `exam_notifications`;
+CREATE TABLE `exam_notifications`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '通知ID',
+  `booking_id` bigint NULL DEFAULT NULL COMMENT '预约ID（可为空，系统通知时）',
+  `user_id` bigint NOT NULL COMMENT '接收用户ID',
+  `notification_type` enum('BOOKING_CONFIRMED','BOOKING_CANCELLED','EXAM_REMINDER','EXAM_CHANGED','SYSTEM_NOTICE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '通知类型',
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '通知标题',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '通知内容',
+  `send_method` enum('SYSTEM','EMAIL','SMS','PUSH') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'SYSTEM' COMMENT '发送方式',
+  `send_status` enum('PENDING','SENT','FAILED','READ') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'PENDING' COMMENT '发送状态',
+  `send_time` timestamp NULL DEFAULT NULL COMMENT '发送时间',
+  `read_time` timestamp NULL DEFAULT NULL COMMENT '阅读时间',
+  `scheduled_time` timestamp NULL DEFAULT NULL COMMENT '定时发送时间',
+  `priority` enum('LOW','NORMAL','HIGH','URGENT') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'NORMAL' COMMENT '优先级',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_booking_id`(`booking_id` ASC) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
+  INDEX `idx_notification_type`(`notification_type` ASC) USING BTREE,
+  INDEX `idx_send_status`(`send_status` ASC) USING BTREE,
+  INDEX `idx_scheduled_time`(`scheduled_time` ASC) USING BTREE,
+  INDEX `idx_priority`(`priority` ASC) USING BTREE,
+  CONSTRAINT `exam_notifications_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `exam_bookings` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `exam_notifications_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '考试通知表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for exam_participants
@@ -170,6 +266,41 @@ CREATE TABLE `exam_statistics`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '考试统计表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Table structure for exam_time_slots
+-- ----------------------------
+DROP TABLE IF EXISTS `exam_time_slots`;
+CREATE TABLE `exam_time_slots`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '时间段ID',
+  `exam_id` bigint NOT NULL COMMENT '考试ID',
+  `slot_date` date NOT NULL COMMENT '考试日期',
+  `start_time` time NOT NULL COMMENT '开始时间',
+  `end_time` time NOT NULL COMMENT '结束时间',
+  `exam_location` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '考试地点',
+  `exam_mode` enum('ONLINE','OFFLINE','HYBRID') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'ONLINE' COMMENT '考试模式',
+  `max_capacity` int NULL DEFAULT 50 COMMENT '最大容量',
+  `current_bookings` int NULL DEFAULT 0 COMMENT '当前预约人数',
+  `status` enum('AVAILABLE','FULL','CANCELLED','COMPLETED') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'AVAILABLE' COMMENT '状态',
+  `booking_start_time` timestamp NULL DEFAULT NULL COMMENT '开始预约时间',
+  `booking_end_time` timestamp NULL DEFAULT NULL COMMENT '预约截止时间',
+  `allow_cancel` tinyint(1) NULL DEFAULT 1 COMMENT '是否允许取消预约',
+  `cancel_deadline_hours` int NULL DEFAULT 24 COMMENT '取消预约截止时间(小时)',
+  `requirements` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '特殊要求说明',
+  `equipment_needed` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '所需设备',
+  `created_by` bigint NOT NULL COMMENT '创建者ID',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_exam_id`(`exam_id` ASC) USING BTREE,
+  INDEX `idx_slot_date`(`slot_date` ASC) USING BTREE,
+  INDEX `idx_status`(`status` ASC) USING BTREE,
+  INDEX `idx_exam_mode`(`exam_mode` ASC) USING BTREE,
+  INDEX `idx_exam_date_time`(`exam_id` ASC, `slot_date` ASC, `start_time` ASC) USING BTREE,
+  INDEX `created_by`(`created_by` ASC) USING BTREE,
+  CONSTRAINT `exam_time_slots_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `exam_time_slots_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '考试时间段表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for exams
 -- ----------------------------
 DROP TABLE IF EXISTS `exams`;
@@ -183,7 +314,8 @@ CREATE TABLE `exams`  (
   `start_time` timestamp NULL DEFAULT NULL COMMENT '考试开始时间',
   `end_time` timestamp NULL DEFAULT NULL COMMENT '考试结束时间',
   `status` enum('DRAFT','PUBLISHED','ENDED','CANCELLED') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'DRAFT' COMMENT '考试状态',
-  `exam_type` enum('PRACTICE','FORMAL','SIMULATION','QUIZ_HOMEWORK','FILE_HOMEWORK') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'FORMAL' COMMENT '考试/作业类型',
+  `booking_status` enum('AVAILABLE','UNAVAILABLE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'UNAVAILABLE' COMMENT '预约状态',
+  `exam_type` enum('PRACTICE','FORMAL','SIMULATION') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'FORMAL' COMMENT '考试/作业类型',
   `max_attempts` int NULL DEFAULT 1 COMMENT '最大尝试次数',
   `created_by` bigint NOT NULL COMMENT '创建者ID',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -191,6 +323,7 @@ CREATE TABLE `exams`  (
   `course_id` bigint NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
+  INDEX `idx_booking_status`(`booking_status` ASC) USING BTREE,
   INDEX `idx_created_by`(`created_by` ASC) USING BTREE,
   INDEX `idx_start_time`(`start_time` ASC) USING BTREE,
   INDEX `idx_end_time`(`end_time` ASC) USING BTREE,
@@ -455,7 +588,7 @@ CREATE TABLE `post_like`  (
   UNIQUE INDEX `uk_post_user`(`post_id` ASC, `user_id` ASC) USING BTREE COMMENT '同一用户对同一帖子只能点赞一次',
   INDEX `idx_post_id`(`post_id` ASC) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '帖子点赞表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '帖子点赞表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for post_report
@@ -476,7 +609,7 @@ CREATE TABLE `post_report`  (
   INDEX `idx_reporter_id`(`reporter_id` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '帖子举报表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '帖子举报表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for question_bank_items
@@ -599,7 +732,7 @@ CREATE TABLE `study_record`  (
   UNIQUE INDEX `uk_user_video`(`user_id` ASC, `video_id` ASC) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
   INDEX `idx_video_id`(`video_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for user
@@ -616,7 +749,7 @@ CREATE TABLE `user`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for user_notification
@@ -634,6 +767,6 @@ CREATE TABLE `user_notification`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户通知表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户通知表' ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
