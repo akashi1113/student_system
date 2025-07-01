@@ -266,13 +266,13 @@
             e.id as exam_id, e.title as exam_title, e.description as exam_description,
             e.duration as exam_duration,
 
-            u.id as user_id, u.username, u.real_name as student_name,
-            u.email, u.phone
+            u.id as user_id, u.username as student_name,
+            u.email
 
         FROM exam_bookings eb
                  JOIN exam_time_slots ets ON eb.time_slot_id = ets.id
                  JOIN exams e ON ets.exam_id = e.id
-                 JOIN users u ON eb.user_id = u.id
+                 JOIN user u ON eb.user_id = u.id
         WHERE eb.id = #{bookingId}
     </select>
 
@@ -289,13 +289,13 @@
         e.id as exam_id, e.title as exam_title, e.description as exam_description,
         e.duration as exam_duration,
 
-        u.id as user_id, u.username, u.real_name as student_name,
-        u.email, u.phone
+        u.id as user_id, u.username as student_name,
+        u.email
 
         FROM exam_bookings eb
         JOIN exam_time_slots ets ON eb.time_slot_id = ets.id
         JOIN exams e ON ets.exam_id = e.id
-        JOIN users u ON eb.user_id = u.id
+        JOIN user u ON eb.user_id = u.id
         WHERE eb.user_id = #{userId}
         <if test="status != null">
             AND eb.status = #{status}
@@ -513,4 +513,21 @@
               )}
     </select>
 
+    <select id="findBookingByUserAndExam" resultMap="ExamBookingResultMap">
+        SELECT b.*
+        FROM exam_bookings b
+                 JOIN exam_time_slots ts ON b.time_slot_id = ts.id
+        WHERE b.user_id = #{userId}
+          AND ts.exam_id = #{examId}
+          AND b.status = 'CONFIRMED'
+            LIMIT 1
+    </select>
+
+    <select id="findBookedExamIdsByUserId" resultType="long">
+        SELECT DISTINCT ts.exam_id
+        FROM exam_bookings b
+                 JOIN exam_time_slots ts ON b.time_slot_id = ts.id
+        WHERE b.user_id = #{userId}
+          AND b.status = 'CONFIRMED'
+    </select>
 </mapper>

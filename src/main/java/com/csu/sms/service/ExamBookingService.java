@@ -360,6 +360,18 @@ public class ExamBookingService {
         }
     }
 
+    public ApiResponse<Long> getBookingIdByUserAndExam(Long userId, Long examId) {
+        try {
+            ExamBooking booking = examBookingMapper.findBookingByUserAndExam(userId, examId);
+            if (booking == null) {
+                return ApiResponse.error(404, "未找到预约记录");
+            }
+            return ApiResponse.success(booking.getId());
+        } catch (Exception e) {
+            return ApiResponse.error(500, "获取预约ID失败");
+        }
+    }
+
     public ApiResponse<BookingDetailsDTO> getBookingDetails(Long bookingId) {
         try {
             BookingDetailsDTO details = examBookingMapper.findBookingDetails(bookingId);

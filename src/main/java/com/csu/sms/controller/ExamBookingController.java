@@ -22,7 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/exam-booking")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 public class ExamBookingController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class ExamBookingController {
      * 查询考试的可预约时间段
      */
     @GetMapping("/time-slots/{examId}")
-    public ApiResponse<List<ExamTimeSlot>> getAvailableTimeSlots(@PathVariable Long examId) {
+    public ApiResponse<List<ExamTimeSlot>> getAvailableTimeSlots(@PathVariable("examId") Long examId) {
         return examBookingService.getAvailableTimeSlots(examId);
     }
 
@@ -121,8 +121,19 @@ public class ExamBookingController {
      * 查询预约详情
      */
     @GetMapping("/bookings/{bookingId}")
-    public ApiResponse<BookingDetailsDTO> getBookingDetails(@PathVariable Long bookingId) {
+    public ApiResponse<BookingDetailsDTO> getBookingDetails(@PathVariable("bookingId") Long bookingId) {
         return examBookingService.getBookingDetails(bookingId);
+    }
+
+    /**
+     * 根据用户ID和考试ID获取预约ID
+     */
+    @GetMapping("/bookings/by-user-exam")
+    public ApiResponse<Long> getBookingIdByUserAndExam(
+            @RequestParam("userId") Long userId,
+            @RequestParam("examId") Long examId
+    ) {
+        return examBookingService.getBookingIdByUserAndExam(userId, examId);
     }
 
     /**
@@ -212,4 +223,5 @@ public class ExamBookingController {
     public ApiResponse<Void> handleExpiredBookings() {
         return examBookingService.handleExpiredBookings();
     }
+
 }

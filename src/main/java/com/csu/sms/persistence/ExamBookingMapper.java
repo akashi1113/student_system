@@ -20,6 +20,11 @@ public interface ExamBookingMapper {
     List<ExamTimeSlot> findTimeSlotsByExamId(Long examId);
 
     /**
+     * 查询用户已预约的考试ID列表
+     */
+    List<Long> findBookedExamIdsByUserId(@Param("userId") Long userId);
+
+    /**
      * 查询可预约的时间段
      */
     List<ExamTimeSlot> findAvailableTimeSlots(Long examId);
@@ -62,6 +67,12 @@ public interface ExamBookingMapper {
     int deleteTimeSlot(Long id);
 
     // ============================== 考试预约相关 ==============================
+
+    /**
+     * 查询用户在指定考试的预约
+     */
+    ExamBooking findBookingByUserAndExam(@Param("userId") Long userId,
+                                         @Param("examId") Long examId);
 
     /**
      * 根据ID查询预约

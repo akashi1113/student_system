@@ -1,8 +1,10 @@
 package com.csu.sms.service;
 
+import com.csu.sms.model.booking.ExamBooking;
 import com.csu.sms.model.exam.Exam;
 import com.csu.sms.model.exam.ExamRecord;
 import com.csu.sms.model.question.Question;
+import com.csu.sms.persistence.ExamBookingMapper;
 import com.csu.sms.persistence.ExamMapper;
 import com.csu.sms.persistence.QuestionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class ExamService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private ExamBookingMapper examBookingMapper;
+
     public List<Exam> getAllAvailableExams() {
         return examMapper.findAvailableExams();
     }
@@ -34,8 +39,36 @@ public class ExamService {
         return exam;
     }
 
+    public List<Exam> getBookedExams(Long userId) {
+        List<Long> bookedExamIds = examBookingMapper.findBookedExamIdsByUserId(userId);
+
+        if (bookedExamIds == null || bookedExamIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return examMapper.findByIds(bookedExamIds);
+    }
+
+    public List<Exam> getBookableExams() {
+        return examMapper.findBookableExams();
+    }
+
     @Transactional
     public ExamRecord startExam(Long examId, Long userId) {
+        // 检查考试是否需要预约
+        Exam exam = examMapper.findById(examId);
+        if (exam == null) {
+            throw new RuntimeException("考试不存在");
+        }
+
+        // 如果需要预约，检查用户是否已预约
+        if (exam.getBookingStatus() != null && exam.getBookingStatus().equals("AVAILABLE")) {
+            boolean hasBooking = examBookingMapper.findBookingByUserAndExam(userId, examId) != null;
+            if (!hasBooking) {
+                throw new RuntimeException("请先预约该考试才能开始");
+            }
+        }
+
         // 检查是否已经开始考试
         ExamRecord existingRecord = examMapper.findExamRecord(examId, userId);
         if (existingRecord != null && !"TIMEOUT".equals(existingRecord.getStatus())) {

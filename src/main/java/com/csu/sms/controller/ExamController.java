@@ -31,8 +31,19 @@ public class ExamController {
         return ApiResponse.success(examService.getAllAvailableExams());
     }
 
+    @GetMapping("/bookable")
+    public ApiResponse<List<Exam>> getBookableExams() {
+        return ApiResponse.success(examService.getBookableExams());
+    }
+
+    @GetMapping("/booked")
+    public ApiResponse<List<Exam>> getBookedExams(Authentication auth) {
+        Long userId = getUserIdFromAuth(auth);
+        return ApiResponse.success(examService.getBookedExams(userId));
+    }
+
     @GetMapping("/{examId}")
-    public ApiResponse<Exam> getExamById(@PathVariable Long examId) {
+    public ApiResponse<Exam> getExamById(@PathVariable("examId") Long examId) {
         Exam exam = examService.getExamById(examId);
         return ApiResponse.success(exam);
     }
