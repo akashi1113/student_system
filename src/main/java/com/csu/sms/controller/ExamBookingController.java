@@ -112,7 +112,7 @@ public class ExamBookingController {
      * 查询用户的预约列表
      */
     @GetMapping("/bookings/user/{userId}")
-    public ApiResponse<List<BookingDetailsDTO>> getUserBookings(@PathVariable Long userId,
+    public ApiResponse<List<BookingDetailsDTO>> getUserBookings(@PathVariable("userId") Long userId,
                                                                 @RequestParam(required = false) String status) {
         return examBookingService.getUserBookings(userId, status);
     }
@@ -167,7 +167,7 @@ public class ExamBookingController {
      * 查询用户的预约统计
      */
     @GetMapping("/stats/user/{userId}")
-    public ApiResponse<Map<String, Object>> getUserBookingStats(@PathVariable Long userId) {
+    public ApiResponse<Map<String, Object>> getUserBookingStats(@PathVariable("userId") Long userId) {
         return examBookingService.getUserBookingStats(userId);
     }
 
