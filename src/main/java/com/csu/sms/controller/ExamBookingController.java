@@ -1,5 +1,6 @@
 package com.csu.sms.controller;
 
+import com.csu.sms.common.PageResult;
 import com.csu.sms.service.ExamBookingService;
 import com.csu.sms.model.booking.ExamTimeSlot;
 import com.csu.sms.model.booking.ExamBooking;
@@ -13,6 +14,7 @@ import com.csu.sms.common.ApiResponse;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -222,6 +224,25 @@ public class ExamBookingController {
     @PostMapping("/admin/handle-expired")
     public ApiResponse<Void> handleExpiredBookings() {
         return examBookingService.handleExpiredBookings();
+    }
+
+    @GetMapping("/list")
+    public ApiResponse<PageResult<BookingDetailsDTO>> getBookings(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "20") int pageSize
+    ) {
+        return examBookingService.getBookings(status, startDate, endDate, pageNum, pageSize);
+    }
+
+    @GetMapping("/stats")
+    public ApiResponse<Map<String, Long>> getBookingStats(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        return examBookingService.getBookingStats(startDate, endDate);
     }
 
 }

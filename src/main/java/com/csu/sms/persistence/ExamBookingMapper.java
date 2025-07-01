@@ -1,5 +1,6 @@
 package com.csu.sms.persistence;
 
+import com.csu.sms.common.PageResult;
 import com.csu.sms.model.booking.ExamNotification;
 import com.csu.sms.model.booking.ExamTimeSlot;
 import com.csu.sms.model.booking.ExamBooking;
@@ -227,4 +228,17 @@ public interface ExamBookingMapper {
                                       @Param("cancelReason") String cancelReason,
                                       @Param("resultCode") Integer resultCode,
                                       @Param("resultMessage") String resultMessage);
+
+    List<BookingDetailsDTO> getBookings(
+            @Param("status") String status,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            @Param("offset") int offset,
+            @Param("pageSize") int pageSize
+    );
+
+    Long countBookings(@Param("status") String status,
+                       @Param("startDate") LocalDate startDate,
+                       @Param("endDate") LocalDate endDate);
+
 }

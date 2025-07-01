@@ -530,4 +530,55 @@
         WHERE b.user_id = #{userId}
           AND b.status = 'CONFIRMED'
     </select>
+
+    <select id="getBookings" resultMap="BookingDetailsResultMap">
+        SELECT
+        eb.id as booking_id, eb.booking_number, eb.status as booking_status,
+        eb.booking_time, eb.check_in_status, eb.contact_phone, eb.contact_email,
+        eb.special_requirements, eb.remarks,
+
+        ets.id as time_slot_id, ets.slot_date, ets.start_time, ets.end_time,
+        ets.exam_location, ets.exam_mode, ets.max_capacity, ets.current_bookings,
+
+        e.id as exam_id, e.title as exam_title, e.description as exam_description,
+        e.duration as exam_duration,
+
+        u.id as user_id, u.username as student_name,
+        u.email
+
+        FROM exam_bookings eb
+        JOIN exam_time_slots ets ON eb.time_slot_id = ets.id
+        JOIN exams e ON ets.exam_id = e.id
+        JOIN user u ON eb.user_id = u.id
+        <where>
+            <if test="status != null and status != ''">
+                AND eb.status = #{status}
+            </if>
+            <if test="startDate != null">
+                AND ets.slot_date >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND ets.slot_date <![CDATA[ <= ]]> #{endDate}
+            </if>
+        </where>
+        ORDER BY eb.booking_time DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countBookings" resultType="long">
+        SELECT COUNT(*)
+        FROM exam_bookings eb
+        JOIN exam_time_slots ets ON eb.time_slot_id = ets.id
+        <where>
+            <if test="status != null and status != ''">
+                AND eb.status = #{status}
+            </if>
+            <if test="startDate != null">
+                AND ets.slot_date >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND ets.slot_date <![CDATA[ <= ]]> #{endDate}
+            </if>
+        </where>
+    </select>
 </mapper>

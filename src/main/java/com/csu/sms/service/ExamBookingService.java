@@ -1,5 +1,6 @@
 package com.csu.sms.service;
 
+import com.csu.sms.common.PageResult;
 import com.csu.sms.persistence.ExamBookingMapper;
 import com.csu.sms.persistence.ExamMapper;
 import com.csu.sms.model.booking.ExamTimeSlot;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -545,6 +547,56 @@ public class ExamBookingService {
         } catch (Exception e) {
             // 记录日志，但不影响主流程
             System.err.println("创建通知失败：" + e.getMessage());
+        }
+    }
+
+    public ApiResponse<PageResult<BookingDetailsDTO>> getBookings(
+            String status,
+            LocalDate startDate,
+            LocalDate endDate,
+            int pageNum,
+            int pageSize
+    ) {
+        try {
+            // 计算偏移量
+            int offset = (pageNum - 1) * pageSize;
+
+            // 查询总数
+            long total = examBookingMapper.countBookings(status, startDate, endDate);
+
+            // 查询分页数据
+            List<BookingDetailsDTO> list = examBookingMapper.getBookings(
+                    status, startDate, endDate, offset, pageSize
+            );
+
+            // 使用PageResult.of 方法构建分页结果
+            PageResult<BookingDetailsDTO> result = PageResult.of(list, total, pageNum, pageSize);
+
+            return ApiResponse.success(result);
+        } catch (Exception e) {
+            return ApiResponse.error("查询预约列表失败: " + e.getMessage());
+        }
+    }
+
+    public ApiResponse<Map<String, Long>> getBookingStats(LocalDate startDate, LocalDate endDate) {
+        try {
+            Map<String, Long> stats = new HashMap<>();
+
+            // 总预约数（可加入日期筛选）
+            stats.put("totalBookings", examBookingMapper.countBookings(null, startDate, endDate));
+
+            // 已确认预约数
+            stats.put("confirmedBookings", examBookingMapper.countBookings("CONFIRMED", startDate, endDate));
+
+            // 已取消预约数
+            stats.put("cancelledBookings", examBookingMapper.countBookings("CANCELLED", startDate, endDate));
+
+            // 已完成预约数
+            stats.put("completedBookings", examBookingMapper.countBookings("COMPLETED", startDate, endDate));
+
+            return ApiResponse.success(stats);
+        } catch (Exception e) {
+            return ApiResponse.error("获取统计数据失败: " + e.getMessage());
         }
     }
 }
