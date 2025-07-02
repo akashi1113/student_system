@@ -197,7 +197,7 @@ public class QuestionService {
                     if (aiResult.isSuccess()) {
                         AIGradingResponse gradingResult = aiResult.getData();
                         record.setScore(gradingResult.getScore());
-                        record.setIsCorrect(gradingResult.getScore() > 0);
+                        record.setIsCorrect(gradingResult.getScore() == question.getScore());
                         record.setAiFeedback(gradingResult.getFeedback());
                         record.setAiScoreRatio(gradingResult.getScoreRatio());
                         record.setGradingMethod("AI");
@@ -213,11 +213,10 @@ public class QuestionService {
                     String correctAnswer = questionMapper.getCorrectAnswersByQuestionId(question.getId());
                     int score = scoreObjectiveQuestion(question, answerDTO.getAnswer());
                     record.setScore(score);
-                    record.setIsCorrect(score > 0);
+                    record.setIsCorrect(score == question.getScore());
                     record.setCorrectAnswer(correctAnswer);
                     record.setGradingMethod("AUTO");
                 }
-
                 answerRecords.add(record);
             }
 
@@ -240,23 +239,46 @@ public class QuestionService {
         }
 
         boolean isCorrect = false;
+        int score = 0;
 
         switch (question.getType()) {
             case "SINGLE":
             case "JUDGE":
                 isCorrect = studentAnswer.equals(correctAnswer);
+                score = isCorrect ? question.getScore() : 0;
                 break;
 
             case "MULTIPLE":
                 List<String> studentOptions = Arrays.asList(studentAnswer.split(","));
                 List<String> correctOptions = Arrays.asList(correctAnswer.split(","));
-                studentOptions.sort(String::compareTo);
-                correctOptions.sort(String::compareTo);
-                isCorrect = studentOptions.equals(correctOptions);
+
+                // 计算选对的数量
+                long correctSelected = studentOptions.stream()
+                        .filter(correctOptions::contains)
+                        .count();
+
+                // 计算选错的数量
+                long wrongSelected = studentOptions.stream()
+                        .filter(option -> !correctOptions.contains(option))
+                        .count();
+
+                if (wrongSelected > 0) {
+                    // 有选错的选项，不得分
+                    score = 0;
+                } else if (correctSelected == correctOptions.size()) {
+                    // 全部选对，得满分
+                    score = question.getScore();
+                } else if (correctSelected > 0) {
+                    // 少选但没选错，得一半分
+                    score = question.getScore() / 2;
+                } else {
+                    // 没选任何正确选项
+                    score = 0;
+                }
                 break;
         }
 
-        return isCorrect ? question.getScore() : 0;
+        return score;
     }
 
     // 判断是否为主观题
@@ -297,6 +319,8 @@ public class QuestionService {
             analysis.setCorrectAnswer(formatCorrectAnswer(record.getCorrectAnswer(), question));
             analysis.setAnalysis(question.getAnalysis());
             analysis.setIsCorrect(record.getIsCorrect());
+            analysis.setAiFeedback(record.getAiFeedback());
+            analysis.setAiScoreRatio(record.getAiScoreRatio());
 
             analysisList.add(analysis);
         }

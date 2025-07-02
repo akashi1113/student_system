@@ -109,6 +109,14 @@ public class ExamService {
         return exams;
     }
 
+    public boolean canStartExam(Long examId, Long userId) {
+        ExamRecord record = examMapper.findExamRecord(examId, userId);
+        if (record == null) {
+            return true; // 没有记录，可以开始
+        }
+        return !"SUBMITTED".equals(record.getStatus()); // 未完成才能开始
+    }
+
     @Transactional
     public ExamRecord startExam(Long examId, Long userId) {
         // 检查考试是否需要预约

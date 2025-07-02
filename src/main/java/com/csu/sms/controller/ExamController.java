@@ -52,6 +52,9 @@ public class ExamController {
     public ApiResponse<ExamRecord> startExam(@PathVariable Long examId,
                                              Authentication auth) {
         Long userId = getUserIdFromAuth(auth);
+        if(!examService.canStartExam(examId, userId)) {
+            return ApiResponse.success("您已经完成该考试，无法再次开始",examService.getExamRecord(examId, userId));
+        }
         ExamRecord record = examService.startExam(examId, userId);
         return ApiResponse.success(record);
     }
