@@ -1,8 +1,8 @@
 package com.csu.sms.persistence;
 
 import com.csu.sms.model.KnowledgeBase;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.Map;
  * 知识库数据访问层
  * @author CSU Team
  */
-@Repository
+@Mapper
 public interface KnowledgeBaseMapper {
 
     /**

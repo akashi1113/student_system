@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import com.csu.sms.model.SystemLog;
+import com.csu.sms.service.LogService;
 
 @Service
 public class AIService {
@@ -24,6 +26,9 @@ public class AIService {
 
     @Autowired
     private AIConfig aiConfig;
+
+    @Autowired
+    private LogService logService;
 
     public List<AILearningSuggestionDTO.Suggestion> getLearningSuggestions(AILearningSuggestionDTO.Request request) {
         try {
@@ -35,12 +40,15 @@ public class AIService {
             List<AILearningSuggestionDTO.Suggestion> suggestions = parseAIResponse(aiResponse);
             if (suggestions == null || suggestions.isEmpty()) {
                 logger.warn("AI响应解析失败，使用备用建议");
+                recordAISystemLog("WARN", "AI服务调用", "AI响应解析失败", "AI返回内容无法解析，已使用备用建议", prompt, aiResponse);
                 return getFallbackSuggestions(request);
             }
             logger.info("成功解析AI响应，返回{}条建议", suggestions.size());
+            recordAISystemLog("INFO", "AI服务调用", "AI学习建议获取成功", "AI服务返回建议条数: " + suggestions.size(), prompt, aiResponse);
             return suggestions;
         } catch (Exception e) {
             logger.error("获取AI学习建议失败，使用备用建议", e);
+            recordAISystemLog("ERROR", "AI服务调用", "AI学习建议获取异常", e.getMessage(), null, null);
             return getFallbackSuggestions(request);
         }
     }
@@ -206,5 +214,17 @@ public class AIService {
         } else {
             return minutes + "分钟";
         }
+    }
+
+    private void recordAISystemLog(String level, String type, String title, String content, String prompt, String aiResponse) {
+        try {
+            SystemLog log = new SystemLog();
+            log.setLevel(level);
+            log.setType(type);
+            log.setTitle(title);
+            log.setContent(content + (prompt != null ? "\nPrompt: " + prompt : "") + (aiResponse != null ? "\nAI响应: " + aiResponse : ""));
+            log.setSource("AIService");
+            logService.recordSystemLog(log);
+        } catch (Exception ignore) {}
     }
 } 

@@ -2,7 +2,7 @@ package com.csu.sms.service;
 
 import com.csu.sms.dto.*;
 import com.csu.sms.persistence.GradeAnalysisMapper;
-import com.csu.sms.util.PageResult;
+import com.csu.sms.common.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ public class GradeAnalysisService {
         long total = gradeAnalysisMapper.countUserExamRecords(userId, startDate, endDate);
         List<ExamRecordDTO> records = gradeAnalysisMapper.getUserExamRecordsWithPaging(
                 userId, startDate, endDate, offset, pageSize);
-        return new PageResult<>(records, total, pageNum, pageSize);
+        return PageResult.of(records, total, pageNum, pageSize);
     }
 
     public PageResult<StudyRecordDTO> getUserStudyRecords(Long userId, int pageNum, int pageSize,
@@ -31,14 +31,14 @@ public class GradeAnalysisService {
         long total = gradeAnalysisMapper.countUserStudyRecords(userId, startDate, endDate);
         List<StudyRecordDTO> records = gradeAnalysisMapper.getUserStudyRecordsWithPaging(
                 userId, startDate, endDate, offset, pageSize);
-        return new PageResult<>(records, total, pageNum, pageSize);
+        return PageResult.of(records, total, pageNum, pageSize);
     }
 
     public PageResult<ExamRecordDTO> getExamRecordsByExam(Long examId, int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
         long total = gradeAnalysisMapper.countExamRecordsByExam(examId);
         List<ExamRecordDTO> records = gradeAnalysisMapper.getExamRecordsByExamWithPaging(examId, offset, pageSize);
-        return new PageResult<>(records, total, pageNum, pageSize);
+        return PageResult.of(records, total, pageNum, pageSize);
     }
 
     public GradeAnalysisDTO getUserAnalysis(Long userId, LocalDateTime startDate, LocalDateTime endDate) {

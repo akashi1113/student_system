@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus; // 引入HttpStatus
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile; // 引入MultipartFile
+import com.csu.sms.annotation.LogOperation;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -62,6 +63,7 @@ public class CourseController {
 
     // 添加课程 (管理员接口，支持文件上传)
     @PostMapping("/admin")
+    @LogOperation(module = "课程管理", operation = "新增课程", description = "管理员新增课程")
     public ApiControllerResponse<Long> addCourse(
             @RequestParam String title,
             @RequestParam(defaultValue = "") String description,
@@ -89,6 +91,7 @@ public class CourseController {
 
     // 更新课程 (管理员接口，支持文件上传)
     @PutMapping("/admin/{id}")
+    @LogOperation(module = "课程管理", operation = "修改课程", description = "管理员修改课程信息")
     public ApiControllerResponse<Boolean> updateCourse(
             @PathVariable Long id,
             @RequestParam(required = false) String title,
@@ -111,7 +114,7 @@ public class CourseController {
                 // 当然，你也可以根据需求决定：如果传了 "" 是不是意味着要清空字段？
                 // 如果传 "" 意味着清空，那就直接 course.setTitle("")
                 // 如果传 "" 意味着不更新，就转为 null
-                // 这里我们选择转为 null，让 Service 层通过 null 判断“不更新”
+                // 这里我们选择转为 null，让 Service 层通过 null 判断"不更新"
                 course.setTitle(null); // 或者直接不设置，因为初始course对象的String字段就是null
             }
 
@@ -155,6 +158,7 @@ public class CourseController {
 
     // 删除课程 (管理员接口)
     @DeleteMapping("/admin/{id}")
+    @LogOperation(module = "课程管理", operation = "删除课程", description = "管理员删除课程")
     public ApiControllerResponse<Boolean> deleteCourse(@PathVariable Long id) {
         try {
             boolean success = courseService.deleteCourse(id);

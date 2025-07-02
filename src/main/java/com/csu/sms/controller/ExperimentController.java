@@ -1,5 +1,6 @@
 package com.csu.sms.controller;
 
+import com.csu.sms.annotation.LogOperation;
 import com.csu.sms.dto.ApiResponse;
 import com.csu.sms.dto.ExperimentBookingDTO;
 import com.csu.sms.dto.ExperimentDTO;
@@ -48,6 +49,7 @@ public class ExperimentController {
     }
 
     @PostMapping("/book")
+    @LogOperation(module = "实验管理", operation = "预约实验", description = "学生预约实验")
     public ApiResponse<ExperimentBookingDTO> bookExperiment(@RequestBody BookingRequest request) {
         System.out.println("Received: " + request); // 确保日志打印
         return ApiResponse.success(experimentService.bookExperiment(
@@ -60,30 +62,35 @@ public class ExperimentController {
 
     // 开始实验
     @PostMapping("/start/{bookingId}")
+    @LogOperation(module = "实验管理", operation = "开始实验", description = "学生开始实验")
     public ApiResponse<ExperimentRecordDTO> startExperiment(@PathVariable Long bookingId) {
         return ApiResponse.success(experimentService.startExperiment(bookingId));
     }
 
     // 保存实验记录
     @PostMapping("/save-record")
+    @LogOperation(module = "实验管理", operation = "保存实验记录", description = "保存实验过程记录")
     public ApiResponse<ExperimentRecordDTO> saveExperimentRecord(@RequestBody ExperimentRecordDTO recordDTO) {
         return ApiResponse.success(experimentService.saveExperimentRecord(recordDTO));
     }
 
     // 结束实验
     @PostMapping("/end/{recordId}")
+    @LogOperation(module = "实验管理", operation = "结束实验", description = "学生结束实验")
     public ApiResponse<ExperimentRecordDTO> endExperiment(@PathVariable Long recordId) {
         return ApiResponse.success(experimentService.endExperiment(recordId));
     }
 
     // 生成实验报告
     @PostMapping("/generate-report")
+    @LogOperation(module = "实验管理", operation = "生成实验报告", description = "生成实验报告")
     public ApiResponse<ExperimentReportDTO> generateReport(@RequestBody ExperimentReportDTO reportDTO) {
         return ApiResponse.success(experimentService.generateReport(reportDTO));
     }
 
     // 导出报告
     @PostMapping("/export-report")
+    @LogOperation(module = "实验管理", operation = "导出实验报告", description = "导出实验报告")
     public ApiResponse<String> exportReport(
             @RequestParam Long reportId,
             @RequestParam String format) {
@@ -92,6 +99,7 @@ public class ExperimentController {
 
     // 导入实验数据
     @PostMapping("/import-data")
+    @LogOperation(module = "实验管理", operation = "导入实验数据", description = "导入实验数据文件")
     public ApiResponse<ExperimentRecordDTO> importExperimentData(
             @RequestParam Long recordId,
             @RequestParam MultipartFile file) {

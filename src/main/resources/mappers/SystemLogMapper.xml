@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.SystemLogMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.csu.sms.model.SystemLog">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="level" property="level" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="stack_trace" property="stackTrace" jdbcType="LONGVARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 插入系统日志 -->
+    <insert id="insert" parameterType="com.csu.sms.model.SystemLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO system_logs (
+            level, type, title, content, source, stack_trace, create_time
+        ) VALUES (
+            #{level}, #{type}, #{title}, #{content}, #{source}, #{stackTrace}, #{createTime}
+        )
+    </insert>
+
+    <!-- 根据条件查询系统日志 -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT * FROM system_logs
+        <where>
+            <if test="level != null and level != ''">
+                AND level = #{level}
+            </if>
+            <if test="type != null and type != ''">
+                AND type = #{type}
+            </if>
+            <if test="source != null and source != ''">
+                AND source = #{source}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND create_time >= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND create_time &lt;= #{endTime}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 统计系统日志数量 -->
+    <select id="countByCondition" resultType="long">
+        SELECT COUNT(*) FROM system_logs
+        <where>
+            <if test="level != null and level != ''">
+                AND level = #{level}
+            </if>
+            <if test="type != null and type != ''">
+                AND type = #{type}
+            </if>
+            <if test="source != null and source != ''">
+                AND source = #{source}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND create_time >= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND create_time &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <!-- 删除指定日期之前的日志 -->
+    <delete id="deleteBeforeDate">
+        DELETE FROM system_logs WHERE create_time &lt; #{date}
+    </delete>
+
+</mapper> 

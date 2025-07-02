@@ -19,9 +19,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 注意：请根据实际情况选择数据库
 #    url: "jdbc:mysql://localhost:3306/student_knowledge_system?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8"
-    url: jdbc:mysql://127.0.0.1:3306/student_system
+    url: jdbc:mysql://127.0.0.1:3306/student_knowledge_system
     username: root
-    password: amy20041113  # 请根据实际情况修改
+    password: q18834366303  # 请根据实际情况修改
     hikari:
       minimum-idle: 5
       maximum-pool-size: 20
@@ -81,6 +81,7 @@ mybatis:
 
 # 日志配置
 logging:
+  config: classpath:logback-spring.xml
   level:
     root: INFO
     com.csu.sms.persistence: DEBUG
@@ -88,6 +89,7 @@ logging:
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: TRACE
     org.mybatis: DEBUG
+    com.csu.sms.log: DEBUG
 
 # 阿里云通义千问API配置
 alibaba:

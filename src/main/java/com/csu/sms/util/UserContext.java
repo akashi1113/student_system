@@ -13,6 +13,8 @@ public class UserContext {
     
     private static final String USER_ID_HEADER = "X-User-Id";
     private static final String USER_ID_PARAM = "userId";
+    private static final String USERNAME_HEADER = "X-Username";
+    private static final String USERNAME_PARAM = "username";
     
     /**
      * 获取当前用户ID
@@ -65,5 +67,32 @@ public class UserContext {
             throw new IllegalStateException("当前用户ID不存在，请先登录");
         }
         return userId;
+    }
+    
+    /**
+     * 获取当前用户名
+     * 优先从请求头获取，其次从请求参数获取
+     */
+    public static String getCurrentUsername() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return null;
+        }
+        
+        HttpServletRequest request = attributes.getRequest();
+        
+        // 优先从请求头获取
+        String usernameHeader = request.getHeader(USERNAME_HEADER);
+        if (usernameHeader != null && !usernameHeader.trim().isEmpty()) {
+            return usernameHeader.trim();
+        }
+        
+        // 从请求参数获取
+        String usernameParam = request.getParameter(USERNAME_PARAM);
+        if (usernameParam != null && !usernameParam.trim().isEmpty()) {
+            return usernameParam.trim();
+        }
+        
+        return null;
     }
 } 

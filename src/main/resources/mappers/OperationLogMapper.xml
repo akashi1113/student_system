@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.OperationLogMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.csu.sms.model.OperationLog">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="module" property="module" jdbcType="VARCHAR"/>
+        <result column="operation" property="operation" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="request_url" property="requestUrl" jdbcType="VARCHAR"/>
+        <result column="request_method" property="requestMethod" jdbcType="VARCHAR"/>
+        <result column="ip_address" property="ipAddress" jdbcType="VARCHAR"/>
+        <result column="user_agent" property="userAgent" jdbcType="VARCHAR"/>
+        <result column="request_params" property="requestParams" jdbcType="LONGVARCHAR"/>
+        <result column="response_result" property="responseResult" jdbcType="LONGVARCHAR"/>
+        <result column="execution_time" property="executionTime" jdbcType="BIGINT"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="error_message" property="errorMessage" jdbcType="LONGVARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 插入操作日志 -->
+    <insert id="insert" parameterType="com.csu.sms.model.OperationLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO operation_logs (
+            user_id, username, module, operation, description,
+            request_url, request_method, ip_address, user_agent,
+            request_params, response_result, execution_time, status, error_message, create_time
+        ) VALUES (
+            #{userId}, #{username}, #{module}, #{operation}, #{description},
+            #{requestUrl}, #{requestMethod}, #{ipAddress}, #{userAgent},
+            #{requestParams}, #{responseResult}, #{executionTime}, #{status}, #{errorMessage}, #{createTime}
+        )
+    </insert>
+
+    <!-- 根据条件查询操作日志 -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT * FROM operation_logs
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="module != null and module != ''">
+                AND module LIKE CONCAT('%', #{module}, '%')
+            </if>
+            <if test="operation != null and operation != ''">
+                AND operation = #{operation}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND create_time >= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND create_time &lt;= #{endTime}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 统计操作日志数量 -->
+    <select id="countByCondition" resultType="long">
+        SELECT COUNT(*) FROM operation_logs
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="module != null and module != ''">
+                AND module LIKE CONCAT('%', #{module}, '%')
+            </if>
+            <if test="operation != null and operation != ''">
+                AND operation = #{operation}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND create_time >= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND create_time &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <!-- 删除指定日期之前的日志 -->
+    <delete id="deleteBeforeDate">
+        DELETE FROM operation_logs WHERE create_time &lt; #{date}
+    </delete>
+
+    <select id="auditReport" resultType="com.csu.sms.vo.OperationLogReportVO">
+        SELECT
+            user_id AS userId,
+            username,
+            operation,
+            module,
+            COUNT(*) AS count,
+            SUM(CASE WHEN status = 'SUCCESS' THEN 1 ELSE 0 END) AS successCount,
+            SUM(CASE WHEN status = 'FAILED' THEN 1 ELSE 0 END) AS failedCount,
+            MAX(create_time) AS lastOperationTime
+        FROM operation_logs
+        WHERE 1=1
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="startTime != null">AND create_time &gt;= #{startTime}</if>
+            <if test="endTime != null">AND create_time &lt;= #{endTime}</if>
+            <if test="operation != null and operation != ''">AND operation = #{operation}</if>
+            <if test="module != null and module != ''">AND module LIKE CONCAT('%', #{module}, '%')</if>
+        GROUP BY user_id, username, operation, module
+        ORDER BY lastOperationTime DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="auditReportCount" resultType="int">
+        SELECT COUNT(1)
+        FROM (
+            SELECT 1
+            FROM operation_logs
+            WHERE 1=1
+                <if test="userId != null">AND user_id = #{userId}</if>
+                <if test="startTime != null">AND create_time &gt;= #{startTime}</if>
+                <if test="endTime != null">AND create_time &lt;= #{endTime}</if>
+                <if test="operation != null and operation != ''">AND operation = #{operation}</if>
+                <if test="module != null and module != ''">AND module LIKE CONCAT('%', #{module}, '%')</if>
+            GROUP BY user_id, username, operation, module
+        ) t
+    </select>
+
+    <!-- 查询分组下所有原始操作日志明细 -->
+    <select id="selectDetails" resultMap="BaseResultMap">
+        SELECT * FROM operation_logs
+        <where>
+            <if test="username != null and username != ''">
+                AND username = #{username}
+            </if>
+            <if test="module != null and module != ''">
+                AND module LIKE CONCAT('%', #{module}, '%')
+            </if>
+            <if test="operation != null and operation != ''">
+                AND operation = #{operation}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND create_time &lt;= #{endTime}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 统计分组下所有原始操作日志明细数量 -->
+    <select id="countDetails" resultType="long">
+        SELECT COUNT(*) FROM operation_logs
+        <where>
+            <if test="username != null and username != ''">
+                AND username = #{username}
+            </if>
+            <if test="module != null and module != ''">
+                AND module LIKE CONCAT('%', #{module}, '%')
+            </if>
+            <if test="operation != null and operation != ''">
+                AND operation = #{operation}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND create_time &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+
+</mapper> 

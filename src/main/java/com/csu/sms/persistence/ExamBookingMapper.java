@@ -4,12 +4,14 @@ import com.csu.sms.model.booking.ExamNotification;
 import com.csu.sms.model.booking.ExamTimeSlot;
 import com.csu.sms.model.booking.ExamBooking;
 import com.csu.sms.dto.booking.BookingDetailsDTO;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+@Mapper
 public interface ExamBookingMapper {
 
     // ============================== 考试时间段相关 ==============================

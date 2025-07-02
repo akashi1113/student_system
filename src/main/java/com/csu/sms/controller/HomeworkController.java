@@ -8,6 +8,7 @@ import com.csu.sms.model.homework.Homework;
 import com.csu.sms.model.homework.HomeworkSubmission;
 import com.csu.sms.model.homework.HomeworkAnswer;
 import com.csu.sms.service.HomeworkService;
+import com.csu.sms.annotation.LogOperation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class HomeworkController {
      * 创建作业（基于课程）
      */
     @PostMapping
+    @LogOperation(module = "作业管理", operation = "创建作业", description = "教师创建作业")
     public ResponseEntity<Map<String, Object>> createHomework(
             @Valid @RequestBody HomeworkCreateRequest request) {
         Map<String, Object> response = new HashMap<>();
@@ -51,6 +53,7 @@ public class HomeworkController {
      * 更新作业
      */
     @PutMapping("/{id}")
+    @LogOperation(module = "作业管理", operation = "修改作业", description = "教师修改作业")
     public ResponseEntity<Map<String, Object>> updateHomework(
             @PathVariable Long id,
             @Valid @RequestBody HomeworkUpdateRequest request) {
@@ -72,6 +75,7 @@ public class HomeworkController {
      * 删除作业
      */
     @DeleteMapping("/{id}")
+    @LogOperation(module = "作业管理", operation = "删除作业", description = "教师删除作业")
     public ResponseEntity<Map<String, Object>> deleteHomework(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -185,6 +189,7 @@ public class HomeworkController {
      * 发布作业
      */
     @PutMapping("/{id}/publish")
+    @LogOperation(module = "作业管理", operation = "发布作业", description = "教师发布作业")
     public ResponseEntity<Map<String, Object>> publishHomework(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -203,6 +208,7 @@ public class HomeworkController {
      * 关闭作业
      */
     @PutMapping("/{id}/close")
+    @LogOperation(module = "作业管理", operation = "关闭作业", description = "教师关闭作业")
     public ResponseEntity<Map<String, Object>> closeHomework(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -279,6 +285,7 @@ public class HomeworkController {
      * 提交作业
      */
     @PostMapping("/{homeworkId}/submit")
+    @LogOperation(module = "作业管理", operation = "提交作业", description = "学生提交作业")
     public ResponseEntity<Map<String, Object>> submitHomework(
             @PathVariable Long homeworkId,
             @RequestBody HomeworkSubmitRequest request) {
@@ -410,6 +417,7 @@ public class HomeworkController {
      * 批改作业
      */
     @PutMapping("/submission/{submissionId}/grade")
+    @LogOperation(module = "作业管理", operation = "批改作业", description = "教师批改作业")
     public ResponseEntity<Map<String, Object>> gradeHomework(
             @PathVariable Long submissionId,
             @RequestBody HomeworkGradeRequest request) {

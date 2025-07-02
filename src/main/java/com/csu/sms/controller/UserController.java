@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated; // 用于对 @RequestParam 参数进行校验
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile; // 引入 MultipartFile
+import com.csu.sms.annotation.LogOperation;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -46,6 +47,7 @@ public class UserController {
 
     // 用户登录
     @PostMapping("/login")
+    @LogOperation(module = "用户管理", operation = "用户登录", description = "用户登录系统")
     public ApiControllerResponse<UserVO> login(
             @RequestParam String username,
             @RequestParam String password
@@ -69,6 +71,7 @@ public class UserController {
     // 注意：同时接收表单数据和文件，不能用 @RequestBody UserDTO
     // 前端请求 Content-Type 必须是 multipart/form-data
     @PostMapping("/register")
+    @LogOperation(module = "用户管理", operation = "用户注册", description = "用户注册账号")
     public ApiControllerResponse<Long> register(
             @NotBlank(message = "用户名不能为空")
             @Size(min = 3, max = 20, message = "用户名长度需在3到20字符之间")
@@ -106,6 +109,7 @@ public class UserController {
     // 同样，同时接收表单数据和文件，不能用 @RequestBody UserDTO
     // 前端请求 Content-Type 必须是 multipart/form-data
     @PutMapping("/{id}")
+    @LogOperation(module = "用户管理", operation = "修改个人信息", description = "用户修改个人信息")
     public ApiControllerResponse<Boolean> updateProfile(
             @PathVariable Long id,
             @NotBlank(message = "用户名不能为空")
@@ -141,6 +145,7 @@ public class UserController {
 
     // 修改密码
     @PutMapping("/{id}/password")
+    @LogOperation(module = "用户管理", operation = "修改密码", description = "用户修改登录密码")
     public ApiControllerResponse<Boolean> changePassword(
             @PathVariable Long id,
             @RequestParam String oldPassword,
@@ -182,6 +187,7 @@ public class UserController {
 
     // 管理员接口：启用用户
     @PutMapping("/admin/{id}/enable")
+    @LogOperation(module = "用户管理", operation = "启用用户", description = "管理员启用用户账号")
     public ApiControllerResponse<Boolean> enableUser(
             @PathVariable Long id,
             @RequestParam Long adminId
@@ -200,6 +206,7 @@ public class UserController {
 
     // 管理员接口：禁用用户
     @PutMapping("/admin/{id}/disable")
+    @LogOperation(module = "用户管理", operation = "禁用用户", description = "管理员禁用用户账号")
     public ApiControllerResponse<Boolean> disableUser(
             @PathVariable Long id,
             @RequestParam Long adminId
@@ -218,6 +225,7 @@ public class UserController {
 
     // 管理员接口：设置用户角色
     @PutMapping("/admin/{id}/role")
+    @LogOperation(module = "用户管理", operation = "设置用户角色", description = "管理员设置用户角色")
     public ApiControllerResponse<Boolean> setUserRole(
             @PathVariable Long id,
             @RequestParam Integer role,
@@ -237,6 +245,7 @@ public class UserController {
 
     // 管理员接口：重置密码
     @PutMapping("/admin/{id}/password")
+    @LogOperation(module = "用户管理", operation = "重置用户密码", description = "管理员重置用户密码")
     public ApiControllerResponse<Boolean> resetPassword(
             @PathVariable Long id,
             @RequestParam Long adminId

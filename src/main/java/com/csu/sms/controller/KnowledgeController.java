@@ -2,8 +2,9 @@ package com.csu.sms.controller;
 
 import com.csu.sms.model.KnowledgeBase;
 import com.csu.sms.service.KnowledgeBaseService;
-import com.csu.sms.util.PageResult;
+import com.csu.sms.common.PageResult;
 import com.csu.sms.common.ApiResponse;
+import com.csu.sms.annotation.LogOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public class KnowledgeController {
      * @return 分页结果
      */
     @GetMapping("/books")
+    @LogOperation(module = "知识库管理", operation = "查询书籍列表", description = "分页查询知识库书籍列表")
     public ApiResponse<PageResult<KnowledgeBase>> getKnowledgeList(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String category,
@@ -52,6 +54,7 @@ public class KnowledgeController {
      * @return 知识库详情
      */
     @GetMapping("/book/detail/{id}")
+    @LogOperation(module = "知识库管理", operation = "查看书籍详情", description = "获取知识库书籍详细信息")
     public ApiResponse<KnowledgeBase> getKnowledgeDetail(@PathVariable Long id) {
         try {
             KnowledgeBase knowledge = knowledgeBaseService.getKnowledgeDetail(id);
@@ -71,6 +74,7 @@ public class KnowledgeController {
      * @return 分类列表
      */
     @GetMapping("/categories")
+    @LogOperation(module = "知识库管理", operation = "查询分类列表", description = "获取知识库所有分类")
     public ApiResponse<List<String>> getAllCategories() {
         try {
             List<String> categories = knowledgeBaseService.getAllCategories();
@@ -85,6 +89,7 @@ public class KnowledgeController {
      * @return 分类统计数据
      */
     @GetMapping("/categories/statistics")
+    @LogOperation(module = "知识库管理", operation = "查询分类统计", description = "获取知识库分类统计数据")
     public ApiResponse<List<Map<String, Object>>> getCategoryStatistics() {
         try {
             List<Map<String, Object>> statistics = knowledgeBaseService.getCategoryStatistics();
@@ -100,6 +105,7 @@ public class KnowledgeController {
      * @return 热门书籍列表
      */
     @GetMapping("/books/popular")
+    @LogOperation(module = "知识库管理", operation = "查询热门书籍", description = "获取知识库热门书籍列表")
     public ApiResponse<List<KnowledgeBase>> getPopularBooks(@RequestParam(defaultValue = "10") Integer limit) {
         try {
             List<KnowledgeBase> books = knowledgeBaseService.getPopularBooks(limit);
@@ -117,6 +123,7 @@ public class KnowledgeController {
      * @return 操作结果
      */
     @PostMapping("/book")
+    @LogOperation(module = "知识库管理", operation = "添加书籍", description = "添加新的知识库书籍")
     public ApiResponse<String> addKnowledge(@Valid @RequestBody KnowledgeBase knowledgeBase) {
         try {
             boolean success = knowledgeBaseService.addKnowledge(knowledgeBase);
@@ -138,6 +145,7 @@ public class KnowledgeController {
      * @return 操作结果
      */
     @PostMapping("/books/batch")
+    @LogOperation(module = "知识库管理", operation = "批量添加书籍", description = "批量添加知识库书籍")
     public ApiResponse<String> batchAddKnowledge(@Valid @RequestBody List<KnowledgeBase> knowledgeList) {
         try {
             boolean success = knowledgeBaseService.batchAddKnowledge(knowledgeList);
@@ -159,6 +167,7 @@ public class KnowledgeController {
      * @return 操作结果
      */
     @PutMapping("/book")
+    @LogOperation(module = "知识库管理", operation = "更新书籍", description = "更新知识库书籍信息")
     public ApiResponse<String> updateKnowledge(@Valid @RequestBody KnowledgeBase knowledgeBase) {
         try {
             boolean success = knowledgeBaseService.updateKnowledge(knowledgeBase);
@@ -180,6 +189,7 @@ public class KnowledgeController {
      * @return 操作结果
      */
     @DeleteMapping("/book/{id}")
+    @LogOperation(module = "知识库管理", operation = "删除书籍", description = "删除知识库书籍")
     public ApiResponse<String> deleteKnowledge(@PathVariable Long id) {
         try {
             boolean success = knowledgeBaseService.deleteKnowledge(id);

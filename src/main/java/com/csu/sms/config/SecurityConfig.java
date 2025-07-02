@@ -27,6 +27,7 @@ public class SecurityConfig {
                     config.setAllowedOrigins(List.of("http://localhost:5173"));  // 允许的前端源
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // 允许的HTTP方法
                     config.setAllowedHeaders(List.of("*"));  // 允许所有请求头
+                    config.setAllowCredentials(true); // 允许携带cookie
                     return config;
                 }))
                 

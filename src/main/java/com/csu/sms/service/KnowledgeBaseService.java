@@ -2,7 +2,7 @@ package com.csu.sms.service;
 
 import com.csu.sms.model.KnowledgeBase;
 import com.csu.sms.persistence.KnowledgeBaseMapper;
-import com.csu.sms.util.PageResult;
+import com.csu.sms.common.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +24,10 @@ public class KnowledgeBaseService {
     public PageResult<KnowledgeBase> getKnowledgeList(String keyword, String category, Integer current, Integer size) {
         current = current != null && current > 0 ? current : 1;
         size = size != null && size > 0 ? size : 10;
-        Integer offset = PageResult.calculateOffset(current, size);
+        int offset = (current - 1) * size;
         List<KnowledgeBase> records = knowledgeBaseMapper.selectKnowledgePage(keyword, category, offset, size);
         Long total = knowledgeBaseMapper.countKnowledge(keyword, category);
-        return new PageResult<>(records, total, current, size);
+        return PageResult.of(records, total, current, size);
     }
 
     @Transactional(readOnly = true)

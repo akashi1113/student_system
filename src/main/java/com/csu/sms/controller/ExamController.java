@@ -11,6 +11,7 @@ import com.csu.sms.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import com.csu.sms.annotation.LogOperation;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,6 +39,7 @@ public class ExamController {
     }
 
     @PostMapping("/{examId}/start")
+    @LogOperation(module = "考试管理", operation = "开始考试", description = "学生开始考试")
     public ApiResponse<ExamRecord> startExam(@PathVariable Long examId,
                                              Authentication auth) {
         Long userId = getUserIdFromAuth(auth);
@@ -60,6 +62,7 @@ public class ExamController {
 
     // 提交考试答案
     @PostMapping("/{examId}/submit")
+    @LogOperation(module = "考试管理", operation = "提交考试", description = "学生提交考试答案")
     public ApiResponse<ExamScoreResult> submitExam(@PathVariable Long examId,
                                                    @RequestBody List<AnswerDTO> answers,
                                                    Authentication auth) {
@@ -114,6 +117,7 @@ public class ExamController {
 
     // 记录违规行为
     @PostMapping("/{examId}/violation")
+    @LogOperation(module = "考试管理", operation = "记录违规", description = "记录考试违规行为")
     public ApiResponse<Void> recordViolation(@PathVariable Long examId,
                                              @RequestBody ViolationRequest violation,
                                              Authentication auth) {
@@ -152,6 +156,7 @@ public class ExamController {
 
     // 考试超时处理
     @PostMapping("/{examId}/timeout")
+    @LogOperation(module = "考试管理", operation = "超时处理", description = "考试超时自动提交")
     public ApiResponse<ExamScoreResult> handleTimeout(@PathVariable Long examId,
                                                       Authentication auth) {
         try {

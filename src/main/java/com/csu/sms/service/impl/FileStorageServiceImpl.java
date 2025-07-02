@@ -3,8 +3,11 @@ package com.csu.sms.service.impl;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.ObjectMetadata;
+import com.csu.sms.model.SystemLog;
 import com.csu.sms.service.FileStorageService;
+import com.csu.sms.service.LogService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,13 +31,40 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Value("${aliyun.oss.bucketName}")
     private String bucketName;
 
+    @Autowired
+    private LogService logService;
+
     private OSS ossClient;
 
     @PostConstruct
     public void init() {
         log.info("Initializing OSSClient...");
-        ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
-        log.info("OSSClient initialized for bucket: {}", bucketName);
+        try {
+            ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+            log.info("OSSClient initialized for bucket: {}", bucketName);
+            
+            // 记录系统日志
+            SystemLog systemLog = new SystemLog();
+            systemLog.setLevel("INFO");
+            systemLog.setType("OSS连接");
+            systemLog.setTitle("阿里云OSS连接成功");
+            systemLog.setContent("OSS客户端初始化成功，Bucket: " + bucketName + ", Endpoint: " + endpoint);
+            systemLog.setSource("FileStorageService");
+            logService.recordSystemLog(systemLog);
+            
+        } catch (Exception e) {
+            log.error("Failed to initialize OSSClient", e);
+            
+            // 记录错误日志
+            SystemLog errorLog = new SystemLog();
+            errorLog.setLevel("ERROR");
+            errorLog.setType("OSS连接");
+            errorLog.setTitle("阿里云OSS连接失败");
+            errorLog.setContent("OSS客户端初始化失败: " + e.getMessage());
+            errorLog.setSource("FileStorageService");
+            errorLog.setStackTrace(e.getStackTrace().toString());
+            logService.recordSystemLog(errorLog);
+        }
     }
 
     @PreDestroy
@@ -42,6 +72,15 @@ public class FileStorageServiceImpl implements FileStorageService {
         if (ossClient != null) {
             ossClient.shutdown();
             log.info("OSSClient shut down.");
+            
+            // 记录系统日志
+            SystemLog systemLog = new SystemLog();
+            systemLog.setLevel("INFO");
+            systemLog.setType("OSS连接");
+            systemLog.setTitle("阿里云OSS连接关闭");
+            systemLog.setContent("OSS客户端已关闭");
+            systemLog.setSource("FileStorageService");
+            logService.recordSystemLog(systemLog);
         }
     }
 
