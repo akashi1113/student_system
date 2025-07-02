@@ -21,6 +21,7 @@ public class ExamTimeSlot {
     private Integer maxCapacity;
     private Integer currentBookings;
     private String status; // AVAILABLE, FULL, CANCELLED, COMPLETED
+    private Boolean isActive;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime bookingStartTime;
@@ -116,4 +117,7 @@ public class ExamTimeSlot {
         return availableSlots;
     }
     public void setAvailableSlots(Integer availableSlots) { this.availableSlots = availableSlots; }
+
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
 }

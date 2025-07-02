@@ -7,7 +7,7 @@ public class Question {
     private Long id;
     private Long examId;
     private String content;
-    private String type; // SINGLE, MULTIPLE, JUDGE, TEXT
+    private String type;
     private Integer score;
     private Integer orderNum;
     private String analysis; // 题目解析

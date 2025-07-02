@@ -1,6 +1,7 @@
 package com.csu.sms.persistence;
 
 import com.csu.sms.dto.exam.AnswerDTO;
+import com.csu.sms.model.booking.ExamTimeSlot;
 import com.csu.sms.model.exam.Exam;
 import com.csu.sms.model.exam.ExamRecord;
 import com.csu.sms.model.exam.ExamStatistics;
@@ -18,8 +19,14 @@ public interface ExamMapper {
     // 查询所有可用的考试
     List<Exam> findAvailableExams();
 
+    // 查询可预约考试
+    List<Exam> findBookableExams();
+
     // 根据ID查询考试
     Exam findById(@Param("id") Long id);
+
+    // 根据ID列表查询考试
+    List<Exam> findByIds(@Param("ids") List<Long> ids);
 
     // 根据状态查询考试列表
     List<Exam> findByStatus(@Param("status") String status);
@@ -90,4 +97,5 @@ public interface ExamMapper {
 
     // 根据状态查询考试记录
     List<ExamRecord> findExamRecordsByStatus(@Param("status") String status);
+
 }

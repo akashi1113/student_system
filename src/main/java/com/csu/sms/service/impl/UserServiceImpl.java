@@ -9,6 +9,7 @@ import com.csu.sms.model.enums.UserStatus;
 import com.csu.sms.persistence.UserDao;
 import com.csu.sms.service.FileStorageService; // 引入文件存储服务
 import com.csu.sms.service.UserService;
+import com.csu.sms.util.MailUtil;
 import com.csu.sms.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.csu.sms.service.VerificationCodeService;
+import com.csu.sms.util.JwtUtil;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -33,6 +39,9 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final FileStorageService fileStorageService; // 注入文件存储服务
+
+    private final VerificationCodeService verificationCodeService;
+    private final JwtUtil jwtUtil;
 
     @Value("${app.upload.avatar-folder}")
     private String avatarFolder; // 头像文件夹
@@ -49,21 +58,105 @@ public class UserServiceImpl implements UserService {
         return convertToVO(user);
     }
 
+    // 修改登录方法
+    // 修改登录方法
     @Override
-    public UserVO login(String username, String password) {
+    public Map<String, Object> login(String username, String password) {
         User user = userDao.findByUsername(username);
         if (user == null) {
-            throw new ServiceException(400, "用户名或密码错误。"); // 统一返回错误
+            throw new ServiceException(400, "用户名或密码错误。");
         }
         if (user.getStatus() == UserStatus.DISABLED.getCode()) {
             log.warn("User {} is disabled and tried to login", username);
             throw new ServiceException(403, "账号已被禁用，请联系管理员。");
         }
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (passwordEncoder.matches(password, user.getPassword())) {
             log.warn("Invalid password for user {}", username);
             throw new ServiceException(400, "用户名或密码错误。");
         }
-        return convertToVO(user);
+
+        // 生成JWT令牌
+        String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getTokenVersion());
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("user", convertToVO(user));
+        result.put("token", token);
+        return result;
+    }
+
+    // 新增：发送验证码
+    @Override
+    public void sendVerificationCode(String email) {
+        // 检查邮箱是否已注册
+        User user = userDao.findByEmail(email);
+        if (user == null) {
+            throw new ServiceException(404, "该邮箱未注册");
+        }
+
+        // 生成验证码
+        String code = verificationCodeService.generateCode(email);
+
+        // 发送邮件
+        try {
+            MailUtil.setReceiverMail(email);
+            MailUtil.setReceiverName(user.getUsername());
+            String html = "您的验证码是：" + code + "，5分钟内有效。";
+
+            // 实际发送邮件
+            MailUtil.sendEmail(html);
+            log.info("Send verification code {} to {}", code, email);
+        } catch (Exception e) {
+            log.error("发送验证码邮件失败: {}", e.getMessage());
+            throw new ServiceException(500, "发送验证码失败，请稍后重试");
+        }
+    }
+
+    // 新增：邮箱验证码登录
+    @Override
+    public Map<String, Object> loginByCode(String email, String code) {
+        // 验证验证码
+        if (!verificationCodeService.verifyCode(email, code)) {
+            throw new ServiceException(400, "验证码错误或已过期");
+        }
+
+        // 验证通过后，移除验证码
+        verificationCodeService.removeCode(email);
+
+        // 获取用户
+        User user = userDao.findByEmail(email);
+        if (user == null) {
+            throw new ServiceException(404, "用户不存在");
+        }
+        if (user.getStatus() == UserStatus.DISABLED.getCode()) {
+            throw new ServiceException(403, "账号已被禁用，请联系管理员。");
+        }
+
+        // 生成JWT令牌
+        String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getTokenVersion());
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("user", convertToVO(user));
+        result.put("token", token);
+        return result;
+    }
+
+    // 新增：登出
+    @Override
+    public void logout(String token) {
+        jwtUtil.invalidateToken(token);
+    }
+
+    // 新增：强制下线
+    @Override
+    public boolean forceLogout(Long userId, Long adminId) {
+        // 验证管理员权限
+        if (!isAdminRole(adminId)) {
+            throw new ServiceException(403, "没有权限");
+        }
+
+        // 增加用户的tokenVersion，使旧令牌失效
+        int updated = userDao.incrementTokenVersion(userId);
+        return updated > 0;
     }
 
 
@@ -196,7 +289,8 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(newPassword);
         boolean success = userDao.updatePassword(userId, encodedPassword) > 0;
         if (!success) {
-            throw new ServiceException(500, "密码修改失败，请稍后重试。");
+            // 密码修改后增加token版本，使旧token失效
+            userDao.incrementTokenVersion(userId);
         }
         return true;
     }
@@ -284,7 +378,8 @@ public class UserServiceImpl implements UserService {
         }
         boolean success = userDao.updatePassword(id, passwordEncoder.encode("123456")) > 0;
         if (!success) {
-            throw new ServiceException(500, "重置密码失败，请稍后重试。");
+            // 重置密码后增加token版本，使旧token失效
+            userDao.incrementTokenVersion(id);
         }
         return true;
     }

@@ -1,8 +1,11 @@
 package com.csu.sms.service;
 
+import com.csu.sms.model.booking.ExamBooking;
+import com.csu.sms.model.booking.ExamTimeSlot;
 import com.csu.sms.model.exam.Exam;
 import com.csu.sms.model.exam.ExamRecord;
 import com.csu.sms.model.question.Question;
+import com.csu.sms.persistence.ExamBookingMapper;
 import com.csu.sms.persistence.ExamMapper;
 import com.csu.sms.persistence.QuestionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ExamService {
@@ -20,6 +24,9 @@ public class ExamService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private ExamBookingMapper examBookingMapper;
 
     public List<Exam> getAllAvailableExams() {
         return examMapper.findAvailableExams();
@@ -34,8 +41,98 @@ public class ExamService {
         return exam;
     }
 
+    public List<Exam> getBookedExams(Long userId) {
+        List<ExamBooking> bookings = examBookingMapper.findBookingsByUserId(userId);
+
+        if (bookings == null || bookings.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Set<Long> examIds = new HashSet<>();
+        Map<Long, String> examModeMap = new HashMap<>();
+
+        for (ExamBooking booking : bookings) {
+            if (booking.getTimeSlotId() != null) {
+                ExamTimeSlot timeSlot = examBookingMapper.findTimeSlotById(booking.getTimeSlotId());
+                if (timeSlot != null) {
+                    examIds.add(timeSlot.getExamId());
+                    examModeMap.put(timeSlot.getExamId(), timeSlot.getExamMode());
+                }
+            }
+        }
+
+        if (examIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Exam> exams = examMapper.findByIds(new ArrayList<>(examIds));
+        for (Exam exam : exams) {
+            String mode = examModeMap.get(exam.getId());
+            if (mode != null) {
+                exam.setExamMode(mode);
+            }
+        }
+
+        return exams;
+    }
+
+    public List<Exam> getBookableExams() {
+        // 获取所有可预约考试
+        List<Exam> exams = examMapper.findBookableExams();
+
+        if (exams == null || exams.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // 获取考试ID列表
+        List<Long> examIds = exams.stream()
+                .map(Exam::getId)
+                .collect(Collectors.toList());
+
+        // 获取这些考试的所有可用时间段（返回的是 ExamTimeSlot 对象列表）
+        List<ExamTimeSlot> timeSlots = examBookingMapper.findAvailableTimeSlotsByExamIds(examIds);
+
+        // 按考试ID分组
+        Map<Long, List<ExamTimeSlot>> slotsByExamId = timeSlots.stream()
+                .collect(Collectors.groupingBy(ExamTimeSlot::getExamId));
+
+        // 为每个考试设置模式和可用时间段
+        exams.forEach(exam -> {
+            List<ExamTimeSlot> slots = slotsByExamId.get(exam.getId());
+            if (slots != null && !slots.isEmpty()) {
+                exam.setExamMode(slots.get(0).getExamMode());
+            }
+            else
+                exam.setExamMode("ONLINE");
+        });
+
+        return exams;
+    }
+
+    public boolean canStartExam(Long examId, Long userId) {
+        ExamRecord record = examMapper.findExamRecord(examId, userId);
+        if (record == null) {
+            return true; // 没有记录，可以开始
+        }
+        return !"SUBMITTED".equals(record.getStatus()); // 未完成才能开始
+    }
+
     @Transactional
     public ExamRecord startExam(Long examId, Long userId) {
+        // 检查考试是否需要预约
+        Exam exam = examMapper.findById(examId);
+        if (exam == null) {
+            throw new RuntimeException("考试不存在");
+        }
+
+        // 如果需要预约，检查用户是否已预约
+        if (exam.getBookingStatus() != null && exam.getBookingStatus().equals("AVAILABLE")) {
+            boolean hasBooking = examBookingMapper.findBookingByUserAndExam(userId, examId) != null;
+            if (!hasBooking) {
+                throw new RuntimeException("请先预约该考试才能开始");
+            }
+        }
+
         // 检查是否已经开始考试
         ExamRecord existingRecord = examMapper.findExamRecord(examId, userId);
         if (existingRecord != null && !"TIMEOUT".equals(existingRecord.getStatus())) {

@@ -33,4 +33,10 @@ public interface UserDao {
     List<User> findUsersByIds(@Param("userIds") List<Long> userIds);
 
     List<User> findUsersByRole(@Param("code") int code);
+
+    // 新增：增加token版本号
+    int incrementTokenVersion(@Param("id") Long id);
+
+    // 新增：根据用户ID更新token版本
+    int updateTokenVersion(@Param("id") Long id, @Param("tokenVersion") int tokenVersion);
 }

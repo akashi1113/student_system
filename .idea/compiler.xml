@@ -16,7 +16,10 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
         </processorPath>
         <module name="sms" />
+<<<<<<< HEAD
         <module name="student_system" />
+=======
+>>>>>>> 7d87ea895962098cd542d8d5c52536645436228b
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

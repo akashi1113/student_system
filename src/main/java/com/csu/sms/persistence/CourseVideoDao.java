@@ -15,4 +15,8 @@ public interface CourseVideoDao {
     int insertVideo(CourseVideo video);
     int deleteVideo(@Param("id") Long id);
     int deleteVideosByCourseId(@Param("courseId") Long courseId);
+
+    int countAll();
+
+    List<CourseVideo> findVideosByPage(@Param("offset") int offset,@Param("pageSize") Integer pageSize);
 }

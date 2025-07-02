@@ -32,8 +32,19 @@ public class ExamController {
         return ApiResponse.success(examService.getAllAvailableExams());
     }
 
+    @GetMapping("/bookable")
+    public ApiResponse<List<Exam>> getBookableExams() {
+        return ApiResponse.success(examService.getBookableExams());
+    }
+
+    @GetMapping("/booked")
+    public ApiResponse<List<Exam>> getBookedExams(Authentication auth) {
+        Long userId = getUserIdFromAuth(auth);
+        return ApiResponse.success(examService.getBookedExams(userId));
+    }
+
     @GetMapping("/{examId}")
-    public ApiResponse<Exam> getExamById(@PathVariable Long examId) {
+    public ApiResponse<Exam> getExamById(@PathVariable("examId") Long examId) {
         Exam exam = examService.getExamById(examId);
         return ApiResponse.success(exam);
     }
@@ -43,6 +54,9 @@ public class ExamController {
     public ApiResponse<ExamRecord> startExam(@PathVariable Long examId,
                                              Authentication auth) {
         Long userId = getUserIdFromAuth(auth);
+        if(!examService.canStartExam(examId, userId)) {
+            return ApiResponse.success("您已经完成该考试，无法再次开始",examService.getExamRecord(examId, userId));
+        }
         ExamRecord record = examService.startExam(examId, userId);
         return ApiResponse.success(record);
     }
@@ -80,7 +94,7 @@ public class ExamController {
             }
 
             // 保存答案并评分
-            questionService.scoreAnswers(examRecord.getId(), answers);
+            questionService.scoreAnswersWithAI(examRecord.getId(), answers);
 
             // 计算总分
             int totalScore = examService.calculateTotalScore(examRecord.getId());

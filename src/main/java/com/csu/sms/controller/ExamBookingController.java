@@ -1,5 +1,6 @@
 package com.csu.sms.controller;
 
+import com.csu.sms.common.PageResult;
 import com.csu.sms.service.ExamBookingService;
 import com.csu.sms.model.booking.ExamTimeSlot;
 import com.csu.sms.model.booking.ExamBooking;
@@ -13,6 +14,7 @@ import com.csu.sms.common.ApiResponse;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -22,7 +24,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/exam-booking")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 public class ExamBookingController {
 
     @Autowired
@@ -34,7 +36,7 @@ public class ExamBookingController {
      * 查询考试的可预约时间段
      */
     @GetMapping("/time-slots/{examId}")
-    public ApiResponse<List<ExamTimeSlot>> getAvailableTimeSlots(@PathVariable Long examId) {
+    public ApiResponse<List<ExamTimeSlot>> getAvailableTimeSlots(@PathVariable("examId") Long examId) {
         return examBookingService.getAvailableTimeSlots(examId);
     }
 
@@ -112,7 +114,7 @@ public class ExamBookingController {
      * 查询用户的预约列表
      */
     @GetMapping("/bookings/user/{userId}")
-    public ApiResponse<List<BookingDetailsDTO>> getUserBookings(@PathVariable Long userId,
+    public ApiResponse<List<BookingDetailsDTO>> getUserBookings(@PathVariable("userId") Long userId,
                                                                 @RequestParam(required = false) String status) {
         return examBookingService.getUserBookings(userId, status);
     }
@@ -121,8 +123,19 @@ public class ExamBookingController {
      * 查询预约详情
      */
     @GetMapping("/bookings/{bookingId}")
-    public ApiResponse<BookingDetailsDTO> getBookingDetails(@PathVariable Long bookingId) {
+    public ApiResponse<BookingDetailsDTO> getBookingDetails(@PathVariable("bookingId") Long bookingId) {
         return examBookingService.getBookingDetails(bookingId);
+    }
+
+    /**
+     * 根据用户ID和考试ID获取预约ID
+     */
+    @GetMapping("/bookings/by-user-exam")
+    public ApiResponse<Long> getBookingIdByUserAndExam(
+            @RequestParam("userId") Long userId,
+            @RequestParam("examId") Long examId
+    ) {
+        return examBookingService.getBookingIdByUserAndExam(userId, examId);
     }
 
     /**
@@ -156,7 +169,7 @@ public class ExamBookingController {
      * 查询用户的预约统计
      */
     @GetMapping("/stats/user/{userId}")
-    public ApiResponse<Map<String, Object>> getUserBookingStats(@PathVariable Long userId) {
+    public ApiResponse<Map<String, Object>> getUserBookingStats(@PathVariable("userId") Long userId) {
         return examBookingService.getUserBookingStats(userId);
     }
 
@@ -166,7 +179,7 @@ public class ExamBookingController {
      * 查询用户通知列表
      */
     @GetMapping("/notifications/{userId}")
-    public ApiResponse<List<ExamNotification>> getUserNotifications(@PathVariable Long userId) {
+    public ApiResponse<List<ExamNotification>> getUserNotifications(@PathVariable("userId") Long userId) {
         return examBookingService.getUserNotifications(userId);
     }
 
@@ -182,7 +195,7 @@ public class ExamBookingController {
      * 标记通知为已读
      */
     @PostMapping("/notifications/{notificationId}/read")
-    public ApiResponse<Void> markNotificationAsRead(@PathVariable Long notificationId) {
+    public ApiResponse<Void> markNotificationAsRead(@PathVariable("notificationId") Long notificationId) {
         return examBookingService.markNotificationAsRead(notificationId);
     }
 
@@ -212,4 +225,38 @@ public class ExamBookingController {
     public ApiResponse<Void> handleExpiredBookings() {
         return examBookingService.handleExpiredBookings();
     }
+
+    @GetMapping("/list")
+    public ApiResponse<PageResult<BookingDetailsDTO>> getBookings(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "20") int pageSize
+    ) {
+        return examBookingService.getBookings(status, startDate, endDate, pageNum, pageSize);
+    }
+
+    @GetMapping("/stats")
+    public ApiResponse<Map<String, Long>> getBookingStats(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        return examBookingService.getBookingStats(startDate, endDate);
+    }
+
+    // 获取考试时间段列表
+    @GetMapping("/{examId}/time-slots")
+    public ApiResponse<List<ExamTimeSlot>> getTimeSlots(
+            @PathVariable("examId") Long examId) {
+        return examBookingService.getTimeSlots(examId);
+    }
+
+    // 切换时间段状态
+    @PostMapping("/time-slots/{timeSlotId}/toggle-status")
+    public ApiResponse<Void> toggleTimeSlotStatus(
+            @PathVariable("timeSlotId") Long timeSlotId) {
+        return examBookingService.toggleTimeSlotStatus(timeSlotId);
+    }
+
 }

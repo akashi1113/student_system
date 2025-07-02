@@ -1,5 +1,6 @@
 package com.csu.sms.service;
 
+import com.csu.sms.common.PageResult;
 import com.csu.sms.persistence.ExamBookingMapper;
 import com.csu.sms.persistence.ExamMapper;
 import com.csu.sms.model.booking.ExamTimeSlot;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -360,6 +362,18 @@ public class ExamBookingService {
         }
     }
 
+    public ApiResponse<Long> getBookingIdByUserAndExam(Long userId, Long examId) {
+        try {
+            ExamBooking booking = examBookingMapper.findBookingByUserAndExam(userId, examId);
+            if (booking == null) {
+                return ApiResponse.error(404, "未找到预约记录");
+            }
+            return ApiResponse.success(booking.getId());
+        } catch (Exception e) {
+            return ApiResponse.error(500, "获取预约ID失败");
+        }
+    }
+
     public ApiResponse<BookingDetailsDTO> getBookingDetails(Long bookingId) {
         try {
             BookingDetailsDTO details = examBookingMapper.findBookingDetails(bookingId);
@@ -533,6 +547,87 @@ public class ExamBookingService {
         } catch (Exception e) {
             // 记录日志，但不影响主流程
             System.err.println("创建通知失败：" + e.getMessage());
+        }
+    }
+
+    public ApiResponse<PageResult<BookingDetailsDTO>> getBookings(
+            String status,
+            LocalDate startDate,
+            LocalDate endDate,
+            int pageNum,
+            int pageSize
+    ) {
+        try {
+            // 计算偏移量
+            int offset = (pageNum - 1) * pageSize;
+
+            // 查询总数
+            long total = examBookingMapper.countBookings(status, startDate, endDate);
+
+            // 查询分页数据
+            List<BookingDetailsDTO> list = examBookingMapper.getBookings(
+                    status, startDate, endDate, offset, pageSize
+            );
+
+            // 使用PageResult.of 方法构建分页结果
+            PageResult<BookingDetailsDTO> result = PageResult.of(list, total, pageNum, pageSize);
+
+            return ApiResponse.success(result);
+        } catch (Exception e) {
+            return ApiResponse.error("查询预约列表失败: " + e.getMessage());
+        }
+    }
+
+    public ApiResponse<Map<String, Long>> getBookingStats(LocalDate startDate, LocalDate endDate) {
+        try {
+            Map<String, Long> stats = new HashMap<>();
+
+            // 总预约数（可加入日期筛选）
+            stats.put("totalBookings", examBookingMapper.countBookings(null, startDate, endDate));
+
+            // 已确认预约数
+            stats.put("confirmedBookings", examBookingMapper.countBookings("CONFIRMED", startDate, endDate));
+
+            // 已取消预约数
+            stats.put("cancelledBookings", examBookingMapper.countBookings("CANCELLED", startDate, endDate));
+
+            // 已完成预约数
+            stats.put("completedBookings", examBookingMapper.countBookings("COMPLETED", startDate, endDate));
+
+            return ApiResponse.success(stats);
+        } catch (Exception e) {
+            return ApiResponse.error("获取统计数据失败: " + e.getMessage());
+        }
+    }
+
+    // 获取考试时间段列表
+    public ApiResponse<List<ExamTimeSlot>> getTimeSlots(Long examId) {
+        try {
+            List<ExamTimeSlot> timeSlots = examBookingMapper.findTimeSlotsByExamId(examId);
+
+            // 计算是否活跃状态（前端用 isActive 字段）
+            timeSlots.forEach(slot -> {
+                slot.setIsActive("AVAILABLE".equals(slot.getStatus()));
+                slot.setAvailableSlots(slot.getMaxCapacity() - slot.getCurrentBookings());
+            });
+
+            return ApiResponse.success(timeSlots);
+        } catch (Exception e) {
+            return ApiResponse.error("获取时间段失败: " + e.getMessage());
+        }
+    }
+
+    // 切换时间段状态
+    public ApiResponse<Void> toggleTimeSlotStatus(Long timeSlotId) {
+        try {
+            int rows = examBookingMapper.toggleTimeSlotStatus(timeSlotId);
+            if (rows > 0) {
+                return ApiResponse.success("状态切换成功",null);
+            } else {
+                return ApiResponse.error("时间段不存在或更新失败");
+            }
+        } catch (Exception e) {
+            return ApiResponse.error("状态切换失败: " + e.getMessage());
         }
     }
 }

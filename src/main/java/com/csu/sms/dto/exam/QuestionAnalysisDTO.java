@@ -10,6 +10,8 @@ public class QuestionAnalysisDTO {
     private String correctAnswer; // 正确答案
     private String analysis; // 题目解析
     private Boolean isCorrect;
+    private String aiFeedback;
+    private Double aiScoreRatio;
 
     public QuestionAnalysisDTO() {}
 
@@ -84,5 +86,29 @@ public class QuestionAnalysisDTO {
 
     public void setIsCorrect(Boolean isCorrect) {
         this.isCorrect = isCorrect;
+    }
+
+    public Boolean getCorrect() {
+        return isCorrect;
+    }
+
+    public void setCorrect(Boolean correct) {
+        isCorrect = correct;
+    }
+
+    public String getAiFeedback() {
+        return aiFeedback;
+    }
+
+    public void setAiFeedback(String aiFeedback) {
+        this.aiFeedback = aiFeedback;
+    }
+
+    public Double getAiScoreRatio() {
+        return aiScoreRatio;
+    }
+
+    public void setAiScoreRatio(Double aiScoreRatio) {
+        this.aiScoreRatio = aiScoreRatio;
     }
 }

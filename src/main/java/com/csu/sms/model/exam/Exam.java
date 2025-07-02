@@ -22,6 +22,8 @@ public class Exam {
     private List<Question> questions;
     private Integer passingScore;
     private Integer maxAttempts;
+    private String bookingStatus;
+    private String examMode;
 
     public Long getId() {
         return id;
@@ -149,5 +151,20 @@ public class Exam {
 
     public void setMaxAttempts(Integer maxAttempts) {
         this.maxAttempts = maxAttempts;
+    }
+
+    public String getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(String bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
+
+    public String getExamMode() {
+        return examMode;
+    }
+    public void setExamMode(String examMode) {
+        this.examMode = examMode;
     }
 }

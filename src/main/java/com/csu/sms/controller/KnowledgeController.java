@@ -16,6 +16,10 @@ import java.util.Map;
  * 知识库控制器
  * @author CSU Team
  */
+@CrossOrigin(origins = {"http://localhost:5173"},
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+        allowCredentials = "true")
 @RestController
 @RequestMapping("/api/knowledge")
 public class KnowledgeController {

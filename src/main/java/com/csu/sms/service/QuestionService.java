@@ -1,5 +1,6 @@
 package com.csu.sms.service;
 
+import com.csu.sms.common.ApiResponse;
 import com.csu.sms.dto.exam.*;
 import com.csu.sms.model.question.AnswerRecord;
 import com.csu.sms.model.question.Question;
@@ -19,6 +20,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    public AIGradingService aiGradingService;
 
     // 根据考试ID获取所有题目（用于考试）
     // 不包含正确答案信息
@@ -149,64 +153,150 @@ public class QuestionService {
             return 0;
         }
 
+        switch (question.getType()) {
+            case "SINGLE":
+            case "JUDGE":
+            case "MULTIPLE":
+                return scoreObjectiveQuestion(question, studentAnswer);
+
+            case "TEXT":
+                ApiResponse<AIGradingResponse> textResult = aiGradingService.gradeTextAnswer(question, studentAnswer);
+                return textResult.isSuccess() ? textResult.getData().getScore() : 0;
+
+            case "FILL":
+                ApiResponse<AIGradingResponse> fillResult = aiGradingService.gradeFillAnswer(question, studentAnswer);
+                return fillResult.isSuccess() ? fillResult.getData().getScore() : 0;
+
+            case "PROGRAMMING":
+                ApiResponse<AIGradingResponse> progResult = aiGradingService.gradeProgrammingAnswer(question, studentAnswer);
+                return progResult.isSuccess() ? progResult.getData().getScore() : 0;
+
+            default:
+                return 0;
+        }
+    }
+
+    // 批量评分
+    @Transactional
+    public ApiResponse<Void> scoreAnswersWithAI(Long examRecordId, List<AnswerDTO> answers) {
+        try {
+            List<AnswerRecord> answerRecords = new ArrayList<>();
+
+            for (AnswerDTO answerDTO : answers) {
+                Question question = questionMapper.findById(answerDTO.getQuestionId());
+                if (question == null) continue;
+
+                AnswerRecord record = new AnswerRecord();
+                record.setExamRecordId(examRecordId);
+                record.setQuestionId(answerDTO.getQuestionId());
+                record.setAnswer(answerDTO.getAnswer());
+
+                if (isSubjectiveQuestion(question.getType())) {
+                    // 主观题使用AI评分
+                    ApiResponse<AIGradingResponse> aiResult = gradeSubjectiveQuestion(question, answerDTO.getAnswer());
+                    if (aiResult.isSuccess()) {
+                        AIGradingResponse gradingResult = aiResult.getData();
+                        record.setScore(gradingResult.getScore());
+                        record.setIsCorrect(gradingResult.getScore() == question.getScore());
+                        record.setAiFeedback(gradingResult.getFeedback());
+                        record.setAiScoreRatio(gradingResult.getScoreRatio());
+                        record.setGradingMethod("AI");
+                    } else {
+                        record.setScore(0);
+                        record.setIsCorrect(false);
+                        record.setAiFeedback("AI评分失败: " + aiResult.getMessage());
+                        record.setGradingMethod("AUTO");
+                    }
+                    record.setCorrectAnswer(question.getAnalysis());
+                } else {
+                    // 客观题使用传统评分
+                    String correctAnswer = questionMapper.getCorrectAnswersByQuestionId(question.getId());
+                    int score = scoreObjectiveQuestion(question, answerDTO.getAnswer());
+                    record.setScore(score);
+                    record.setIsCorrect(score == question.getScore());
+                    record.setCorrectAnswer(correctAnswer);
+                    record.setGradingMethod("AUTO");
+                }
+                answerRecords.add(record);
+            }
+
+            if (!answerRecords.isEmpty()) {
+                questionMapper.batchInsertAnswerRecords(answerRecords);
+            }
+
+            return ApiResponse.success("评分完成",null);
+
+        } catch (Exception e) {
+            return ApiResponse.error("评分过程中发生错误: " + e.getMessage());
+        }
+    }
+
+    // 客观题评分
+    private int scoreObjectiveQuestion(Question question, String studentAnswer) {
         String correctAnswer = questionMapper.getCorrectAnswersByQuestionId(question.getId());
         if (correctAnswer == null) {
             return 0;
         }
 
         boolean isCorrect = false;
+        int score = 0;
 
         switch (question.getType()) {
             case "SINGLE":
             case "JUDGE":
-                // 单选题和判断题：直接比较
                 isCorrect = studentAnswer.equals(correctAnswer);
+                score = isCorrect ? question.getScore() : 0;
                 break;
 
             case "MULTIPLE":
-                // 多选题：比较选项ID集合
                 List<String> studentOptions = Arrays.asList(studentAnswer.split(","));
                 List<String> correctOptions = Arrays.asList(correctAnswer.split(","));
-                studentOptions.sort(String::compareTo);
-                correctOptions.sort(String::compareTo);
-                isCorrect = studentOptions.equals(correctOptions);
-                break;
 
-            case "TEXT":
-                // 简答题：暂时按关键词匹配，实际项目中可能需要人工评分
-                isCorrect = evaluateTextAnswer(studentAnswer, correctAnswer);
+                // 计算选对的数量
+                long correctSelected = studentOptions.stream()
+                        .filter(correctOptions::contains)
+                        .count();
+
+                // 计算选错的数量
+                long wrongSelected = studentOptions.stream()
+                        .filter(option -> !correctOptions.contains(option))
+                        .count();
+
+                if (wrongSelected > 0) {
+                    // 有选错的选项，不得分
+                    score = 0;
+                } else if (correctSelected == correctOptions.size()) {
+                    // 全部选对，得满分
+                    score = question.getScore();
+                } else if (correctSelected > 0) {
+                    // 少选但没选错，得一半分
+                    score = question.getScore() / 2;
+                } else {
+                    // 没选任何正确选项
+                    score = 0;
+                }
                 break;
         }
 
-        return isCorrect ? question.getScore() : 0;
+        return score;
     }
 
-    // 批量评分
-    @Transactional
-    public void scoreAnswers(Long examRecordId, List<AnswerDTO> answers) {
-        List<AnswerRecord> answerRecords = new ArrayList<>();
+    // 判断是否为主观题
+    private boolean isSubjectiveQuestion(String type) {
+        return "TEXT".equals(type) || "FILL".equals(type) || "PROGRAMMING".equals(type);
+    }
 
-        for (AnswerDTO answerDTO : answers) {
-            Question question = questionMapper.findById(answerDTO.getQuestionId());
-            if (question == null) continue;
-
-            String correctAnswer = questionMapper.getCorrectAnswersByQuestionId(question.getId());
-            int score = scoreQuestion(question, answerDTO.getAnswer());
-            boolean isCorrect = score > 0;
-
-            AnswerRecord record = new AnswerRecord();
-            record.setExamRecordId(examRecordId);
-            record.setQuestionId(answerDTO.getQuestionId());
-            record.setAnswer(answerDTO.getAnswer());
-            record.setCorrectAnswer(correctAnswer);
-            record.setScore(score);
-            record.setIsCorrect(isCorrect);
-
-            answerRecords.add(record);
-        }
-
-        if (!answerRecords.isEmpty()) {
-            questionMapper.batchInsertAnswerRecords(answerRecords);
+    // 主观题AI评分
+    private ApiResponse<AIGradingResponse> gradeSubjectiveQuestion(Question question, String studentAnswer) {
+        switch (question.getType()) {
+            case "TEXT":
+                return aiGradingService.gradeTextAnswer(question, studentAnswer);
+            case "FILL":
+                return aiGradingService.gradeFillAnswer(question, studentAnswer);
+            case "PROGRAMMING":
+                return aiGradingService.gradeProgrammingAnswer(question, studentAnswer);
+            default:
+                return ApiResponse.error("不支持的题目类型");
         }
     }
 
@@ -229,6 +319,8 @@ public class QuestionService {
             analysis.setCorrectAnswer(formatCorrectAnswer(record.getCorrectAnswer(), question));
             analysis.setAnalysis(question.getAnalysis());
             analysis.setIsCorrect(record.getIsCorrect());
+            analysis.setAiFeedback(record.getAiFeedback());
+            analysis.setAiScoreRatio(record.getAiScoreRatio());
 
             analysisList.add(analysis);
         }
@@ -280,7 +372,10 @@ public class QuestionService {
                 break;
 
             case "TEXT":
-                // 简答题不需要选项
+                break;
+            case "FILL":
+                break;
+            case "PROGRAMMING":
                 break;
 
             default:
@@ -371,6 +466,10 @@ public class QuestionService {
                 return "true".equals(answer) ? "正确" : "错误";
             case "TEXT":
                 return answer;
+            case "FILL":
+                return answer;
+            case "PROGRAMMING":
+                return null;
             default:
                 return answer;
         }

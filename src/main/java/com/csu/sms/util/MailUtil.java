@@ -1,5 +1,6 @@
 package com.csu.sms.util;
 
+import jakarta.mail.*;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.InternetAddress;
@@ -7,11 +8,12 @@ import jakarta.mail.internet.MimeMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.Properties;
 
 
 public class MailUtil {
-    private static String senderMail = "1428188606@qq.com";
-    private static String authCode = "llnxcjgpxxmoiedd";
+    private static String senderMail = "3626183568@qq.com";
+    private static String authCode = "hvkdfkrbtfmtcifh";
     private static String emailSMTPHost = "smtp.qq.com";
     private static String receiverMail = "";
     private static String receiverName = "";
@@ -71,6 +73,36 @@ public class MailUtil {
         }
 
         return message;
+    }
+
+    public static void sendEmail(String htmlContent) {
+        // 创建Properties对象
+        Properties props = new Properties();
+        props.setProperty("mail.transport.protocol", "smtp"); // 使用的协议
+        props.setProperty("mail.smtp.host", emailSMTPHost); // 发件人的SMTP服务器地址
+        props.setProperty("mail.smtp.auth", "true"); // 需要请求认证
+
+        // QQ邮箱需要开启SSL加密
+        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.setProperty("mail.smtp.port", "465");
+        props.setProperty("mail.smtp.socketFactory.port", "465");
+
+        // 创建会话
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(senderMail, authCode);
+            }
+        });
+
+        try {
+            // 创建邮件
+            MimeMessage message = creatMimeMessage(session, htmlContent);
+            // 发送邮件
+            Transport.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException("发送邮件失败", e);
+        }
     }
 }
 
