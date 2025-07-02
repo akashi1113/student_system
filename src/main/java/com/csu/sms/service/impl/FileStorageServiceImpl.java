@@ -70,15 +70,13 @@ public class FileStorageServiceImpl implements FileStorageService {
             // 如果你使用了CDN，这里应该返回CDN域名对应的URL。
             // 假设默认OSS公共读URL格式: https://{bucketName}.{endpoint}/{fileKey}
             String fileUrl = "https://" + bucketName + "." + endpoint + "/" + fileKey;
-            log.info(">>>> OSS Upload Success, URL generated: {}", fileUrl);
+            log.info("File uploaded to OSS: {}", fileUrl);
             return fileUrl;
         } catch (Exception e) {
             log.error("Failed to upload file to OSS (key: {}): {}", fileKey, e.getMessage(), e);
             // 向上抛出IOException，让业务层处理
             throw new IOException("Failed to upload file to cloud storage: " + e.getMessage(), e);
-        }finally {
-        log.info("<<<< OSS Upload Method Exited."); // <-- 新增日志点 B
-    }
+        }
     }
 
     @Override
@@ -133,3 +131,4 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 }
+

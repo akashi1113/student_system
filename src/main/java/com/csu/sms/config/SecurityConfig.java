@@ -21,14 +21,14 @@ public class SecurityConfig {
                 // 禁用 CSRF (使用更简洁的写法)
                 .csrf(AbstractHttpConfigurer::disable)
                 
-                // CORS 配置 (保留跨域设置)
+    /*            // CORS 配置 (保留跨域设置)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5173"));  // 允许的前端源
+                    config.setAllowedOrigins(List.of("*"));  // 允许的前端源
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // 允许的HTTP方法
                     config.setAllowedHeaders(List.of("*"));  // 允许所有请求头
                     return config;
-                }))
+                }))*/
                 
                 // 授权配置 (保留权限设置)
                 .authorizeHttpRequests(auth -> auth

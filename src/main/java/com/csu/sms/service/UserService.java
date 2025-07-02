@@ -6,10 +6,13 @@ import com.csu.sms.vo.UserVO;
 import org.springframework.web.multipart.MultipartFile; // 导入 MultipartFile
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     UserVO getUserById(Long id);
-    UserVO login(String username, String password);
+    // UserVO login(String username, String password);
+    Map<String, Object> login(String username, String password); // 修改返回类型
+    Map<String, Object> loginByCode(String email, String code); // 新增邮箱验证码登录
 
     Long register(UserDTO userDTO, MultipartFile avatarFile);
     boolean updateUserProfile(UserDTO userDTO, MultipartFile avatarFile); // 修改方法签名
@@ -21,6 +24,11 @@ public interface UserService {
     boolean setUserRole(Long userId, Integer role, Long adminId);
     boolean isAdminRole(Long adminId);
     boolean resetPassword(Long id, Long adminId);
+
+    // 新增方法
+    void sendVerificationCode(String email); // 发送验证码
+    void logout(String token); // 登出
+    boolean forceLogout(Long userId, Long adminId); // 强制下线
 }
 
 //package com.csu.sms.service;

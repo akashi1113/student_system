@@ -17,7 +17,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-@CrossOrigin(origins = "http://localhost:5173")
+import java.util.Map;
+
+//@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173"},
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+        allowCredentials = "true")
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -46,16 +52,13 @@ public class UserController {
 
     // 用户登录
     @PostMapping("/login")
-    public ApiControllerResponse<UserVO> login(
+    public ApiControllerResponse<Map<String, Object>> login(
             @RequestParam String username,
             @RequestParam String password
     ) {
         try {
-            UserVO userVO = userService.login(username, password);
-            if (userVO == null) {
-                return ApiControllerResponse.error(401, "用户名或密码错误。");
-            }
-            return ApiControllerResponse.success(userVO);
+            Map<String, Object> result = userService.login(username, password);
+            return ApiControllerResponse.success(result);
         } catch (ServiceException e) {
             log.warn("Login failed for user {}: {}", username, e.getMessage());
             return ApiControllerResponse.error(e.getCode(), e.getMessage());
@@ -250,6 +253,73 @@ public class UserController {
         } catch (Exception e) {
             log.error("An unexpected error occurred while admin resetting password for user {}: {}", id, e.getMessage(), e);
             return ApiControllerResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误，重置密码失败。");
+        }
+    }
+
+    // 新增：发送验证码接口
+    @PostMapping("/sendCode")
+    public ApiControllerResponse<Boolean> sendVerificationCode(
+            @RequestParam @NotBlank @Email String email
+    ) {
+        try {
+            userService.sendVerificationCode(email);
+            return ApiControllerResponse.success(true);
+        } catch (ServiceException e) {
+            log.warn("Failed to send verification code to {}: {}", email, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while sending verification code to {}: {}", email, e.getMessage(), e);
+            return ApiControllerResponse.error(500, "服务器内部错误，发送验证码失败。");
+        }
+    }
+
+    // 新增：邮箱验证码登录接口
+    @PostMapping("/loginByCode")
+    public ApiControllerResponse<Map<String, Object>> loginByCode(
+            @RequestParam @NotBlank @Email String email,
+            @RequestParam @NotBlank @Size(min = 6, max = 6) String code
+    ) {
+        try {
+            Map<String, Object> result = userService.loginByCode(email, code);
+            return ApiControllerResponse.success(result);
+        } catch (ServiceException e) {
+            log.warn("Login by code failed for email {}: {}", email, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred during login by code for email {}: {}", email, e.getMessage(), e);
+            return ApiControllerResponse.error(500, "服务器内部错误，验证码登录失败。");
+        }
+    }
+
+    // 新增：登出接口
+    @PostMapping("/logout")
+    public ApiControllerResponse<Boolean> logout(@RequestHeader("Authorization") String token) {
+        try {
+            if (token != null && token.startsWith("Bearer ")) {
+                userService.logout(token.substring(7));
+            }
+            return ApiControllerResponse.success(true);
+        } catch (Exception e) {
+            log.error("Logout error: {}", e.getMessage());
+            return ApiControllerResponse.error(500, "登出失败");
+        }
+    }
+
+    // 新增：管理员强制下线接口
+    @PostMapping("/admin/{userId}/forceLogout")
+    public ApiControllerResponse<Boolean> forceLogout(
+            @PathVariable Long userId,
+            @RequestParam Long adminId
+    ) {
+        try {
+            boolean success = userService.forceLogout(userId, adminId);
+            return ApiControllerResponse.success(success);
+        } catch (ServiceException e) {
+            log.warn("Admin failed to force logout user {}: {}", userId, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while force logout user {}: {}", userId, e.getMessage(), e);
+            return ApiControllerResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误，强制下线失败。");
         }
     }
 }
