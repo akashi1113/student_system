@@ -42,6 +42,9 @@
         <result column="score" property="score" jdbcType="INTEGER"/>
         <result column="is_correct" property="isCorrect" jdbcType="BOOLEAN"/>
         <result column="answered_at" property="answeredAt" jdbcType="TIMESTAMP"/>
+        <result column="ai_feedback" property="aiFeedback" jdbcType="VARCHAR"/>
+        <result column="ai_score_ratio" property="aiScoreRatio" jdbcType="DECIMAL"/>
+        <result column="grading_method" property="gradingMethod" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="AnswerStatisticsResultMap" type="com.csu.sms.model.question.AnswerStatistics">
@@ -63,7 +66,7 @@
     </sql>
 
     <sql id="answerRecordColumns">
-        id, exam_record_id, question_id, answer, correct_answer, score, is_correct, answered_at
+        id, exam_record_id, question_id, answer, correct_answer, score, is_correct, answered_at,ai_feedback, ai_score_ratio, grading_method
     </sql>
 
     <!-- 根据考试ID查询所有题目 -->
@@ -275,17 +278,30 @@
 
     <!-- 插入答题记录 -->
     <insert id="insertAnswerRecord" parameterType="com.csu.sms.model.question.AnswerRecord" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO answer_records (exam_record_id, question_id, answer, correct_answer, score, is_correct, answered_at)
-        VALUES (#{examRecordId}, #{questionId}, #{answer}, #{correctAnswer}, #{score}, #{isCorrect}, NOW())
+        INSERT INTO answer_records (
+        exam_record_id, question_id, answer, correct_answer,
+        score, is_correct, answer_time, answered_at,
+        ai_feedback, ai_score_ratio, grading_method  <!-- 新增字段 -->
+        ) VALUES (
+        #{examRecordId}, #{questionId}, #{answer}, #{correctAnswer},
+        #{score}, #{isCorrect}, #{answerTime}, NOW(),
+        #{aiFeedback}, #{aiScoreRatio}, #{gradingMethod}  <!-- 新增字段 -->
+        )
     </insert>
 
     <!-- 批量插入答题记录 -->
     <insert id="batchInsertAnswerRecords" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO answer_records (exam_record_id, question_id, answer, correct_answer, score, is_correct, answered_at)
-        VALUES
+        INSERT INTO answer_records (
+        exam_record_id, question_id, answer, correct_answer,
+        score, is_correct, answered_at,
+        ai_feedback, ai_score_ratio, grading_method  <!-- 新增字段 -->
+        ) VALUES
         <foreach collection="records" item="record" separator=",">
-            (#{record.examRecordId}, #{record.questionId}, #{record.answer}, #{record.correctAnswer},
-            #{record.score}, #{record.isCorrect}, NOW())
+            (
+            #{record.examRecordId}, #{record.questionId}, #{record.answer}, #{record.correctAnswer},
+            #{record.score}, #{record.isCorrect}, NOW(),
+            #{record.aiFeedback}, #{record.aiScoreRatio}, #{record.gradingMethod}  <!-- 新增字段 -->
+            )
         </foreach>
     </insert>
 
@@ -308,9 +324,12 @@
     <update id="updateAnswerRecord" parameterType="com.csu.sms.model.question.AnswerRecord">
         UPDATE answer_records
         SET answer = #{answer},
-            correct_answer = #{correctAnswer},
-            score = #{score},
-            is_correct = #{isCorrect}
+        correct_answer = #{correctAnswer},
+        score = #{score},
+        is_correct = #{isCorrect},
+        ai_feedback = #{aiFeedback},      <!-- 新增字段 -->
+        ai_score_ratio = #{aiScoreRatio},<!-- 新增字段 -->
+        grading_method = #{gradingMethod}<!-- 新增字段 -->
         WHERE id = #{id}
     </update>
 

@@ -2,7 +2,6 @@ server:
   port: 8081
   servlet:
     context-path: /
-
 spring:
   application:
     name: student_system
@@ -13,6 +12,10 @@ spring:
       pool:
         size: 5
       thread-name-prefix: exam-booking-task-
+  # AI评分配置
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration
 
   # 数据源配置
   datasource:
@@ -68,6 +71,13 @@ spring:
   # 环境配置
   profiles:
     active: dev
+  ai:
+    deepseek:
+      api-key: ${DEEPSEEK_API}
+      base-url: https://api.deepseek.com/v1
+      chat:
+        options:
+          model: deepseek-chat
 
 # MyBatis配置
 mybatis:
@@ -131,3 +141,4 @@ exam:
     booking-number-prefix: "BK"
     # 通知保留天数
     notification-retention-days: 30
+

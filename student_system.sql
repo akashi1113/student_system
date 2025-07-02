@@ -11,7 +11,7 @@
  Target Server Version : 80019 (8.0.19)
  File Encoding         : 65001
 
- Date: 02/07/2025 09:08:53
+ Date: 02/07/2025 14:43:13
 */
 
 SET NAMES utf8mb4;
@@ -31,6 +31,9 @@ CREATE TABLE `answer_records`  (
   `is_correct` tinyint(1) NULL DEFAULT 0 COMMENT '是否正确',
   `answer_time` int NULL DEFAULT NULL COMMENT '答题用时(秒)',
   `answered_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '答题时间',
+  `ai_feedback` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'AI评分反馈',
+  `ai_score_ratio` decimal(3, 2) NULL DEFAULT NULL COMMENT 'AI评分得分率',
+  `grading_method` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'AUTO' COMMENT '评分方式：AUTO/AI/MANUAL',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_exam_record_question`(`exam_record_id` ASC, `question_id` ASC) USING BTREE,
   INDEX `idx_exam_record_id`(`exam_record_id` ASC) USING BTREE,
@@ -38,7 +41,7 @@ CREATE TABLE `answer_records`  (
   INDEX `idx_is_correct`(`is_correct` ASC) USING BTREE,
   CONSTRAINT `answer_records_ibfk_1` FOREIGN KEY (`exam_record_id`) REFERENCES `exam_records` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `answer_records_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '答题记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '答题记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for comment_like
@@ -238,7 +241,7 @@ CREATE TABLE `exam_records`  (
   INDEX `idx_exam_user`(`exam_id` ASC, `user_id` ASC) USING BTREE,
   CONSTRAINT `exam_records_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `exam_records_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '考试记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '考试记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for exam_statistics
@@ -677,7 +680,7 @@ CREATE TABLE `questions`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '题目ID',
   `exam_id` bigint NOT NULL COMMENT '考试ID',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '题目内容',
-  `type` enum('SINGLE','MULTIPLE','JUDGE','TEXT','FILL') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '题目类型',
+  `type` enum('SINGLE','MULTIPLE','JUDGE','TEXT','FILL','PROGRAMMING') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '题目类型(SINGLE-单选题,MULTIPLE-多选题,JUDGE-判断题,TEXT-简答题,FILL-填空题,PROGRAMMING-编程题)',
   `score` int NULL DEFAULT 5 COMMENT '题目分数',
   `order_num` int NULL DEFAULT NULL COMMENT '题目序号',
   `analysis` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '题目解析',
