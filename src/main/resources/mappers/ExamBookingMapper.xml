@@ -592,4 +592,20 @@
             updated_at = NOW()
         WHERE id = #{timeSlotId}
     </update>
+
+    <select id="findAvailableTimeSlotsByExamIds" resultMap="ExamTimeSlotResultMap">
+        SELECT DISTINCT
+        id, exam_id, slot_date, start_time, end_time,
+        exam_location, exam_mode, max_capacity, current_bookings,
+        status, booking_start_time, booking_end_time
+        FROM exam_time_slots
+        WHERE exam_id IN
+        <foreach item="id" collection="examIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND status = 'AVAILABLE'
+        AND current_bookings &lt; max_capacity
+                               AND booking_end_time >= NOW()
+    </select>
+
 </mapper>

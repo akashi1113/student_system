@@ -23,6 +23,7 @@ public class Exam {
     private Integer passingScore;
     private Integer maxAttempts;
     private String bookingStatus;
+    private String examMode;
 
     public Long getId() {
         return id;
@@ -158,5 +159,12 @@ public class Exam {
 
     public void setBookingStatus(String bookingStatus) {
         this.bookingStatus = bookingStatus;
+    }
+
+    public String getExamMode() {
+        return examMode;
+    }
+    public void setExamMode(String examMode) {
+        this.examMode = examMode;
     }
 }

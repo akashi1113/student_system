@@ -1,6 +1,7 @@
 package com.csu.sms.service;
 
 import com.csu.sms.model.booking.ExamBooking;
+import com.csu.sms.model.booking.ExamTimeSlot;
 import com.csu.sms.model.exam.Exam;
 import com.csu.sms.model.exam.ExamRecord;
 import com.csu.sms.model.question.Question;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ExamService {
@@ -40,17 +42,71 @@ public class ExamService {
     }
 
     public List<Exam> getBookedExams(Long userId) {
-        List<Long> bookedExamIds = examBookingMapper.findBookedExamIdsByUserId(userId);
+        List<ExamBooking> bookings = examBookingMapper.findBookingsByUserId(userId);
 
-        if (bookedExamIds == null || bookedExamIds.isEmpty()) {
+        if (bookings == null || bookings.isEmpty()) {
             return Collections.emptyList();
         }
 
-        return examMapper.findByIds(bookedExamIds);
+        Set<Long> examIds = new HashSet<>();
+        Map<Long, String> examModeMap = new HashMap<>();
+
+        for (ExamBooking booking : bookings) {
+            if (booking.getTimeSlotId() != null) {
+                ExamTimeSlot timeSlot = examBookingMapper.findTimeSlotById(booking.getTimeSlotId());
+                if (timeSlot != null) {
+                    examIds.add(timeSlot.getExamId());
+                    examModeMap.put(timeSlot.getExamId(), timeSlot.getExamMode());
+                }
+            }
+        }
+
+        if (examIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Exam> exams = examMapper.findByIds(new ArrayList<>(examIds));
+        for (Exam exam : exams) {
+            String mode = examModeMap.get(exam.getId());
+            if (mode != null) {
+                exam.setExamMode(mode);
+            }
+        }
+
+        return exams;
     }
 
     public List<Exam> getBookableExams() {
-        return examMapper.findBookableExams();
+        // 获取所有可预约考试
+        List<Exam> exams = examMapper.findBookableExams();
+
+        if (exams == null || exams.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // 获取考试ID列表
+        List<Long> examIds = exams.stream()
+                .map(Exam::getId)
+                .collect(Collectors.toList());
+
+        // 获取这些考试的所有可用时间段（返回的是 ExamTimeSlot 对象列表）
+        List<ExamTimeSlot> timeSlots = examBookingMapper.findAvailableTimeSlotsByExamIds(examIds);
+
+        // 按考试ID分组
+        Map<Long, List<ExamTimeSlot>> slotsByExamId = timeSlots.stream()
+                .collect(Collectors.groupingBy(ExamTimeSlot::getExamId));
+
+        // 为每个考试设置模式和可用时间段
+        exams.forEach(exam -> {
+            List<ExamTimeSlot> slots = slotsByExamId.get(exam.getId());
+            if (slots != null && !slots.isEmpty()) {
+                exam.setExamMode(slots.get(0).getExamMode());
+            }
+            else
+                exam.setExamMode("ONLINE");
+        });
+
+        return exams;
     }
 
     @Transactional

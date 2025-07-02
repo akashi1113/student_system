@@ -1,6 +1,7 @@
 package com.csu.sms.persistence;
 
 import com.csu.sms.dto.exam.AnswerDTO;
+import com.csu.sms.model.booking.ExamTimeSlot;
 import com.csu.sms.model.exam.Exam;
 import com.csu.sms.model.exam.ExamRecord;
 import com.csu.sms.model.exam.ExamStatistics;
@@ -96,4 +97,5 @@ public interface ExamMapper {
 
     // 根据状态查询考试记录
     List<ExamRecord> findExamRecordsByStatus(@Param("status") String status);
+
 }

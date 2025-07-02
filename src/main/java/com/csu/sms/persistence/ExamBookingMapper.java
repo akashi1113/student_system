@@ -244,4 +244,6 @@ public interface ExamBookingMapper {
     // 切换时间段状态
     int toggleTimeSlotStatus(@Param("timeSlotId") Long timeSlotId);
 
+    List<ExamTimeSlot> findAvailableTimeSlotsByExamIds(@Param("examIds") List<Long> examIds);
+
 }
