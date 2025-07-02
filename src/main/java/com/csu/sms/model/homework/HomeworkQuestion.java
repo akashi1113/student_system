@@ -7,7 +7,7 @@ public class HomeworkQuestion {
     private Long id;
     private Long homeworkId;
     private Integer questionOrder;
-    private String questionType; // SINGLE_CHOICE, MULTIPLE_CHOICE, FILL_BLANK, SHORT_ANSWER, ESSAY
+    private String questionType;
     private String questionContent;
     private String questionOptions; // JSON格式
     private String correctAnswer;

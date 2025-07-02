@@ -12,6 +12,9 @@ public class AnswerRecord {
     private Integer score; // 得分
     private Boolean isCorrect;
     private LocalDateTime answeredAt;
+    private String aiFeedback;
+    private Double aiScoreRatio;
+    private String gradingMethod;
 
     public AnswerRecord() {}
 
@@ -83,5 +86,37 @@ public class AnswerRecord {
 
     public void setAnsweredAt(LocalDateTime answeredAt) {
         this.answeredAt = answeredAt;
+    }
+
+    public Boolean getCorrect() {
+        return isCorrect;
+    }
+
+    public void setCorrect(Boolean correct) {
+        isCorrect = correct;
+    }
+
+    public String getAiFeedback() {
+        return aiFeedback;
+    }
+
+    public void setAiFeedback(String aiFeedback) {
+        this.aiFeedback = aiFeedback;
+    }
+
+    public Double getAiScoreRatio() {
+        return aiScoreRatio;
+    }
+
+    public void setAiScoreRatio(Double aiScoreRatio) {
+        this.aiScoreRatio = aiScoreRatio;
+    }
+
+    public String getGradingMethod() {
+        return gradingMethod;
+    }
+
+    public void setGradingMethod(String gradingMethod) {
+        this.gradingMethod = gradingMethod;
     }
 }

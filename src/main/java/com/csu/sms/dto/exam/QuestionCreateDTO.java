@@ -15,7 +15,7 @@ public class QuestionCreateDTO {
     @NotBlank(message = "题目内容不能为空")
     private String content;
 
-    @Pattern(regexp = "SINGLE|MULTIPLE|JUDGE|TEXT", message = "题目类型必须是 SINGLE, MULTIPLE, JUDGE, TEXT 之一")
+    @Pattern(regexp = "SINGLE|MULTIPLE|JUDGE|TEXT|FILL|PROGRAMMING", message = "题目类型限制")
     private String type;
 
     @NotNull(message = "题目分数不能为空")

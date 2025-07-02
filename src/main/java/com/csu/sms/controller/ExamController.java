@@ -88,7 +88,7 @@ public class ExamController {
             }
 
             // 保存答案并评分
-            questionService.scoreAnswers(examRecord.getId(), answers);
+            questionService.scoreAnswersWithAI(examRecord.getId(), answers);
 
             // 计算总分
             int totalScore = examService.calculateTotalScore(examRecord.getId());
