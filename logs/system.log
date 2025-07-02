@@ -2567,3 +2567,106 @@ java.lang.ClassNotFoundException: org.apache.poi.ss.usermodel.Sheet
 2025-07-02 14:41:00.222 [SpringApplicationShutdownHook] INFO  com.csu.sms.service.impl.FileStorageServiceImpl [] [] - OSSClient shut down.
 2025-07-02 14:41:00.233 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [] [] - HikariPool-1 - Shutdown initiated...
 2025-07-02 14:41:00.236 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [] [] - HikariPool-1 - Shutdown completed.
+2025-07-02 19:38:24.721 [background-preinit] INFO  org.hibernate.validator.internal.util.Version [] [] - HV000001: Hibernate Validator 8.0.1.Final
+2025-07-02 19:38:24.761 [main] INFO  com.csu.sms.StudentSystemApplication [] [] - Starting StudentSystemApplication using Java 21.0.5 with PID 25548 (D:\大二下\华迪实训\student_system\target\classes started by q1520 in D:\大二下\华迪实训\student_system)
+2025-07-02 19:38:24.761 [main] DEBUG com.csu.sms.StudentSystemApplication [] [] - Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-07-02 19:38:24.762 [main] INFO  com.csu.sms.StudentSystemApplication [] [] - The following 1 profile is active: "dev"
+2025-07-02 19:38:25.718 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\CommentLikeDao.class]
+2025-07-02 19:38:25.718 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\CourseDao.class]
+2025-07-02 19:38:25.718 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\CourseVideoDao.class]
+2025-07-02 19:38:25.718 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\ExamBookingMapper.class]
+2025-07-02 19:38:25.718 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\ExamMapper.class]
+2025-07-02 19:38:25.718 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\ExperimentBookingMapper.class]
+2025-07-02 19:38:25.718 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\ExperimentMapper.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\ExperimentRecordMapper.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\ExperimentReportMapper.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\ForumCommentDao.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\ForumPostDao.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\GradeAnalysisMapper.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\HomeworkMapper.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\KnowledgeBaseMapper.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\NoteMapper.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\NotificationDao.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\OperationLogMapper.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\PostLikeDao.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\PostReportDao.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\QuestionMapper.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\StudyRecordDao.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\SystemLogMapper.class]
+2025-07-02 19:38:25.719 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Identified candidate component class: file [D:\大二下\华迪实训\student_system\target\classes\com\csu\sms\persistence\UserDao.class]
+2025-07-02 19:38:25.721 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'commentLikeDao' and 'com.csu.sms.persistence.CommentLikeDao' mapperInterface
+2025-07-02 19:38:25.722 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'commentLikeDao'.
+2025-07-02 19:38:25.722 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'courseDao' and 'com.csu.sms.persistence.CourseDao' mapperInterface
+2025-07-02 19:38:25.723 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'courseDao'.
+2025-07-02 19:38:25.723 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'courseVideoDao' and 'com.csu.sms.persistence.CourseVideoDao' mapperInterface
+2025-07-02 19:38:25.723 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'courseVideoDao'.
+2025-07-02 19:38:25.723 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'examBookingMapper' and 'com.csu.sms.persistence.ExamBookingMapper' mapperInterface
+2025-07-02 19:38:25.724 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'examBookingMapper'.
+2025-07-02 19:38:25.724 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'examMapper' and 'com.csu.sms.persistence.ExamMapper' mapperInterface
+2025-07-02 19:38:25.725 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'examMapper'.
+2025-07-02 19:38:25.725 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'experimentBookingMapper' and 'com.csu.sms.persistence.ExperimentBookingMapper' mapperInterface
+2025-07-02 19:38:25.725 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'experimentBookingMapper'.
+2025-07-02 19:38:25.725 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'experimentMapper' and 'com.csu.sms.persistence.ExperimentMapper' mapperInterface
+2025-07-02 19:38:25.725 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'experimentMapper'.
+2025-07-02 19:38:25.725 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'experimentRecordMapper' and 'com.csu.sms.persistence.ExperimentRecordMapper' mapperInterface
+2025-07-02 19:38:25.726 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'experimentRecordMapper'.
+2025-07-02 19:38:25.726 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'experimentReportMapper' and 'com.csu.sms.persistence.ExperimentReportMapper' mapperInterface
+2025-07-02 19:38:25.726 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'experimentReportMapper'.
+2025-07-02 19:38:25.726 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'forumCommentDao' and 'com.csu.sms.persistence.ForumCommentDao' mapperInterface
+2025-07-02 19:38:25.727 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'forumCommentDao'.
+2025-07-02 19:38:25.727 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'forumPostDao' and 'com.csu.sms.persistence.ForumPostDao' mapperInterface
+2025-07-02 19:38:25.727 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'forumPostDao'.
+2025-07-02 19:38:25.727 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'gradeAnalysisMapper' and 'com.csu.sms.persistence.GradeAnalysisMapper' mapperInterface
+2025-07-02 19:38:25.728 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'gradeAnalysisMapper'.
+2025-07-02 19:38:25.728 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'homeworkMapper' and 'com.csu.sms.persistence.HomeworkMapper' mapperInterface
+2025-07-02 19:38:25.728 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'homeworkMapper'.
+2025-07-02 19:38:25.728 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'knowledgeBaseMapper' and 'com.csu.sms.persistence.KnowledgeBaseMapper' mapperInterface
+2025-07-02 19:38:25.729 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'knowledgeBaseMapper'.
+2025-07-02 19:38:25.729 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'noteMapper' and 'com.csu.sms.persistence.NoteMapper' mapperInterface
+2025-07-02 19:38:25.729 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'noteMapper'.
+2025-07-02 19:38:25.729 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'notificationDao' and 'com.csu.sms.persistence.NotificationDao' mapperInterface
+2025-07-02 19:38:25.730 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'notificationDao'.
+2025-07-02 19:38:25.730 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'operationLogMapper' and 'com.csu.sms.persistence.OperationLogMapper' mapperInterface
+2025-07-02 19:38:25.730 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'operationLogMapper'.
+2025-07-02 19:38:25.730 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'postLikeDao' and 'com.csu.sms.persistence.PostLikeDao' mapperInterface
+2025-07-02 19:38:25.731 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'postLikeDao'.
+2025-07-02 19:38:25.731 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'postReportDao' and 'com.csu.sms.persistence.PostReportDao' mapperInterface
+2025-07-02 19:38:25.731 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'postReportDao'.
+2025-07-02 19:38:25.731 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'questionMapper' and 'com.csu.sms.persistence.QuestionMapper' mapperInterface
+2025-07-02 19:38:25.732 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'questionMapper'.
+2025-07-02 19:38:25.732 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'studyRecordDao' and 'com.csu.sms.persistence.StudyRecordDao' mapperInterface
+2025-07-02 19:38:25.732 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'studyRecordDao'.
+2025-07-02 19:38:25.732 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'systemLogMapper' and 'com.csu.sms.persistence.SystemLogMapper' mapperInterface
+2025-07-02 19:38:25.733 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'systemLogMapper'.
+2025-07-02 19:38:25.733 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Creating MapperFactoryBean with name 'userDao' and 'com.csu.sms.persistence.UserDao' mapperInterface
+2025-07-02 19:38:25.733 [main] DEBUG org.mybatis.spring.mapper.ClassPathMapperScanner [] [] - Enabling autowire by type for MapperFactoryBean with name 'userDao'.
+2025-07-02 19:38:26.356 [main] INFO  org.apache.coyote.http11.Http11NioProtocol [] [] - Initializing ProtocolHandler ["http-nio-8081"]
+2025-07-02 19:38:26.358 [main] INFO  org.apache.catalina.core.StandardService [] [] - Starting service [Tomcat]
+2025-07-02 19:38:26.358 [main] INFO  org.apache.catalina.core.StandardEngine [] [] - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-02 19:38:26.464 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] [] [] - Initializing Spring embedded WebApplicationContext
+2025-07-02 19:38:26.764 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\CommentLikeMapper.xml]'
+2025-07-02 19:38:26.781 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\CourseMapper.xml]'
+2025-07-02 19:38:26.792 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\CourseVideoMapper.xml]'
+2025-07-02 19:38:26.858 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\ExamBookingMapper.xml]'
+2025-07-02 19:38:26.888 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\ExamMapper.xml]'
+2025-07-02 19:38:26.899 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\ForumCommentMapper.xml]'
+2025-07-02 19:38:26.906 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\ForumPostMapper.xml]'
+2025-07-02 19:38:26.918 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\GradeAnalysisMapper.xml]'
+2025-07-02 19:38:26.952 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\HomeworkMapper.xml]'
+2025-07-02 19:38:26.961 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\KnowledgeBaseMapper.xml]'
+2025-07-02 19:38:26.966 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\NotificationMapper.xml]'
+2025-07-02 19:38:26.972 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\OperationLogMapper.xml]'
+2025-07-02 19:38:26.975 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\PostLikeMapper.xml]'
+2025-07-02 19:38:26.978 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\PostReportMapper.xml]'
+2025-07-02 19:38:26.990 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\QuestionMapper.xml]'
+2025-07-02 19:38:26.993 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\StudyRecordMapper.xml]'
+2025-07-02 19:38:26.996 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\SystemLogMapper.xml]'
+2025-07-02 19:38:26.999 [main] DEBUG org.mybatis.spring.SqlSessionFactoryBean [] [] - Parsed mapper file: 'file [D:\大二下\华迪实训\student_system\target\classes\mappers\UserMapper.xml]'
+2025-07-02 19:38:27.719 [main] INFO  com.csu.sms.service.impl.FileStorageServiceImpl [] [] - Initializing OSSClient...
+2025-07-02 19:38:38.898 [main] INFO  com.csu.sms.service.impl.FileStorageServiceImpl [] [] - OSSClient initialized for bucket: students-sms
+2025-07-02 19:38:38.945 [log-1] INFO  com.zaxxer.hikari.HikariDataSource [] [] - HikariPool-1 - Starting...
+2025-07-02 19:38:39.229 [log-1] INFO  com.zaxxer.hikari.pool.HikariPool [] [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@63e0b995
+2025-07-02 19:38:39.231 [log-1] INFO  com.zaxxer.hikari.HikariDataSource [] [] - HikariPool-1 - Start completed.
+2025-07-02 19:38:39.918 [main] INFO  org.apache.coyote.http11.Http11NioProtocol [] [] - Starting ProtocolHandler ["http-nio-8081"]
+2025-07-02 19:38:39.943 [main] INFO  com.csu.sms.StudentSystemApplication [] [] - Started StudentSystemApplication in 15.699 seconds (process running for 16.306)
+2025-07-02 19:38:39.945 [main] INFO  com.csu.sms.StudentSystemApplication [] [] - 系统启动日志已记录

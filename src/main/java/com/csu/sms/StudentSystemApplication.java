@@ -1,13 +1,10 @@
 package com.csu.sms;
 
-<<<<<<< HEAD
 import com.csu.sms.model.SystemLog;
 import com.csu.sms.service.LogService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-=======
 import org.mybatis.spring.annotation.MapperScan;
->>>>>>> 7d87ea895962098cd542d8d5c52536645436228b
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -15,12 +12,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-<<<<<<< HEAD
 @EnableScheduling
-@Slf4j
-=======
 @MapperScan("com.csu.sms.persistence")
->>>>>>> 7d87ea895962098cd542d8d5c52536645436228b
+@Slf4j
 public class StudentSystemApplication {
 
 	@Autowired

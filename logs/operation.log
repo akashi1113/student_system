@@ -655,3 +655,5 @@ Caused by: java.net.SocketException: Socket closed
 2025-07-02 14:40:44.532 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
 2025-07-02 14:40:44.532 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
 2025-07-02 14:40:44.532 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
+2025-07-02 19:38:39.361 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
+2025-07-02 19:38:39.977 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功

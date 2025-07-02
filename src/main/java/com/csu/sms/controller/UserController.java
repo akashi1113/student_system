@@ -53,12 +53,8 @@ public class UserController {
 
     // 用户登录
     @PostMapping("/login")
-<<<<<<< HEAD
     @LogOperation(module = "用户管理", operation = "用户登录", description = "用户登录系统")
-    public ApiControllerResponse<UserVO> login(
-=======
     public ApiControllerResponse<Map<String, Object>> login(
->>>>>>> 7d87ea895962098cd542d8d5c52536645436228b
             @RequestParam String username,
             @RequestParam String password
     ) {

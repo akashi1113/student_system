@@ -74,13 +74,13 @@ public class AuditReportController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=operation_logs.xlsx");
 
-        cn.hutool.poi.excel.ExcelWriter writer = cn.hutool.poi.excel.ExcelUtil.getWriter(true); // true 表示xlsx
-        writer.write(exportList, true);
-        writer.autoSizeColumnAll(); // 自动调整所有列宽
-        writer.setColumnWidth(2, 20); // module列
-        writer.setColumnWidth(3, 20); // operation列
-        writer.setColumnWidth(4, 40); // description列
-        writer.flush(response.getOutputStream(), true);
-        writer.close();
+//        cn.hutool.poi.excel.ExcelWriter writer = cn.hutool.poi.excel.ExcelUtil.getWriter(true); // true 表示xlsx
+//        writer.write(exportList, true);
+//        writer.autoSizeColumnAll(); // 自动调整所有列宽
+//        writer.setColumnWidth(2, 20); // module列
+//        writer.setColumnWidth(3, 20); // operation列
+//        writer.setColumnWidth(4, 40); // description列
+//        writer.flush(response.getOutputStream(), true);
+//        writer.close();
     }
 } 

@@ -22,10 +22,8 @@ public class UserContext {
     
     private static final String USER_ID_HEADER = "X-User-Id";
     private static final String USER_ID_PARAM = "userId";
-<<<<<<< HEAD
     private static final String USERNAME_HEADER = "X-Username";
     private static final String USERNAME_PARAM = "username";
-=======
     private static final String AUTHORIZATION_HEADER = "Authorization";
     // JWT密钥（应与JwtUtil中的一致）
     private static final String SECRET = "6v9y$B&E)H@McQfTjWnZr4u7x!A%D*G-";
@@ -62,11 +60,10 @@ public class UserContext {
             return null;
         }
     }
->>>>>>> 7d87ea895962098cd542d8d5c52536645436228b
     
     /**
      * 获取当前用户ID
-     * 优先从请求头获取，其次从请求参数获取
+     * 优先从JWT token获取，其次从请求头/参数获取
      */
     public static Long getCurrentUserId() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
