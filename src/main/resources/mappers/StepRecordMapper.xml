@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.StepRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.csu.sms.model.experiment.StepRecord">
+        <id column="id" property="id"/>
+        <result column="experiment_record_id" property="experimentRecordId"/>
+        <result column="step_index" property="stepIndex"/>
+        <result column="step_name" property="stepName"/>
+        <result column="completed" property="completed"/>
+        <result column="completion_time" property="completionTime"/>
+        <result column="notes" property="notes"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, experiment_record_id, step_index, step_name, completed, completion_time, notes, created_at, updated_at
+    </sql>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step_record
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByExperimentRecordId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step_record
+        WHERE experiment_record_id = #{experimentRecordId}
+        ORDER BY step_index ASC
+    </select>
+
+    <select id="findByExperimentRecordIdAndStepIndex" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step_record
+        WHERE experiment_record_id = #{experimentRecordId} AND step_index = #{stepIndex}
+    </select>
+
+    <insert id="insert" parameterType="com.csu.sms.model.experiment.StepRecord" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO step_record (
+            experiment_record_id, step_index, step_name, completed, completion_time, notes, created_at, updated_at
+        ) VALUES (
+                     #{experimentRecordId}, #{stepIndex}, #{stepName}, #{completed}, #{completionTime}, #{notes}, NOW(), NOW()
+                 )
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO step_record (
+        experiment_record_id, step_index, step_name, completed, completion_time, notes, created_at, updated_at
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.experimentRecordId}, #{item.stepIndex}, #{item.stepName}, #{item.completed}, #{item.completionTime}, #{item.notes}, NOW(), NOW())
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.csu.sms.model.experiment.StepRecord">
+        UPDATE step_record
+        SET experiment_record_id = #{experimentRecordId},
+            step_index = #{stepIndex},
+            step_name = #{stepName},
+            completed = #{completed},
+            completion_time = #{completionTime},
+            notes = #{notes},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM step_record WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByExperimentRecordId">
+        DELETE FROM step_record WHERE experiment_record_id = #{experimentRecordId}
+    </delete>
+
+    <select id="countCompletedByExperimentRecordId" resultType="int">
+        SELECT COUNT(*)
+        FROM step_record
+        WHERE experiment_record_id = #{experimentRecordId} AND completed = 1
+    </select>
+
+</mapper>
