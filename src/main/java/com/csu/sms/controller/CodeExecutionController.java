@@ -22,6 +22,7 @@ public class CodeExecutionController {
         try {
             CodeExecutionResult result = codeExecutionService.executeCode(
                     request.getCode(),
+                    request.getLanguage(),
                     request.getClassName(),
                     request.getInput(),
                     request.getExpectedOutput()
@@ -33,21 +34,105 @@ public class CodeExecutionController {
         }
     }
 
-    @PostMapping("/test")
-    public String testBasic() {
+    @PostMapping("/test/java")
+    public ApiResponse<CodeExecutionResult> testJava() {
         String testCode = """
             public class HelloWorld {
                 public static void main(String[] args) {
-                    System.out.println("Hello, World!");
+                    System.out.println("Hello, Java!");
                 }
             }
             """;
 
         CodeExecutionResult result = codeExecutionService.executeCode(
-                testCode, "HelloWorld", null, "Hello, World!"
+                testCode, "java", "HelloWorld", null, "Hello, Java!"
         );
 
-        return "测试结果: " + result.getStatus() + "\n输出: " + result.getOutput();
+        return ApiResponse.success(result);
+    }
+
+    @PostMapping("/test/cpp")
+    public ApiResponse<CodeExecutionResult> testCpp() {
+        String testCode = """
+            #include <iostream>
+            using namespace std;
+            
+            int main() {
+                cout << "Hello, C++!" << endl;
+                return 0;
+            }
+            """;
+
+        CodeExecutionResult result = codeExecutionService.executeCode(
+                testCode, "cpp", "main", null, "Hello, C++!"
+        );
+
+        return ApiResponse.success(result);
+    }
+
+    @PostMapping("/test/python")
+    public ApiResponse<CodeExecutionResult> testPython() {
+        String testCode = """
+            print("Hello, Python!")
+            """;
+
+        CodeExecutionResult result = codeExecutionService.executeCode(
+                testCode, "python", "main", null, "Hello, Python!"
+        );
+
+        return ApiResponse.success(result);
+    }
+
+    @PostMapping("/test/input")
+    public ApiResponse<CodeExecutionResult> testInput(@RequestParam String language) {
+        String testCode = "";
+        String input = "5\n3";
+        String expectedOutput = "8";
+
+        switch (language.toLowerCase()) {
+            case "java":
+                testCode = """
+                    import java.util.Scanner;
+                    public class AddNumbers {
+                        public static void main(String[] args) {
+                            Scanner scanner = new Scanner(System.in);
+                            int a = scanner.nextInt();
+                            int b = scanner.nextInt();
+                            System.out.println(a + b);
+                            scanner.close();
+                        }
+                    }
+                    """;
+                break;
+            case "cpp":
+                testCode = """
+                    #include <iostream>
+                    using namespace std;
+                    
+                    int main() {
+                        int a, b;
+                        cin >> a >> b;
+                        cout << a + b << endl;
+                        return 0;
+                    }
+                    """;
+                break;
+            case "python":
+                testCode = """
+                    a = int(input())
+                    b = int(input())
+                    print(a + b)
+                    """;
+                break;
+            default:
+                return ApiResponse.error(400, "不支持的语言: " + language);
+        }
+
+        CodeExecutionResult result = codeExecutionService.executeCode(
+                testCode, language, "AddNumbers", input, expectedOutput
+        );
+
+        return ApiResponse.success(result);
     }
 
     public static class CodeSubmissionRequest {

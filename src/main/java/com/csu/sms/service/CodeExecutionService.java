@@ -15,7 +15,7 @@ public class CodeExecutionService {
     private static final long TIMEOUT_SECONDS = 10; // 执行超时时间
     private static final int MAX_OUTPUT_SIZE = 1024 * 1024; // 最大输出1MB
 
-    public CodeExecutionResult executeCode(String code, String className, String input, String expectedOutput) {
+    public CodeExecutionResult executeCode(String code, String language, String className, String input, String expectedOutput) {
         CodeExecutionResult result = new CodeExecutionResult();
         String executionId = generateExecutionId();
         Path workDir = null;
@@ -24,24 +24,22 @@ public class CodeExecutionService {
             // 创建工作目录
             workDir = createWorkDirectory(executionId);
 
-            // 1. 编译代码
-            CompilationResult compilationResult = compileCode(code, className, workDir);
-            if (!compilationResult.isSuccess()) {
-                result.setStatus("COMPILE_ERROR");
-                result.setOutput(compilationResult.getErrors());
-                return result;
-            }
-
-            // 2. 运行代码
-            ExecutionResult executionResult = runCode(className, input, workDir);
-            result.setStatus(executionResult.getStatus());
-            result.setOutput(executionResult.getOutput());
-            result.setExecutionTime(executionResult.getExecutionTime());
-
-            // 3. 检查答案（如果提供了期望输出）
-            if (expectedOutput != null && !expectedOutput.trim().isEmpty()) {
-                boolean isCorrect = checkAnswer(executionResult.getOutput(), expectedOutput);
-                result.setCorrect(isCorrect);
+            // 根据语言执行不同的编译和运行逻辑
+            switch (language.toLowerCase()) {
+                case "java":
+                    result = executeJavaCode(code, className, input, expectedOutput, workDir);
+                    break;
+                case "cpp":
+                case "c++":
+                    result = executeCppCode(code, input, expectedOutput, workDir);
+                    break;
+                case "python":
+                    result = executePythonCode(code, input, expectedOutput, workDir);
+                    break;
+                default:
+                    result.setStatus("UNSUPPORTED_LANGUAGE");
+                    result.setOutput("不支持的编程语言: " + language);
+                    break;
             }
 
         } catch (Exception e) {
@@ -56,7 +54,259 @@ public class CodeExecutionService {
         return result;
     }
 
-    private CompilationResult compileCode(String code, String className, Path workDir) {
+    // 兼容旧版本的方法
+    public CodeExecutionResult executeCode(String code, String className, String input, String expectedOutput) {
+        return executeCode(code, "java", className, input, expectedOutput);
+    }
+
+    private CodeExecutionResult executeJavaCode(String code, String className, String input, String expectedOutput, Path workDir) {
+        CodeExecutionResult result = new CodeExecutionResult();
+
+        try {
+            // 1. 编译Java代码
+            CompilationResult compilationResult = compileJavaCode(code, className, workDir);
+            if (!compilationResult.isSuccess()) {
+                result.setStatus("COMPILE_ERROR");
+                result.setOutput(compilationResult.getErrors());
+                return result;
+            }
+
+            // 2. 运行Java代码
+            ExecutionResult executionResult = runJavaCode(className, input, workDir);
+            result.setStatus(executionResult.getStatus());
+            result.setOutput(executionResult.getOutput());
+            result.setExecutionTime(executionResult.getExecutionTime());
+
+            // 3. 检查答案
+            if (expectedOutput != null && !expectedOutput.trim().isEmpty()) {
+                boolean isCorrect = checkAnswer(executionResult.getOutput(), expectedOutput);
+                result.setCorrect(isCorrect);
+            }
+
+        } catch (Exception e) {
+            log.error("Java代码执行异常", e);
+            result.setStatus("SYSTEM_ERROR");
+            result.setOutput("系统错误: " + e.getMessage());
+        }
+
+        return result;
+    }
+
+    private CodeExecutionResult executeCppCode(String code, String input, String expectedOutput, Path workDir) {
+        CodeExecutionResult result = new CodeExecutionResult();
+        long startTime = System.currentTimeMillis();
+
+        try {
+            // 1. 创建C++源文件
+            Path sourceFile = workDir.resolve("main.cpp");
+            Files.write(sourceFile, code.getBytes());
+
+            // 2. 编译C++代码
+            String executableName = System.getProperty("os.name").toLowerCase().contains("windows") ? "main.exe" : "main";
+            Path executableFile = workDir.resolve(executableName);
+
+            ProcessBuilder compileBuilder = new ProcessBuilder();
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                // Windows系统使用g++
+                compileBuilder.command("g++", "-o", executableFile.toString(), sourceFile.toString());
+            } else {
+                // Linux/Mac系统使用g++
+                compileBuilder.command("g++", "-o", executableFile.toString(), sourceFile.toString());
+            }
+
+            compileBuilder.directory(workDir.toFile());
+            compileBuilder.redirectErrorStream(true);
+
+            Process compileProcess = compileBuilder.start();
+
+            // 读取编译输出
+            StringBuilder compileOutput = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(compileProcess.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    compileOutput.append(line).append("\n");
+                }
+            }
+
+            boolean compileFinished = compileProcess.waitFor(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
+            if (!compileFinished) {
+                compileProcess.destroyForcibly();
+                result.setStatus("COMPILE_TIMEOUT");
+                result.setOutput("编译超时");
+                return result;
+            }
+
+            if (compileProcess.exitValue() != 0) {
+                result.setStatus("COMPILE_ERROR");
+                result.setOutput("编译错误:\n" + compileOutput.toString());
+                return result;
+            }
+
+            // 3. 运行C++程序
+            ProcessBuilder runBuilder = new ProcessBuilder();
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                runBuilder.command(executableFile.toString());
+            } else {
+                runBuilder.command("./" + executableName);
+            }
+
+            runBuilder.directory(workDir.toFile());
+            runBuilder.redirectErrorStream(true);
+
+            Process runProcess = runBuilder.start();
+
+            // 提供输入
+            if (input != null && !input.isEmpty()) {
+                try (PrintWriter writer = new PrintWriter(runProcess.getOutputStream())) {
+                    writer.print(input);
+                    writer.flush();
+                }
+            }
+
+            // 读取输出
+            StringBuilder output = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(runProcess.getInputStream()))) {
+                String line;
+                int totalChars = 0;
+                while ((line = reader.readLine()) != null) {
+                    if (totalChars + line.length() > MAX_OUTPUT_SIZE) {
+                        output.append("\n[输出过长，已截断]");
+                        break;
+                    }
+                    output.append(line).append("\n");
+                    totalChars += line.length() + 1;
+                }
+            }
+
+            boolean runFinished = runProcess.waitFor(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
+            if (!runFinished) {
+                runProcess.destroyForcibly();
+                result.setStatus("TIMEOUT");
+                result.setOutput("程序执行超时（超过" + TIMEOUT_SECONDS + "秒）");
+            } else {
+                int exitCode = runProcess.exitValue();
+                if (exitCode == 0) {
+                    result.setStatus("SUCCESS");
+                    result.setOutput(output.toString());
+                } else {
+                    result.setStatus("RUNTIME_ERROR");
+                    result.setOutput("程序异常退出，退出码: " + exitCode + "\n" + output.toString());
+                }
+            }
+
+            // 检查答案
+            if (expectedOutput != null && !expectedOutput.trim().isEmpty()) {
+                boolean isCorrect = checkAnswer(result.getOutput(), expectedOutput);
+                result.setCorrect(isCorrect);
+            }
+
+        } catch (Exception e) {
+            log.error("C++代码执行异常", e);
+            result.setStatus("EXECUTION_ERROR");
+            result.setOutput("执行异常: " + e.getMessage());
+        }
+
+        long executionTime = System.currentTimeMillis() - startTime;
+        result.setExecutionTime(executionTime);
+
+        return result;
+    }
+
+    private CodeExecutionResult executePythonCode(String code, String input, String expectedOutput, Path workDir) {
+        CodeExecutionResult result = new CodeExecutionResult();
+        long startTime = System.currentTimeMillis();
+
+        try {
+            // 1. 创建Python源文件
+            Path sourceFile = workDir.resolve("main.py");
+            Files.write(sourceFile, code.getBytes());
+
+            // 2. 运行Python代码
+            ProcessBuilder processBuilder = new ProcessBuilder();
+
+            // 尝试使用python3，如果不存在则使用python
+            String pythonCommand = "python3";
+            try {
+                ProcessBuilder testBuilder = new ProcessBuilder("python3", "--version");
+                Process testProcess = testBuilder.start();
+                testProcess.waitFor(2, TimeUnit.SECONDS);
+                if (testProcess.exitValue() != 0) {
+                    pythonCommand = "python";
+                }
+            } catch (Exception e) {
+                pythonCommand = "python";
+            }
+
+            processBuilder.command(pythonCommand, sourceFile.toString());
+            processBuilder.directory(workDir.toFile());
+            processBuilder.redirectErrorStream(true);
+
+            Process process = processBuilder.start();
+
+            // 提供输入
+            if (input != null && !input.isEmpty()) {
+                try (PrintWriter writer = new PrintWriter(process.getOutputStream())) {
+                    writer.print(input);
+                    writer.flush();
+                }
+            }
+
+            // 读取输出
+            StringBuilder output = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()))) {
+                String line;
+                int totalChars = 0;
+                while ((line = reader.readLine()) != null) {
+                    if (totalChars + line.length() > MAX_OUTPUT_SIZE) {
+                        output.append("\n[输出过长，已截断]");
+                        break;
+                    }
+                    output.append(line).append("\n");
+                    totalChars += line.length() + 1;
+                }
+            }
+
+            boolean finished = process.waitFor(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
+            if (!finished) {
+                process.destroyForcibly();
+                result.setStatus("TIMEOUT");
+                result.setOutput("程序执行超时（超过" + TIMEOUT_SECONDS + "秒）");
+            } else {
+                int exitCode = process.exitValue();
+                if (exitCode == 0) {
+                    result.setStatus("SUCCESS");
+                    result.setOutput(output.toString());
+                } else {
+                    result.setStatus("RUNTIME_ERROR");
+                    result.setOutput("程序异常退出，退出码: " + exitCode + "\n" + output.toString());
+                }
+            }
+
+            // 检查答案
+            if (expectedOutput != null && !expectedOutput.trim().isEmpty()) {
+                boolean isCorrect = checkAnswer(result.getOutput(), expectedOutput);
+                result.setCorrect(isCorrect);
+            }
+
+        } catch (Exception e) {
+            log.error("Python代码执行异常", e);
+            result.setStatus("EXECUTION_ERROR");
+            result.setOutput("执行异常: " + e.getMessage());
+        }
+
+        long executionTime = System.currentTimeMillis() - startTime;
+        result.setExecutionTime(executionTime);
+
+        return result;
+    }
+
+    private CompilationResult compileJavaCode(String code, String className, Path workDir) {
         CompilationResult result = new CompilationResult();
 
         try {
@@ -113,7 +363,7 @@ public class CodeExecutionService {
         return result;
     }
 
-    private ExecutionResult runCode(String className, String input, Path workDir) {
+    private ExecutionResult runJavaCode(String className, String input, Path workDir) {
         ExecutionResult result = new ExecutionResult();
         long startTime = System.currentTimeMillis();
 
