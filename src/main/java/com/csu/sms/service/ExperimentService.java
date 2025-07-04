@@ -67,4 +67,14 @@ public interface ExperimentService {
      * 获取实验记录
      */
     ExperimentRecord getExperimentRecordById(Long experimentRecordId);
+
+    //获取最后一次提交
+    Map<String, Object> getStudentFinalReport(Long experimentId, Long studentId);
+
+    /**
+     * 获取指定实验的所有记录
+     * @param experimentId 实验ID
+     * @return 实验记录列表
+     */
+    List<ExperimentRecord> getExperimentRecords(Long experimentId);
 }

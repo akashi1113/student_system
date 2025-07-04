@@ -48,4 +48,9 @@ public interface ExperimentRecordMapper {
      * 统计用户完成的实验数量
      */
     int countCompletedByUserId(@Param("userId") Long userId);
+
+    // 根据实验ID和学生ID获取最后一次完成的实验记录
+    ExperimentRecord findLastCompletedByExperimentAndUser(@Param("experimentId") Long experimentId,
+                                                          @Param("userId") Long userId);
+
 }
