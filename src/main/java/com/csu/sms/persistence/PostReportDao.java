@@ -13,7 +13,7 @@ public interface PostReportDao {
 
     int updateReportStatus(@Param("reportId") Long reportId,@Param("reportStatus") ReportStatus reportStatus,@Param("adminId") Long adminId,@Param("now") LocalDateTime now);
 
-    Long getPostIdByReportId(Long reportId);
+    Long getPostIdByReportId(@Param("reportId") Long reportId);
 
-    PostReport findReportByReportId(Long reportId);
+    PostReport findReportByReportId(@Param("reportId") Long reportId);
 }

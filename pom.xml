@@ -260,6 +260,12 @@
             <artifactId>mybatis</artifactId>
             <version>3.5.17</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv-platform -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv-platform</artifactId>
+            <version>1.5.10</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

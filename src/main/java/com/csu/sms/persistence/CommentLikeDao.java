@@ -14,4 +14,6 @@ public interface CommentLikeDao {
     int insertCommentLike(@Param("commentId") Long commentId,@Param("userId") Long userId);
 
     int deleteCommentLike(@Param("commentId") Long commentId,@Param("userId") Long userId);
+
+    int checkUserLiked(@Param("commentId") Long commentId,@Param("userId") Long userId);
 }

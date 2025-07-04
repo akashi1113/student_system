@@ -35,7 +35,7 @@ public interface ForumPostDao {
     void updateViewCount(@Param("postId") Long postId,
                          @Param("viewCount") Integer viewCount);
 
-    void incrementCommentCount(Long postId);
+    void incrementCommentCount(@Param("postId") Long postId);
 
-    void decrementCommentCount(Long postId);
+    void decrementCommentCount(@Param("postId") Long postId);
 }
