@@ -19,4 +19,6 @@ public interface StudyRecordDao {
 
     int countCompletedVideosByUserIdAndVideoIds(@Param("userId") Long userId,
                                                 @Param("videoIds") List<Long> videoIds);
+
+    List<StudyRecord> findAllByUserId(@Param("userId") Long userId);
 }

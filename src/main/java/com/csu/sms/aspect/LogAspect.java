@@ -76,7 +76,15 @@ public class LogAspect {
             operationLog.setUsername(UserContext.getCurrentUsername());
             operationLog.setModule(logOperation.module());
             operationLog.setOperation(logOperation.operation());
-            operationLog.setDescription(logOperation.description());
+            
+            // 处理登录类型
+            String loginType = UserContext.getLoginType();
+            if ("FACE_LOGIN".equals(loginType) && "人脸登录".equals(logOperation.operation())) {
+                operationLog.setDescription("用户通过人脸识别登录系统");
+            } else {
+                operationLog.setDescription(logOperation.description());
+            }
+            
             operationLog.setStatus(status);
             operationLog.setExecutionTime(executionTime);
             operationLog.setCreateTime(LocalDateTime.now());

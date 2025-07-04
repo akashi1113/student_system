@@ -3,14 +3,20 @@ package com.csu.sms.service.impl;
 import com.csu.sms.dto.StudyRecordDTO;
 import com.csu.sms.model.course.CourseVideo;
 import com.csu.sms.model.course.StudyRecord;
+import com.csu.sms.model.course.Course;
+import com.csu.sms.persistence.CourseDao;
 import com.csu.sms.persistence.CourseVideoDao;
 import com.csu.sms.persistence.StudyRecordDao;
 import com.csu.sms.service.StudyRecordService;
+import com.csu.sms.vo.StudyRecordVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +24,7 @@ import java.time.LocalDateTime;
 public class StudyRecordServiceImpl implements StudyRecordService {
     private final StudyRecordDao studyRecordDao;
     private final CourseVideoDao courseVideoDao;
+    private final CourseDao courseDao;
 
     @Override
     public StudyRecord getStudyRecordByUserIdAndVideoId(Long userId, Long videoId) {
@@ -72,5 +79,34 @@ public class StudyRecordServiceImpl implements StudyRecordService {
             int rows = studyRecordDao.updateStudyRecord(existingRecord);
             return rows > 0;
         }
+    }
+
+    @Override
+    public List<StudyRecordVO> getStudyRecordsByUserId(Long userId) {
+        List<StudyRecord> records = studyRecordDao.findAllByUserId(userId);
+        if (records == null || records.isEmpty()) {
+            return java.util.Collections.emptyList();
+        }
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        return records.stream().map(record -> {
+            StudyRecordVO vo = new StudyRecordVO();
+            vo.setUserId(record.getUserId());
+            vo.setVideoId(record.getVideoId());
+            vo.setProgress(record.getProgress());
+            vo.setDuration(record.getDuration());
+            vo.setLastStudyTime(record.getLastStudyTime() != null ? record.getLastStudyTime().format(formatter) : null);
+            // 查视频
+            CourseVideo video = courseVideoDao.getVideoById(record.getVideoId());
+            if (video != null) {
+                vo.setVideoTitle(video.getTitle());
+                vo.setCourseId(video.getCourseId());
+                // 查课程
+                Course course = courseDao.findById(video.getCourseId());
+                if (course != null) {
+                    vo.setCourseTitle(course.getTitle());
+                }
+            }
+            return vo;
+        }).collect(java.util.stream.Collectors.toList());
     }
 }

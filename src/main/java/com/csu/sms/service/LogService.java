@@ -38,7 +38,19 @@ public interface LogService {
      */
     void cleanupExpiredLogs(int days);
 
-    PageResult<OperationLogReportVO> getOperationAuditReport(Long userId, String startTime, String endTime, String operation, String module, int page, int size);
+    /**
+     * 获取操作审计报表
+     * @param userId 用户ID，可选
+     * @param username 用户名，可选
+     * @param startTime 开始时间，可选
+     * @param endTime 结束时间，可选
+     * @param operation 操作类型，可选
+     * @param module 模块名称，可选
+     * @param page 页码
+     * @param size 每页大小
+     * @return 分页结果
+     */
+    PageResult<OperationLogReportVO> getOperationAuditReport(Long userId, String username, String startTime, String endTime, String operation, String module, int page, int size);
 
     /**
      * 分组明细接口：根据分组条件查询原始操作日志明细

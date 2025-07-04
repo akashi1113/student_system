@@ -5,10 +5,13 @@ import com.csu.sms.common.ApiControllerResponse;
 import com.csu.sms.dto.StudyRecordDTO;
 import com.csu.sms.model.course.StudyRecord;
 import com.csu.sms.service.StudyRecordService;
+import com.csu.sms.vo.StudyRecordVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -42,5 +45,11 @@ public class StudyRecordController {
         } else {
             return ApiControllerResponse.success("未找到学习记录", null);
         }
+    }
+
+    @GetMapping("/user/{userId}/all")
+    public ApiControllerResponse<List<StudyRecordVO>> getAllStudyRecordsByUserId(@PathVariable Long userId) {
+        List<StudyRecordVO> list = studyRecordService.getStudyRecordsByUserId(userId);
+        return ApiControllerResponse.success(list);
     }
 }

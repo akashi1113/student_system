@@ -6,6 +6,7 @@ import com.csu.sms.dto.*;
 import com.csu.sms.model.experiment.*;
 import com.csu.sms.persistence.*;
 import com.csu.sms.service.ExperimentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
@@ -331,5 +332,76 @@ public class ExperimentServiceImpl implements ExperimentService {
         } catch (Exception e) {
             throw new RuntimeException("初始化步骤记录失败: " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public Map<String, Object> getStudentFinalReport(Long experimentId, Long studentId) {
+        // 获取最后一次完成的实验记录
+        ExperimentRecord record = experimentRecordMapper.findLastCompletedByExperimentAndUser(experimentId, studentId);
+        if (record == null) {
+            throw new RuntimeException("该学生尚未完成此实验");
+        }
+
+        // 获取详细数据
+        Map<String, Object> reportData = new HashMap<>();
+
+        try {
+            Experiment experiment = experimentMapper.selectById(experimentId);
+            reportData.put("experiment", experiment);
+
+            reportData.put("record", record);
+
+            List<StepRecord> stepRecords = stepRecordMapper.findByExperimentRecordId(record.getId());
+            reportData.put("stepRecords", stepRecords);
+
+            List<CodeHistory> codeHistory = codeHistoryMapper.findByExperimentRecordId(record.getId());
+            reportData.put("codeHistory", codeHistory);
+
+            if (record.getExecutionResult() != null) {
+                Object executionResult = objectMapper.readValue(record.getExecutionResult(), Object.class);
+                reportData.put("executionResult", executionResult);
+            }
+
+            if (record.getReportData() != null) {
+                Object report = objectMapper.readValue(record.getReportData(), Object.class);
+                reportData.put("report", report);
+            }
+
+            return reportData;
+        } catch (Exception e) {
+            throw new RuntimeException("生成报告数据失败: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<ExperimentRecord> getExperimentRecords(Long experimentId) {
+        // 参数校验
+        if (experimentId == null || experimentId <= 0) {
+            throw new IllegalArgumentException("实验ID不能为空且必须大于0");
+        }
+
+        // 查询实验是否存在
+        Experiment experiment = experimentMapper.selectById(experimentId);
+        if (experiment == null) {
+            throw new RuntimeException("实验不存在");
+        }
+
+        // 获取该实验的所有记录
+        List<ExperimentRecord> records = experimentRecordMapper.findByExperimentId(experimentId);
+
+        // 按完成时间降序排序（已完成实验优先，未完成的按创建时间排序）
+        records.sort((r1, r2) -> {
+            if ("COMPLETED".equals(r1.getStatus()) && !"COMPLETED".equals(r2.getStatus())) {
+                return -1;
+            } else if (!"COMPLETED".equals(r1.getStatus()) && "COMPLETED".equals(r2.getStatus())) {
+                return 1;
+            } else if ("COMPLETED".equals(r1.getStatus()) && "COMPLETED".equals(r2.getStatus())) {
+                return r2.getEndTime().compareTo(r1.getEndTime()); // 完成时间降序
+            } else {
+                return r2.getCreatedAt().compareTo(r1.getCreatedAt()); // 创建时间降序
+            }
+        });
+
+        return records;
     }
 }

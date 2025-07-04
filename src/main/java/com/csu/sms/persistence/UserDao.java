@@ -39,4 +39,7 @@ public interface UserDao {
 
     // 新增：根据用户ID更新token版本
     int updateTokenVersion(@Param("id") Long id, @Param("tokenVersion") int tokenVersion);
+
+    // 新增：根据用户ID删除用户
+    int deleteUser(@Param("id") Long id);
 }

@@ -91,4 +91,15 @@
         WHERE user_id = #{userId} AND status = 'COMPLETED'
     </select>
 
+    <select id="findLastCompletedByExperimentAndUser" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM experiment_record
+        WHERE experiment_id = #{experimentId}
+        AND user_id = #{userId}
+        AND status = 'COMPLETED'
+        ORDER BY end_time DESC
+        LIMIT 1
+    </select>
+
 </mapper>
