@@ -13,4 +13,5 @@ public class CourseVO {
     private String teacherName;
     private Integer videoCount;
     private Integer studyProgress;
+    private Integer status; // 0-上架 1-下架
 }
