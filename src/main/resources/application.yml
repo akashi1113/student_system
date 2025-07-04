@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /
 spring:
@@ -143,4 +143,11 @@ exam:
     booking-number-prefix: "BK"
     # 通知保留天数
     notification-retention-days: 30
+
+# 百度云人脸识别API配置
+baidu:
+  face:
+    api-key: TVYsewoIomu9mS1Jpg4CKfW0   # 请替换为你在百度云控制台申请的人脸识别API Key
+    secret-key: 9VS65XEDezLcpRHkENxeXILREKCC0HOp  # 请替换为你在百度云控制台申请的Secret Key
+    group-id: student_system   # 建议与项目名一致，或自定义分组名
 

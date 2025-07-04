@@ -108,15 +108,15 @@ public class LogServiceImpl implements LogService {
     }
     
     @Override
-    public PageResult<OperationLogReportVO> getOperationAuditReport(Long userId, String startTime, String endTime, String operation, String module, int page, int size) {
+    public PageResult<OperationLogReportVO> getOperationAuditReport(Long userId, String username, String startTime, String endTime, String operation, String module, int page, int size) {
         int offset = (page - 1) * size;
         
         // 添加调试日志
-        log.info("审计报表查询参数 - userId: {}, startTime: {}, endTime: {}, operation: {}, module: {}, page: {}, size: {}", 
-                userId, startTime, endTime, operation, module, page, size);
+        log.info("审计报表查询参数 - userId: {}, username: {}, startTime: {}, endTime: {}, operation: {}, module: {}, page: {}, size: {}", 
+                userId, username, startTime, endTime, operation, module, page, size);
         
-        List<OperationLogReportVO> records = operationLogMapper.auditReport(userId, startTime, endTime, operation, module, offset, size);
-        int total = operationLogMapper.auditReportCount(userId, startTime, endTime, operation, module);
+        List<OperationLogReportVO> records = operationLogMapper.auditReport(userId, username, startTime, endTime, operation, module, offset, size);
+        int total = operationLogMapper.auditReportCount(userId, username, startTime, endTime, operation, module);
         
         // 添加结果日志
         log.info("审计报表查询结果 - 记录数: {}, 总数: {}", records.size(), total);

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletResponse;
 
+
 @RestController
 @RequestMapping("/api/audit/report")
 public class AuditReportController {
@@ -18,6 +19,7 @@ public class AuditReportController {
     @GetMapping("/operation")
     public PageResult<OperationLogReportVO> getOperationAuditReport(
             @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) String username,
             @RequestParam(required = false) String startTime,
             @RequestParam(required = false) String endTime,
             @RequestParam(required = false) String operation,
@@ -25,7 +27,7 @@ public class AuditReportController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return logService.getOperationAuditReport(userId, startTime, endTime, operation, module, page, size);
+        return logService.getOperationAuditReport(userId, username, startTime, endTime, operation, module, page, size);
     }
 
     /**
@@ -74,13 +76,13 @@ public class AuditReportController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=operation_logs.xlsx");
 
-//        cn.hutool.poi.excel.ExcelWriter writer = cn.hutool.poi.excel.ExcelUtil.getWriter(true); // true 表示xlsx
-//        writer.write(exportList, true);
-//        writer.autoSizeColumnAll(); // 自动调整所有列宽
-//        writer.setColumnWidth(2, 20); // module列
-//        writer.setColumnWidth(3, 20); // operation列
-//        writer.setColumnWidth(4, 40); // description列
-//        writer.flush(response.getOutputStream(), true);
-//        writer.close();
+        cn.hutool.poi.excel.ExcelWriter writer = cn.hutool.poi.excel.ExcelUtil.getWriter(true); // true 表示xlsx
+        writer.write(exportList, true);
+        writer.autoSizeColumnAll(); // 自动调整所有列宽
+        writer.setColumnWidth(2, 20); // module列
+        writer.setColumnWidth(3, 20); // operation列
+        writer.setColumnWidth(4, 40); // description列
+        writer.flush(response.getOutputStream(), true);
+        writer.close();
     }
 } 

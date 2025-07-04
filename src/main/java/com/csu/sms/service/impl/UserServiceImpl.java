@@ -32,6 +32,8 @@ import com.csu.sms.util.JwtUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.csu.sms.util.UserContext;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -59,7 +61,6 @@ public class UserServiceImpl implements UserService {
     }
 
     // 修改登录方法
-    // 修改登录方法
     @Override
     public Map<String, Object> login(String username, String password) {
         User user = userDao.findByUsername(username);
@@ -70,13 +71,18 @@ public class UserServiceImpl implements UserService {
             log.warn("User {} is disabled and tried to login", username);
             throw new ServiceException(403, "账号已被禁用，请联系管理员。");
         }
-        if (passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             log.warn("Invalid password for user {}", username);
             throw new ServiceException(400, "用户名或密码错误。");
         }
 
         // 生成JWT令牌
         String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getTokenVersion());
+        
+        // 设置用户上下文和登录类型
+        UserContext.setCurrentUserId(user.getId());
+        UserContext.setCurrentUsername(user.getUsername());
+        UserContext.setLoginType("PASSWORD_LOGIN");
 
         Map<String, Object> result = new HashMap<>();
         result.put("user", convertToVO(user));
@@ -133,6 +139,11 @@ public class UserServiceImpl implements UserService {
 
         // 生成JWT令牌
         String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getTokenVersion());
+        
+        // 设置用户上下文和登录类型
+        UserContext.setCurrentUserId(user.getId());
+        UserContext.setCurrentUsername(user.getUsername());
+        UserContext.setLoginType("EMAIL_CODE_LOGIN");
 
         Map<String, Object> result = new HashMap<>();
         result.put("user", convertToVO(user));

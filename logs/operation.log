@@ -1,29 +1,29 @@
-2025-07-02 08:37:07.126 [log-1] ERROR com.csu.sms.service.impl.LogServiceImpl [] [] - 保存系统日志失败
+2025-07-04 15:16:28.197 [log-1] ERROR com.csu.sms.service.impl.LogServiceImpl [] [] - 保存系统日志失败
 org.springframework.dao.RecoverableDataAccessException: 
 ### Error updating database.  Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 5,746 milliseconds ago. The last packet sent successfully to the server was 5,747 milliseconds ago.
+The last packet successfully received from the server was 5,676 milliseconds ago. The last packet sent successfully to the server was 5,676 milliseconds ago.
 ### The error may exist in file [D:\大二下\华迪实训\student_system\target\classes\mappers\SystemLogMapper.xml]
 ### The error may involve com.csu.sms.persistence.SystemLogMapper.insert-Inline
 ### The error occurred while setting parameters
 ### SQL: INSERT INTO system_logs (             level, type, title, content, source, stack_trace, create_time         ) VALUES (             ?, ?, ?, ?, ?, ?, ?         )
 ### Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 5,746 milliseconds ago. The last packet sent successfully to the server was 5,747 milliseconds ago.
+The last packet successfully received from the server was 5,676 milliseconds ago. The last packet sent successfully to the server was 5,676 milliseconds ago.
 ; Communications link failure
 
-The last packet successfully received from the server was 5,746 milliseconds ago. The last packet sent successfully to the server was 5,747 milliseconds ago.
+The last packet successfully received from the server was 5,676 milliseconds ago. The last packet sent successfully to the server was 5,676 milliseconds ago.
 	at org.springframework.jdbc.support.SQLExceptionSubclassTranslator.doTranslate(SQLExceptionSubclassTranslator.java:110)
 	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
 	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:116)
 	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:93)
 	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:347)
-	at jdk.proxy2/jdk.proxy2.$Proxy86.insert(Unknown Source)
+	at jdk.proxy2/jdk.proxy2.$Proxy88.insert(Unknown Source)
 	at org.mybatis.spring.SqlSessionTemplate.insert(SqlSessionTemplate.java:224)
 	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:62)
 	at org.apache.ibatis.binding.MapperProxy$PlainMethodInvoker.invoke(MapperProxy.java:141)
 	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86)
-	at jdk.proxy2/jdk.proxy2.$Proxy88.insert(Unknown Source)
+	at jdk.proxy2/jdk.proxy2.$Proxy90.insert(Unknown Source)
 	at com.csu.sms.service.impl.LogServiceImpl.recordSystemLog(LogServiceImpl.java:56)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
@@ -37,7 +37,7 @@ The last packet successfully received from the server was 5,746 milliseconds ago
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 5,746 milliseconds ago. The last packet sent successfully to the server was 5,747 milliseconds ago.
+The last packet successfully received from the server was 5,676 milliseconds ago. The last packet sent successfully to the server was 5,676 milliseconds ago.
 	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175)
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64)
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
@@ -47,7 +47,7 @@ The last packet successfully received from the server was 5,746 milliseconds ago
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
-	at jdk.proxy3/jdk.proxy3.$Proxy139.execute(Unknown Source)
+	at jdk.proxy3/jdk.proxy3.$Proxy128.execute(Unknown Source)
 	at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:48)
 	at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:75)
 	at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:50)
@@ -61,7 +61,7 @@ The last packet successfully received from the server was 5,746 milliseconds ago
 	... 17 common frames omitted
 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 5,746 milliseconds ago. The last packet sent successfully to the server was 5,747 milliseconds ago.
+The last packet successfully received from the server was 5,676 milliseconds ago. The last packet sent successfully to the server was 5,676 milliseconds ago.
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
 	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
@@ -97,32 +97,32 @@ Caused by: java.net.SocketException: Connection reset
 	at com.mysql.cj.protocol.a.MultiPacketReader.readHeader(MultiPacketReader.java:44)
 	at com.mysql.cj.protocol.a.NativeProtocol.readMessage(NativeProtocol.java:576)
 	... 39 common frames omitted
-2025-07-02 08:37:07.126 [log-2] ERROR com.csu.sms.service.impl.LogServiceImpl [] [] - 保存系统日志失败
+2025-07-04 15:16:28.197 [log-2] ERROR com.csu.sms.service.impl.LogServiceImpl [] [] - 保存系统日志失败
 org.springframework.dao.RecoverableDataAccessException: 
 ### Error updating database.  Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 4,979 milliseconds ago. The last packet sent successfully to the server was 4,979 milliseconds ago.
+The last packet successfully received from the server was 2,024 milliseconds ago. The last packet sent successfully to the server was 2,024 milliseconds ago.
 ### The error may exist in file [D:\大二下\华迪实训\student_system\target\classes\mappers\SystemLogMapper.xml]
 ### The error may involve com.csu.sms.persistence.SystemLogMapper.insert-Inline
 ### The error occurred while setting parameters
 ### SQL: INSERT INTO system_logs (             level, type, title, content, source, stack_trace, create_time         ) VALUES (             ?, ?, ?, ?, ?, ?, ?         )
 ### Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 4,979 milliseconds ago. The last packet sent successfully to the server was 4,979 milliseconds ago.
+The last packet successfully received from the server was 2,024 milliseconds ago. The last packet sent successfully to the server was 2,024 milliseconds ago.
 ; Communications link failure
 
-The last packet successfully received from the server was 4,979 milliseconds ago. The last packet sent successfully to the server was 4,979 milliseconds ago.
+The last packet successfully received from the server was 2,024 milliseconds ago. The last packet sent successfully to the server was 2,024 milliseconds ago.
 	at org.springframework.jdbc.support.SQLExceptionSubclassTranslator.doTranslate(SQLExceptionSubclassTranslator.java:110)
 	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
 	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:116)
 	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:93)
 	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:347)
-	at jdk.proxy2/jdk.proxy2.$Proxy86.insert(Unknown Source)
+	at jdk.proxy2/jdk.proxy2.$Proxy88.insert(Unknown Source)
 	at org.mybatis.spring.SqlSessionTemplate.insert(SqlSessionTemplate.java:224)
 	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:62)
 	at org.apache.ibatis.binding.MapperProxy$PlainMethodInvoker.invoke(MapperProxy.java:141)
 	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86)
-	at jdk.proxy2/jdk.proxy2.$Proxy88.insert(Unknown Source)
+	at jdk.proxy2/jdk.proxy2.$Proxy90.insert(Unknown Source)
 	at com.csu.sms.service.impl.LogServiceImpl.recordSystemLog(LogServiceImpl.java:56)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
@@ -136,7 +136,7 @@ The last packet successfully received from the server was 4,979 milliseconds ago
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 4,979 milliseconds ago. The last packet sent successfully to the server was 4,979 milliseconds ago.
+The last packet successfully received from the server was 2,024 milliseconds ago. The last packet sent successfully to the server was 2,024 milliseconds ago.
 	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175)
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64)
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
@@ -146,7 +146,7 @@ The last packet successfully received from the server was 4,979 milliseconds ago
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
-	at jdk.proxy3/jdk.proxy3.$Proxy139.execute(Unknown Source)
+	at jdk.proxy3/jdk.proxy3.$Proxy128.execute(Unknown Source)
 	at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:48)
 	at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:75)
 	at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:50)
@@ -155,7 +155,7 @@ The last packet successfully received from the server was 4,979 milliseconds ago
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:61)
-	at jdk.proxy2/jdk.proxy2.$Proxy147.update(Unknown Source)
+	at jdk.proxy2/jdk.proxy2.$Proxy152.update(Unknown Source)
 	at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:197)
 	at org.apache.ibatis.session.defaults.DefaultSqlSession.insert(DefaultSqlSession.java:184)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
@@ -164,7 +164,7 @@ The last packet successfully received from the server was 4,979 milliseconds ago
 	... 17 common frames omitted
 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 4,979 milliseconds ago. The last packet sent successfully to the server was 4,979 milliseconds ago.
+The last packet successfully received from the server was 2,024 milliseconds ago. The last packet sent successfully to the server was 2,024 milliseconds ago.
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
 	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
@@ -200,154 +200,32 @@ Caused by: java.net.SocketException: Connection reset
 	at com.mysql.cj.protocol.a.MultiPacketReader.readHeader(MultiPacketReader.java:44)
 	at com.mysql.cj.protocol.a.NativeProtocol.readMessage(NativeProtocol.java:576)
 	... 43 common frames omitted
-2025-07-02 08:37:44.639 [log-1] ERROR com.csu.sms.service.impl.LogServiceImpl [] [] - 保存系统日志失败
+2025-07-04 15:16:28.243 [log-1] ERROR com.csu.sms.service.impl.LogServiceImpl [] [] - 保存系统日志失败
 org.springframework.dao.RecoverableDataAccessException: 
 ### Error updating database.  Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 17 milliseconds ago. The last packet sent successfully to the server was 17 milliseconds ago.
+The last packet successfully received from the server was 22 milliseconds ago. The last packet sent successfully to the server was 22 milliseconds ago.
 ### The error may exist in file [D:\大二下\华迪实训\student_system\target\classes\mappers\SystemLogMapper.xml]
 ### The error may involve com.csu.sms.persistence.SystemLogMapper.insert-Inline
 ### The error occurred while setting parameters
 ### SQL: INSERT INTO system_logs (             level, type, title, content, source, stack_trace, create_time         ) VALUES (             ?, ?, ?, ?, ?, ?, ?         )
 ### Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 17 milliseconds ago. The last packet sent successfully to the server was 17 milliseconds ago.
+The last packet successfully received from the server was 22 milliseconds ago. The last packet sent successfully to the server was 22 milliseconds ago.
 ; Communications link failure
 
-The last packet successfully received from the server was 17 milliseconds ago. The last packet sent successfully to the server was 17 milliseconds ago.
+The last packet successfully received from the server was 22 milliseconds ago. The last packet sent successfully to the server was 22 milliseconds ago.
 	at org.springframework.jdbc.support.SQLExceptionSubclassTranslator.doTranslate(SQLExceptionSubclassTranslator.java:110)
 	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
 	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:116)
 	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:93)
 	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:347)
-	at jdk.proxy2/jdk.proxy2.$Proxy86.insert(Unknown Source)
-	at org.mybatis.spring.SqlSessionTemplate.insert(SqlSessionTemplate.java:224)
-	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:62)
-	at org.apache.ibatis.binding.MapperProxy$PlainMethodInvoker.invoke(MapperProxy.java:141)
-	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86)
 	at jdk.proxy2/jdk.proxy2.$Proxy88.insert(Unknown Source)
-	at com.csu.sms.service.impl.LogServiceImpl.recordSystemLog(LogServiceImpl.java:56)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
-	at org.springframework.aop.interceptor.AsyncExecutionInterceptor.lambda$invoke$0(AsyncExecutionInterceptor.java:114)
-	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
-	at java.base/java.lang.Thread.run(Thread.java:1583)
-Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
-
-The last packet successfully received from the server was 17 milliseconds ago. The last packet sent successfully to the server was 17 milliseconds ago.
-	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175)
-	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64)
-	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
-	at com.mysql.cj.jdbc.ClientPreparedStatement.execute(ClientPreparedStatement.java:354)
-	at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
-	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
-	at jdk.proxy3/jdk.proxy3.$Proxy139.execute(Unknown Source)
-	at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:48)
-	at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:75)
-	at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:50)
-	at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:117)
-	at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:76)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:61)
-	at jdk.proxy2/jdk.proxy2.$Proxy147.update(Unknown Source)
-	at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:197)
-	at org.apache.ibatis.session.defaults.DefaultSqlSession.insert(DefaultSqlSession.java:184)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:333)
-	... 17 common frames omitted
-Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
-
-The last packet successfully received from the server was 17 milliseconds ago. The last packet sent successfully to the server was 17 milliseconds ago.
-	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
-	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
-	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:62)
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:105)
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:150)
-	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:166)
-	at com.mysql.cj.protocol.a.NativeProtocol.readMessage(NativeProtocol.java:582)
-	at com.mysql.cj.protocol.a.NativeProtocol.checkErrorMessage(NativeProtocol.java:762)
-	at com.mysql.cj.protocol.a.NativeProtocol.sendCommand(NativeProtocol.java:701)
-	at com.mysql.cj.protocol.a.NativeProtocol.sendQueryPacket(NativeProtocol.java:1052)
-	at com.mysql.cj.NativeSession.execSQL(NativeSession.java:657)
-	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:893)
-	... 38 common frames omitted
-Caused by: java.net.SocketException: Socket closed
-	at java.base/sun.nio.ch.NioSocketImpl.endRead(NioSocketImpl.java:243)
-	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
-	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
-	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
-	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483)
-	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70)
-	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461)
-	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066)
-	at java.base/java.io.FilterInputStream.read(FilterInputStream.java:119)
-	at com.mysql.cj.protocol.FullReadInputStream.readFully(FullReadInputStream.java:64)
-	at com.mysql.cj.protocol.a.SimplePacketReader.readHeaderLocal(SimplePacketReader.java:81)
-	at com.mysql.cj.protocol.a.SimplePacketReader.readHeader(SimplePacketReader.java:63)
-	at com.mysql.cj.protocol.a.SimplePacketReader.readHeader(SimplePacketReader.java:45)
-	at com.mysql.cj.protocol.a.TimeTrackingPacketReader.readHeader(TimeTrackingPacketReader.java:52)
-	at com.mysql.cj.protocol.a.TimeTrackingPacketReader.readHeader(TimeTrackingPacketReader.java:41)
-	at com.mysql.cj.protocol.a.MultiPacketReader.readHeader(MultiPacketReader.java:54)
-	at com.mysql.cj.protocol.a.MultiPacketReader.readHeader(MultiPacketReader.java:44)
-	at com.mysql.cj.protocol.a.NativeProtocol.readMessage(NativeProtocol.java:576)
-	... 43 common frames omitted
-2025-07-02 08:37:53.155 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 08:37:54.524 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 08:49:19.299 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接关闭
-2025-07-02 09:28:00.101 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 09:28:00.974 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 09:28:08.640 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 09:36:49.313 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 09:36:50.025 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 09:37:22.866 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 09:41:14.181 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 09:48:05.789 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 09:48:07.005 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 09:48:24.103 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 09:50:14.329 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 09:52:51.546 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 09:54:41.360 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 10:02:59.591 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 10:25:36.899 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 10:25:38.271 [log-2] ERROR com.csu.sms.service.impl.LogServiceImpl [] [] - 保存系统日志失败
-org.springframework.dao.RecoverableDataAccessException: 
-### Error updating database.  Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
-
-The last packet successfully received from the server was 13 milliseconds ago. The last packet sent successfully to the server was 13 milliseconds ago.
-### The error may exist in file [D:\大二下\华迪实训\student_system\target\classes\mappers\SystemLogMapper.xml]
-### The error may involve com.csu.sms.persistence.SystemLogMapper.insert-Inline
-### The error occurred while setting parameters
-### SQL: INSERT INTO system_logs (             level, type, title, content, source, stack_trace, create_time         ) VALUES (             ?, ?, ?, ?, ?, ?, ?         )
-### Cause: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
-
-The last packet successfully received from the server was 13 milliseconds ago. The last packet sent successfully to the server was 13 milliseconds ago.
-; Communications link failure
-
-The last packet successfully received from the server was 13 milliseconds ago. The last packet sent successfully to the server was 13 milliseconds ago.
-	at org.springframework.jdbc.support.SQLExceptionSubclassTranslator.doTranslate(SQLExceptionSubclassTranslator.java:110)
-	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
-	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:116)
-	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:93)
-	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:347)
-	at jdk.proxy2/jdk.proxy2.$Proxy85.insert(Unknown Source)
 	at org.mybatis.spring.SqlSessionTemplate.insert(SqlSessionTemplate.java:224)
 	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:62)
 	at org.apache.ibatis.binding.MapperProxy$PlainMethodInvoker.invoke(MapperProxy.java:141)
 	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86)
-	at jdk.proxy2/jdk.proxy2.$Proxy87.insert(Unknown Source)
+	at jdk.proxy2/jdk.proxy2.$Proxy90.insert(Unknown Source)
 	at com.csu.sms.service.impl.LogServiceImpl.recordSystemLog(LogServiceImpl.java:56)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
@@ -361,7 +239,7 @@ The last packet successfully received from the server was 13 milliseconds ago. T
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 13 milliseconds ago. The last packet sent successfully to the server was 13 milliseconds ago.
+The last packet successfully received from the server was 22 milliseconds ago. The last packet sent successfully to the server was 22 milliseconds ago.
 	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175)
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64)
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
@@ -371,7 +249,7 @@ The last packet successfully received from the server was 13 milliseconds ago. T
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
-	at jdk.proxy3/jdk.proxy3.$Proxy133.execute(Unknown Source)
+	at jdk.proxy3/jdk.proxy3.$Proxy128.execute(Unknown Source)
 	at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:48)
 	at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:75)
 	at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:50)
@@ -380,7 +258,7 @@ The last packet successfully received from the server was 13 milliseconds ago. T
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:61)
-	at jdk.proxy2/jdk.proxy2.$Proxy144.update(Unknown Source)
+	at jdk.proxy2/jdk.proxy2.$Proxy152.update(Unknown Source)
 	at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:197)
 	at org.apache.ibatis.session.defaults.DefaultSqlSession.insert(DefaultSqlSession.java:184)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
@@ -389,7 +267,7 @@ The last packet successfully received from the server was 13 milliseconds ago. T
 	... 17 common frames omitted
 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
 
-The last packet successfully received from the server was 13 milliseconds ago. The last packet sent successfully to the server was 13 milliseconds ago.
+The last packet successfully received from the server was 22 milliseconds ago. The last packet sent successfully to the server was 22 milliseconds ago.
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
 	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
@@ -426,234 +304,880 @@ Caused by: java.net.SocketException: Socket closed
 	at com.mysql.cj.protocol.a.MultiPacketReader.readHeader(MultiPacketReader.java:44)
 	at com.mysql.cj.protocol.a.NativeProtocol.readMessage(NativeProtocol.java:576)
 	... 43 common frames omitted
-2025-07-02 10:28:29.397 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 10:28:35.662 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 10:28:57.986 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 10:28:59.269 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 10:30:26.347 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:30:26.349 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:31:17.389 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:31:17.391 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:32:53.983 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:32:53.986 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:33:10.676 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:33:10.678 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:34:30.591 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:34:30.592 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:34:53.540 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:34:53.542 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
-2025-07-02 10:37:25.320 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接关闭
-2025-07-02 10:37:46.970 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 10:37:48.273 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 10:42:09.304 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 10:48:20.661 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 10:48:21.572 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 10:53:34.151 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 10:53:34.989 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 10:57:33.990 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 10:57:34.648 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 11:01:48.655 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 11:01:49.329 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 11:02:54.613 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:06:13.269 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:09:50.809 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 11:09:51.484 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 11:11:24.010 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:12:18.460 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:13:44.816 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:17:28.774 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:18:00.612 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:19:44.752 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:19:44.844 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:19:53.987 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:40:54.110 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 11:40:54.862 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 11:41:01.396 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 成绩管理, page: 1, size: 10
-2025-07-02 11:41:01.430 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 1, 总数: 1
-2025-07-02 11:41:01.430 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:41:15.113 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
-2025-07-02 11:41:15.121 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 11:41:15.121 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:41:15.121 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 11:41:33.981 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 成绩管理, page: 1, size: 10
-2025-07-02 11:41:33.989 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 1, 总数: 1
-2025-07-02 11:41:33.989 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:42:03.869 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 11:42:07.762 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 11:42:07.777 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 11:42:07.777 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:42:07.777 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 11:42:17.220 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 成绩管理, page: 1, size: 20
-2025-07-02 11:42:17.237 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 1, 总数: 1
-2025-07-02 11:42:17.237 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:49:24.515 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 11:49:24.530 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 11:49:24.530 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:49:24.530 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 11:49:31.609 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 成绩管理, page: 1, size: 20
-2025-07-02 11:49:31.626 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 1, 总数: 1
-2025-07-02 11:49:31.626 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:49:33.475 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 11:49:33.492 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 11:49:33.492 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:49:33.492 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 11:49:38.959 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 知识库, page: 1, size: 20
-2025-07-02 11:49:38.975 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 0, 总数: 0
-2025-07-02 11:49:40.609 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 11:49:40.631 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 11:49:40.631 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:49:40.631 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 11:49:44.674 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 成绩管理, page: 1, size: 20
-2025-07-02 11:49:44.686 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 1, 总数: 1
-2025-07-02 11:49:44.686 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:49:46.059 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 11:49:46.075 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 11:49:46.075 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 11:49:46.075 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:07:45.155 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 13:07:45.892 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 13:08:00.164 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:08:00.214 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:08:00.216 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:08:00.216 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:08:05.633 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 成绩管理, page: 1, size: 20
-2025-07-02 13:08:05.641 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 1, 总数: 1
-2025-07-02 13:08:05.643 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:08:09.636 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 知识库, page: 1, size: 20
-2025-07-02 13:08:09.643 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 0, 总数: 0
-2025-07-02 13:08:33.712 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: 查询, module: null, page: 1, size: 20
-2025-07-02 13:08:33.721 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 0, 总数: 0
-2025-07-02 13:10:36.349 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:10:36.357 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:10:36.357 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:10:36.357 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:17:29.726 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 13:17:30.375 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
-2025-07-02 13:17:42.816 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:17:42.873 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:17:42.874 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:17:42.874 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:17:48.299 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 知识库, page: 1, size: 20
-2025-07-02 13:17:48.309 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 1, 总数: 1
-2025-07-02 13:17:48.309 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:19:56.105 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:19:56.112 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:19:56.112 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:19:56.112 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:20:01.697 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 成绩管理, page: 1, size: 20
-2025-07-02 13:20:01.711 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 1, 总数: 1
-2025-07-02 13:20:01.711 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:20:05.568 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 知识库, page: 1, size: 20
-2025-07-02 13:20:05.579 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 1, 总数: 1
-2025-07-02 13:20:05.579 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:20:08.934 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:20:08.948 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:20:08.948 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:20:08.948 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:20:17.104 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
-2025-07-02 13:20:17.116 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:20:17.117 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:20:17.117 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:36:03.555 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:36:03.559 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:36:03.559 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:36:03.559 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:38:35.848 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 13:38:41.919 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:38:41.923 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:38:41.923 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:38:41.923 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:42:38.409 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:42:38.413 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:42:38.413 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:42:38.413 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:44:38.767 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:44:38.772 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:44:38.772 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:44:38.772 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:44:59.098 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:44:59.106 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:44:59.106 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:44:59.106 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:45:00.413 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:45:00.420 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:45:00.420 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:45:00.420 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:51:23.373 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:51:23.377 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:51:23.378 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:51:23.378 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:51:46.710 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:51:46.714 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:51:46.714 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:51:46.714 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:52:03.883 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: 成绩管理, page: 1, size: 20
-2025-07-02 13:52:03.890 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 1, 总数: 1
-2025-07-02 13:52:03.890 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:52:14.806 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:52:14.809 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:52:14.809 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:52:14.809 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:59:03.624 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:59:03.630 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:59:03.630 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:59:03.630 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 13:59:40.581 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 13:59:40.585 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 13:59:40.585 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 13:59:40.585 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:02:32.855 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
-2025-07-02 14:04:01.457 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:04:01.461 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:04:01.461 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:04:01.461 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:05:25.546 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:05:25.550 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:05:25.550 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:05:25.550 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:06:03.669 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:06:03.673 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:06:03.673 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:06:03.673 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:07:20.179 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:07:20.184 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:07:20.184 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:07:20.184 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:11:18.208 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:11:18.215 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:11:18.215 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:11:18.215 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:16:08.626 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:16:08.630 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:16:08.630 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:16:08.630 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:19:28.331 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:19:28.335 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:19:28.335 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:19:28.335 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:19:45.811 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:19:45.817 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:19:45.817 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:19:45.817 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:24:07.182 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:24:07.188 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:24:07.188 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:24:07.188 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:26:56.291 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:26:56.295 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:26:56.295 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:26:56.295 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:31:24.148 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:31:24.151 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:31:24.151 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:31:24.151 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:35:50.729 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:35:50.732 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:35:50.732 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:35:50.732 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 14:40:44.527 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
-2025-07-02 14:40:44.532 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
-2025-07-02 14:40:44.532 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=1
-2025-07-02 14:40:44.532 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=4
-2025-07-02 19:38:39.361 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
-2025-07-02 19:38:39.977 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
+2025-07-04 15:17:12.217 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
+2025-07-04 15:17:14.126 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
+2025-07-04 15:22:53.711 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 5154ms
+2025-07-04 15:22:53.785 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 12953ms
+2025-07-04 15:22:53.817 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 15:22:53.821 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 钱佳曼
+2025-07-04 15:29:04.525 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 48ms
+2025-07-04 15:29:04.565 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 15:29:04.627 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 126ms
+2025-07-04 15:29:04.658 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 15:29:07.492 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 14ms
+2025-07-04 15:29:07.512 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 15:29:07.522 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 41ms
+2025-07-04 15:29:07.542 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼
+2025-07-04 15:29:09.077 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 14ms
+2025-07-04 15:29:09.094 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 15:29:09.103 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 用户上下文异常
+2025-07-04 15:29:13.976 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 18ms
+2025-07-04 15:29:13.991 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 用户上下文异常
+2025-07-04 15:29:13.994 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 15:29:15.728 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 12ms
+2025-07-04 15:29:15.735 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 用户上下文异常
+2025-07-04 15:29:15.750 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: 钱佳曼
+2025-07-04 15:29:27.318 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
+2025-07-04 15:30:50.396 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 13205ms
+2025-07-04 15:30:50.505 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 钱佳曼
+2025-07-04 15:30:50.840 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 1549ms
+2025-07-04 15:30:50.864 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 钱佳曼
+2025-07-04 15:31:06.573 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 15:31:06.593 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 27ms
+2025-07-04 15:31:06.597 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 15:31:06.608 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 15:31:07.795 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 11ms
+2025-07-04 15:31:07.810 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 用户上下文异常
+2025-07-04 15:31:07.812 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 15:31:22.741 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
+2025-07-04 15:36:46.551 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 28ms
+2025-07-04 15:36:46.587 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 用户上下文异常
+2025-07-04 15:36:46.591 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 15:36:55.822 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 10ms
+2025-07-04 15:36:55.835 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 22ms
+2025-07-04 15:36:55.850 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 15:36:55.853 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 15:37:29.311 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 300ms
+2025-07-04 15:37:29.332 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 钱佳曼
+2025-07-04 15:37:53.265 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 257ms
+2025-07-04 15:37:53.289 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 小汪汪
+2025-07-04 15:37:57.280 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 10ms
+2025-07-04 15:37:57.297 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 24ms
+2025-07-04 15:37:57.300 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 小汪汪
+2025-07-04 15:37:57.314 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 15:38:03.390 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 15:38:03.426 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 用户上下文异常
+2025-07-04 15:38:03.429 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 15:41:47.941 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 10ms
+2025-07-04 15:41:47.955 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 24ms
+2025-07-04 15:41:47.979 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 钱佳曼
+2025-07-04 15:41:47.980 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 15:41:49.246 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 9ms
+2025-07-04 15:41:49.266 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 用户上下文异常
+2025-07-04 15:41:49.269 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 15:45:53.487 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 21ms
+2025-07-04 15:45:53.602 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 小汪汪
+2025-07-04 15:45:59.586 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 22ms
+2025-07-04 15:45:59.613 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 小汪汪
+2025-07-04 15:46:00.157 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 61ms
+2025-07-04 15:46:00.205 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 15:46:01.908 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 35ms
+2025-07-04 15:46:01.944 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 15:48:08.742 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 系统异常
+2025-07-04 16:00:06.260 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 3ms
+2025-07-04 16:00:06.307 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:00:56.229 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 14ms
+2025-07-04 16:00:56.236 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 21ms
+2025-07-04 16:00:56.336 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:00:56.338 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼
+2025-07-04 16:01:01.835 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:01:01.864 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:01:09.389 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:01:09.396 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 10ms
+2025-07-04 16:01:09.431 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:01:09.446 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 小汪汪
+2025-07-04 16:01:10.515 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 5ms
+2025-07-04 16:01:10.539 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:01:14.256 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:01:14.270 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:01:14.271 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 19ms
+2025-07-04 16:01:14.280 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:01:15.794 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 16:01:15.815 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:04:15.647 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 9ms
+2025-07-04 16:04:15.657 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 19ms
+2025-07-04 16:04:15.696 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:04:15.698 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 小汪汪
+2025-07-04 16:04:16.796 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:04:16.818 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: 小汪汪
+2025-07-04 16:04:20.275 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:04:20.286 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 10ms
+2025-07-04 16:04:20.295 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:04:20.299 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:04:21.387 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 6ms
+2025-07-04 16:04:21.397 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:04:27.346 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 5ms
+2025-07-04 16:04:27.352 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 10ms
+2025-07-04 16:04:27.356 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:04:27.364 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 小汪汪
+2025-07-04 16:04:28.317 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 3ms
+2025-07-04 16:04:28.337 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:04:29.667 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:04:29.673 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 9ms
+2025-07-04 16:04:29.682 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 小汪汪
+2025-07-04 16:04:29.685 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:04:31.379 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:04:31.402 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:07:03.212 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 13866ms
+2025-07-04 16:07:03.240 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 钱佳曼
+2025-07-04 16:07:22.371 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 5ms
+2025-07-04 16:07:22.375 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 16:07:22.392 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 钱佳曼
+2025-07-04 16:07:22.407 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:07:30.393 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 16:07:30.444 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: 钱佳曼
+2025-07-04 16:07:31.976 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 3ms
+2025-07-04 16:07:31.982 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 16:07:31.992 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:07:31.993 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 小汪汪
+2025-07-04 16:21:23.242 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:21:23.246 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 16:21:23.306 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:21:23.308 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:22:07.840 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 16:22:07.913 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 小汪汪
+2025-07-04 16:22:09.349 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:22:09.352 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 16:22:09.360 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 钱佳曼
+2025-07-04 16:22:09.362 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼
+2025-07-04 16:22:14.271 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
+2025-07-04 16:22:14.273 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
+2025-07-04 16:22:17.204 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 16:22:17.220 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 23ms
+2025-07-04 16:22:17.225 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:22:17.235 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:22:39.762 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
+2025-07-04 16:22:39.764 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
+2025-07-04 16:24:26.479 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 6ms
+2025-07-04 16:24:26.482 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 9ms
+2025-07-04 16:24:26.552 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 小汪汪
+2025-07-04 16:24:26.554 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼
+2025-07-04 16:24:34.606 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:24:34.608 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 16:24:34.639 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:24:34.640 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼
+2025-07-04 16:25:54.544 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:25:54.571 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: 小汪汪
+2025-07-04 16:26:05.593 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 6ms
+2025-07-04 16:26:05.614 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 15ms
+2025-07-04 16:26:05.621 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 钱佳曼
+2025-07-04 16:26:05.627 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:26:14.930 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 5ms
+2025-07-04 16:26:14.959 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:26:26.148 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 16:26:26.158 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 小汪汪, 状态: SUCCESS, 执行时间: 16ms
+2025-07-04 16:26:26.178 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: 钱佳曼
+2025-07-04 16:26:26.180 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 小汪汪
+2025-07-04 16:26:41.971 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:26:41.973 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 6ms
+2025-07-04 16:26:41.986 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:26:41.988 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: 钱佳曼
+2025-07-04 16:31:13.060 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 用户上下文异常
+2025-07-04 16:35:56.134 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
+2025-07-04 16:35:58.786 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
+2025-07-04 16:36:17.816 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 40ms
+2025-07-04 16:36:17.832 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 117ms
+2025-07-04 16:36:17.875 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:36:17.876 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:36:58.549 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 11ms
+2025-07-04 16:36:58.567 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 29ms
+2025-07-04 16:36:58.595 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:36:58.597 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:37:07.983 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 9ms
+2025-07-04 16:37:08.008 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:37:12.042 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 10ms
+2025-07-04 16:37:12.056 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 21ms
+2025-07-04 16:37:12.069 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:37:12.071 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:37:21.248 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 3ms
+2025-07-04 16:37:21.263 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:37:37.611 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:37:37.618 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 11ms
+2025-07-04 16:37:37.635 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:37:37.637 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:43:12.422 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 12ms
+2025-07-04 16:43:12.433 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 21ms
+2025-07-04 16:43:12.505 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:43:12.507 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:43:15.221 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 10ms
+2025-07-04 16:43:15.242 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:43:15.244 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 27ms
+2025-07-04 16:43:15.255 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:43:16.338 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:43:16.342 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 16:43:16.351 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:43:16.355 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:43:17.553 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null, 状态: SUCCESS, 执行时间: 9ms
+2025-07-04 16:43:17.571 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查看书籍详情, 用户: null
+2025-07-04 16:43:21.646 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:43:21.652 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 9ms
+2025-07-04 16:43:21.672 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:43:21.673 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:43:38.006 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 16:43:38.026 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 25ms
+2025-07-04 16:43:38.073 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:43:38.075 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:43:39.093 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 16:43:39.116 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:43:39.123 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 34ms
+2025-07-04 16:43:39.148 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:43:39.573 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 16:43:39.585 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 12ms
+2025-07-04 16:43:39.586 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:43:39.606 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:43:39.840 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 16:43:39.852 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 20ms
+2025-07-04 16:43:39.869 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:43:39.874 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:43:40.230 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 16:43:40.242 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 19ms
+2025-07-04 16:43:40.242 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:43:40.255 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:44:54.315 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 13ms
+2025-07-04 16:44:54.412 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:44:55.933 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 6ms
+2025-07-04 16:44:55.948 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:44:57.987 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 9ms
+2025-07-04 16:44:58.012 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:45:00.408 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 14ms
+2025-07-04 16:45:00.431 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:45:02.034 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 16:45:02.052 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:45:04.142 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 6ms
+2025-07-04 16:45:04.162 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:45:07.396 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 16ms
+2025-07-04 16:45:07.418 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:45:48.969 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 5ms
+2025-07-04 16:45:48.974 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 5ms
+2025-07-04 16:45:49.063 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:45:49.065 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:45:50.017 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 16:45:50.024 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 6ms
+2025-07-04 16:45:50.041 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:45:50.045 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:45:50.917 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null, 状态: SUCCESS, 执行时间: 6ms
+2025-07-04 16:45:50.926 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null, 状态: SUCCESS, 执行时间: 14ms
+2025-07-04 16:45:50.933 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询分类列表, 用户: null
+2025-07-04 16:45:50.948 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 知识库管理, 操作: 查询书籍列表, 用户: null
+2025-07-04 16:51:44.190 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 钱佳曼, 状态: SUCCESS, 执行时间: 12355ms
+2025-07-04 16:51:44.299 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 钱佳曼
+2025-07-04 16:53:00.800 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户注册, 用户: null, 状态: SUCCESS, 执行时间: 351ms
+2025-07-04 16:53:00.817 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户注册, 用户: null
+2025-07-04 16:53:17.142 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 859ms
+2025-07-04 16:53:17.237 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 驴将将
+2025-07-04 16:53:41.595 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 20
+2025-07-04 16:53:41.607 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 20, 总数: 26
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 16:53:41.608 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 16:54:02.827 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 16:54:02.844 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:54:32.833 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 16:54:32.841 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:54:37.725 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: 宋柯佳, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 16:54:37.734 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 2, 总数: 2
+2025-07-04 16:54:37.734 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 16:54:37.734 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 16:54:42.226 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 16:54:42.236 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:55:17.626 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 16:55:17.631 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:58:32.532 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 100
+2025-07-04 16:58:32.545 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 26, 总数: 26
+2025-07-04 16:58:32.545 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:58:32.545 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 16:58:32.545 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 16:58:32.545 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 16:58:32.546 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 16:58:42.583 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 16:58:42.592 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:58:48.655 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 16:58:48.661 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:58:51.884 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 16:58:51.891 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:58:54.078 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 100
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 26, 总数: 26
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 16:58:54.105 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 17:01:23.271 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 100
+2025-07-04 17:01:23.282 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 26, 总数: 26
+2025-07-04 17:01:23.282 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:23.282 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 17:01:23.283 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 17:01:26.627 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 17:01:26.634 [http-nio-8080-exec-5] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:28.841 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 2, size: 10
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 17:01:28.851 [http-nio-8080-exec-6] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:31.104 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 3, size: 10
+2025-07-04 17:01:31.113 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 6, 总数: 26
+2025-07-04 17:01:31.113 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 17:01:31.113 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 17:01:31.113 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 17:01:31.113 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 17:01:31.113 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 17:01:31.113 [http-nio-8080-exec-10] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 17:01:34.601 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 2, size: 10
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 17:01:34.608 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:36.416 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 17:01:36.422 [http-nio-8080-exec-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:39.305 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 2, size: 10
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 17:01:39.312 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:42.135 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 3, size: 10
+2025-07-04 17:01:42.142 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 6, 总数: 26
+2025-07-04 17:01:42.142 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 17:01:42.142 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 17:01:42.142 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 17:01:42.142 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 17:01:42.142 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 17:01:42.142 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 17:01:44.789 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 2, size: 10
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 17:01:44.798 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:46.339 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 17:01:46.345 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:55.551 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 100
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 26, 总数: 26
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 17:01:55.561 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 17:02:05.817 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 10
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 10, 总数: 26
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 17:02:05.823 [http-nio-8080-exec-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:02:09.215 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 100
+2025-07-04 17:02:09.227 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 26, 总数: 26
+2025-07-04 17:02:09.227 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:02:09.227 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 17:02:09.227 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 17:02:09.227 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 17:02:09.228 [http-nio-8080-exec-3] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 17:02:40.329 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: 用户, page: 1, size: 100
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 13, 总数: 13
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 17:02:40.338 [http-nio-8080-exec-8] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 17:02:47.776 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 100
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 26, 总数: 26
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 17:02:47.791 [http-nio-8080-exec-4] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 17:06:42.678 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 100
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 26, 总数: 26
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=1
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 17:06:42.687 [http-nio-8080-exec-7] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 17:11:23.934 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 150ms
+2025-07-04 17:11:23.957 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将
+2025-07-04 17:12:04.188 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 12601ms
+2025-07-04 17:12:04.231 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 17:12:12.266 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 521ms
+2025-07-04 17:12:12.294 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 17:12:15.624 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 334ms
+2025-07-04 17:12:15.648 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 驴将将
+2025-07-04 17:28:20.404 [http-nio-8080-exec-1] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户注册, 用户: null, 状态: SUCCESS, 执行时间: 228ms
+2025-07-04 17:28:20.418 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户注册, 用户: null
+2025-07-04 17:28:27.344 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 4ms
+2025-07-04 17:28:27.371 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将
+2025-07-04 17:28:44.043 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 敏柔酱, 状态: SUCCESS, 执行时间: 145ms
+2025-07-04 17:28:44.121 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 敏柔酱
+2025-07-04 17:30:50.340 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 敏柔酱, 状态: SUCCESS, 执行时间: 158ms
+2025-07-04 17:30:50.437 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 敏柔酱
+2025-07-04 17:33:27.379 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 138ms
+2025-07-04 17:33:27.452 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将
+2025-07-04 17:37:35.045 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 232ms
+2025-07-04 17:37:35.102 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将
+2025-07-04 17:41:53.593 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
+2025-07-04 17:41:55.830 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
+2025-07-04 17:42:37.184 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 473ms
+2025-07-04 17:42:37.210 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将
+2025-07-04 18:44:38.592 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
+2025-07-04 18:44:39.840 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
+2025-07-04 18:46:47.495 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 468ms
+2025-07-04 18:46:47.555 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将
+2025-07-04 18:48:00.166 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 3ms
+2025-07-04 18:48:00.201 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:48:48.369 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户注册, 用户: null, 状态: SUCCESS, 执行时间: 271ms
+2025-07-04 18:48:48.389 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户注册, 用户: null
+2025-07-04 18:49:09.514 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 838ms
+2025-07-04 18:49:09.587 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:49:27.077 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 1487ms
+2025-07-04 18:49:27.115 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 驴将将
+2025-07-04 18:49:48.064 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 665ms
+2025-07-04 18:49:48.109 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:50:48.383 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 1272ms
+2025-07-04 18:50:48.477 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:51:51.523 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户注册, 用户: null, 状态: SUCCESS, 执行时间: 296ms
+2025-07-04 18:51:51.533 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户注册, 用户: null
+2025-07-04 18:52:04.834 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 小汪汪汪, 状态: SUCCESS, 执行时间: 1209ms
+2025-07-04 18:52:04.900 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 小汪汪汪
+2025-07-04 18:52:46.236 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户注册, 用户: null, 状态: SUCCESS, 执行时间: 274ms
+2025-07-04 18:52:46.246 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户注册, 用户: null
+2025-07-04 18:53:04.992 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 1192ms
+2025-07-04 18:53:05.045 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:53:13.386 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 793ms
+2025-07-04 18:53:13.429 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:53:23.648 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 1324ms
+2025-07-04 18:53:23.682 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:54:44.948 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户注册, 用户: null, 状态: SUCCESS, 执行时间: 292ms
+2025-07-04 18:54:44.958 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户注册, 用户: null
+2025-07-04 18:55:07.193 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 12666ms
+2025-07-04 18:55:07.239 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:55:07.643 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 325ms
+2025-07-04 18:55:07.655 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:59:03.812 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 小汪汪汪, 状态: SUCCESS, 执行时间: 1289ms
+2025-07-04 18:59:03.866 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 小汪汪汪
+2025-07-04 18:59:07.324 [http-nio-8080-exec-2] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 486ms
+2025-07-04 18:59:07.339 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:59:13.950 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 989ms
+2025-07-04 18:59:13.970 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:59:17.325 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 352ms
+2025-07-04 18:59:17.343 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:59:28.328 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 1278ms
+2025-07-04 18:59:28.349 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:59:34.844 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: null, 状态: SUCCESS, 执行时间: 777ms
+2025-07-04 18:59:34.865 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: null
+2025-07-04 18:59:44.141 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 1430ms
+2025-07-04 18:59:44.163 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 驴将将
+2025-07-04 19:01:32.473 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户认证, 操作: 人脸登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 12122ms
+2025-07-04 19:01:32.555 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户认证, 操作: 人脸登录, 用户: 驴将将
+2025-07-04 19:03:57.179 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 199ms
+2025-07-04 19:03:57.239 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 用户管理, 操作: 用户登录, 用户: 驴将将
+2025-07-04 19:05:54.181 [http-nio-8080-exec-10] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: null, 状态: SUCCESS, 执行时间: 68ms
+2025-07-04 19:05:54.184 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 用户综合分析, 用户: 驴将将, 状态: SUCCESS, 执行时间: 70ms
+2025-07-04 19:05:54.198 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null, 状态: SUCCESS, 执行时间: 87ms
+2025-07-04 19:05:54.198 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 查询学习记录, 用户: null, 状态: SUCCESS, 执行时间: 86ms
+2025-07-04 19:05:54.293 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: null
+2025-07-04 19:05:54.296 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 用户综合分析, 用户: 驴将将
+2025-07-04 19:05:54.306 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null
+2025-07-04 19:05:54.308 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 查询学习记录, 用户: null
+2025-07-04 19:06:00.401 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 查询学习记录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 19:06:00.415 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 查询学习记录, 用户: 驴将将
+2025-07-04 19:06:00.421 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null, 状态: SUCCESS, 执行时间: 5ms
+2025-07-04 19:06:00.429 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null
+2025-07-04 19:06:00.443 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 19:06:00.457 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: null
+2025-07-04 19:06:00.462 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 用户综合分析, 用户: 驴将将, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 19:06:00.475 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 用户综合分析, 用户: 驴将将
+2025-07-04 19:06:15.472 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: AI服务调用, 标题: AI学习建议获取成功
+2025-07-04 19:06:37.678 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 查询学习记录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 9ms
+2025-07-04 19:06:37.704 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 19:06:37.726 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 19:06:37.745 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 用户综合分析, 用户: 驴将将, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 19:06:37.746 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 查询学习记录, 用户: 驴将将
+2025-07-04 19:06:37.746 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null
+2025-07-04 19:06:37.757 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 用户综合分析, 用户: 驴将将
+2025-07-04 19:06:37.760 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: null
+2025-07-04 19:06:42.113 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: AI服务调用, 标题: AI学习建议获取成功
+2025-07-04 19:06:51.756 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: 驴将将, 状态: SUCCESS, 执行时间: 6ms
+2025-07-04 19:06:51.791 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: 驴将将
+2025-07-04 19:06:53.946 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: null, 状态: SUCCESS, 执行时间: 6ms
+2025-07-04 19:06:53.963 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: null
+2025-07-04 19:06:56.060 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: 驴将将, 状态: SUCCESS, 执行时间: 5ms
+2025-07-04 19:06:56.084 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: 驴将将
+2025-07-04 19:11:01.903 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 查询学习记录, 用户: 驴将将, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 19:11:01.928 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 19:11:01.949 [http-nio-8080-exec-7] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: null, 状态: SUCCESS, 执行时间: 8ms
+2025-07-04 19:11:01.970 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 用户综合分析, 用户: 驴将将, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 19:11:02.024 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 查询学习记录, 用户: 驴将将
+2025-07-04 19:11:02.026 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null
+2025-07-04 19:11:02.036 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: null
+2025-07-04 19:11:02.038 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 用户综合分析, 用户: 驴将将
+2025-07-04 19:11:36.614 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: AI服务调用, 标题: AI学习建议获取成功
+2025-07-04 19:14:03.311 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询参数 - userId: null, username: null, startTime: null, endTime: null, operation: null, module: null, page: 1, size: 100
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 审计报表查询结果 - 记录数: 39, 总数: 39
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=学习分析, operation=获取图表数据, count=5
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=学习分析, operation=用户综合分析, count=4
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=成绩管理, operation=查询考试记录, count=4
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=学习分析, operation=查询学习记录, count=3
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=学习分析, operation=获取图表数据, count=2
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=学习分析, operation=查询学习记录, count=1
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=6
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=14
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=2
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=4
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=2
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=2
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=2
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=5
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=31
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=27
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=12
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=6
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=5
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=5
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=4
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=3
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=2
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查看书籍详情, count=7
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=7
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询分类列表, count=7
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=人脸登录, count=1
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=4
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户登录, count=1
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=知识库管理, operation=查询书籍列表, count=1
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=16
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=2
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户管理, operation=用户注册, count=3
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=注册, count=1
+2025-07-04 19:14:03.329 [http-nio-8080-exec-9] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 记录: module=用户认证, operation=登录, count=1
+2025-07-04 19:20:15.128 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
+2025-07-04 19:20:16.516 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
+2025-07-04 19:22:33.840 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: ERROR, 类型: 系统异常, 标题: 运行时异常
+2025-07-04 19:22:34.121 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null, 状态: SUCCESS, 执行时间: 39ms
+2025-07-04 19:22:34.145 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null
+2025-07-04 19:22:34.185 [http-nio-8080-exec-4] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: null, 状态: SUCCESS, 执行时间: 17ms
+2025-07-04 19:22:34.203 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: null
+2025-07-04 19:22:34.222 [http-nio-8080-exec-9] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 用户综合分析, 用户: null, 状态: SUCCESS, 执行时间: 11ms
+2025-07-04 19:22:34.235 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 用户综合分析, 用户: null
+2025-07-04 19:22:38.547 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: AI服务调用, 标题: AI学习建议获取成功
+2025-07-04 19:27:03.072 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: OSS连接, 标题: 阿里云OSS连接成功
+2025-07-04 19:27:06.029 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: 系统启动, 标题: 学生管理系统启动成功
+2025-07-04 19:27:50.684 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null, 状态: SUCCESS, 执行时间: 52ms
+2025-07-04 19:27:50.744 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: null, 状态: SUCCESS, 执行时间: 20ms
+2025-07-04 19:27:50.757 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 成绩管理, 操作: 查询考试记录, 用户: null
+2025-07-04 19:27:50.759 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: null
+2025-07-04 19:27:50.776 [http-nio-8080-exec-8] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 用户综合分析, 用户: null, 状态: SUCCESS, 执行时间: 9ms
+2025-07-04 19:27:50.798 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 用户综合分析, 用户: null
+2025-07-04 19:27:55.846 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 系统日志已保存到数据库 - 级别: INFO, 类型: AI服务调用, 标题: AI学习建议获取成功
+2025-07-04 19:28:15.182 [http-nio-8080-exec-6] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: null, 状态: SUCCESS, 执行时间: 5ms
+2025-07-04 19:28:15.279 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: null
+2025-07-04 19:28:16.898 [http-nio-8080-exec-3] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: null, 状态: SUCCESS, 执行时间: 7ms
+2025-07-04 19:28:16.909 [log-2] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: null
+2025-07-04 19:28:18.555 [http-nio-8080-exec-5] INFO  com.csu.sms.aspect.LogAspect [] [] - 操作日志记录 - 模块: 学习分析, 操作: 获取图表数据, 用户: null, 状态: SUCCESS, 执行时间: 5ms
+2025-07-04 19:28:18.570 [log-1] INFO  com.csu.sms.service.impl.LogServiceImpl [] [] - 操作日志已保存到数据库 - 模块: 学习分析, 操作: 获取图表数据, 用户: null

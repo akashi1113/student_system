@@ -125,11 +125,11 @@
         <!--            <artifactId>lombok</artifactId>-->
         <!--            <optional>true</optional>-->
         <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>cn.hutool</groupId>-->
-        <!--            <artifactId>hutool-all</artifactId>-->
-        <!--            <version>${hutool.version}</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-poi</artifactId>
+            <version>5.8.26</version>
+        </dependency>
 
         <!-- AI SDK -->
         <dependency>

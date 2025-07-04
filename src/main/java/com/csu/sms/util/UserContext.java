@@ -28,6 +28,29 @@ public class UserContext {
     // JWT密钥（应与JwtUtil中的一致）
     private static final String SECRET = "6v9y$B&E)H@McQfTjWnZr4u7x!A%D*G-";
 
+    // 新增：ThreadLocal方式手动设置用户信息
+    private static final ThreadLocal<Long> threadLocalUserId = new ThreadLocal<>();
+    private static final ThreadLocal<String> threadLocalUsername = new ThreadLocal<>();
+    private static final ThreadLocal<String> threadLocalLoginType = new ThreadLocal<>();
+
+    public static void setCurrentUserId(Long userId) {
+        threadLocalUserId.set(userId);
+    }
+    public static void setCurrentUsername(String username) {
+        threadLocalUsername.set(username);
+    }
+    public static void setLoginType(String loginType) {
+        threadLocalLoginType.set(loginType);
+    }
+    public static String getLoginType() {
+        return threadLocalLoginType.get();
+    }
+    public static void clear() {
+        threadLocalUserId.remove();
+        threadLocalUsername.remove();
+        threadLocalLoginType.remove();
+    }
+
     // 生成密钥
     private static SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
@@ -66,6 +89,9 @@ public class UserContext {
      * 优先从JWT token获取，其次从请求头/参数获取
      */
     public static Long getCurrentUserId() {
+        Long threadId = threadLocalUserId.get();
+        if (threadId != null) return threadId;
+        
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
             return null;
@@ -127,6 +153,9 @@ public class UserContext {
      * 优先从请求头获取，其次从请求参数获取
      */
     public static String getCurrentUsername() {
+        String threadName = threadLocalUsername.get();
+        if (threadName != null) return threadName;
+        
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
             return null;
