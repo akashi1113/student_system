@@ -5,12 +5,17 @@ import com.csu.sms.service.KnowledgeBaseService;
 import com.csu.sms.common.PageResult;
 import com.csu.sms.common.ApiResponse;
 import com.csu.sms.annotation.LogOperation;
+import com.csu.sms.model.knowledge.KnowledgeFavorite;
+import com.csu.sms.service.KnowledgeFavoriteService;
+import com.csu.sms.util.UserContext;
+import com.csu.sms.vo.KnowledgeFavoriteVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 知识库控制器
@@ -26,6 +31,8 @@ public class KnowledgeController {
 
     @Autowired
     private KnowledgeBaseService knowledgeBaseService;
+    @Autowired
+    private KnowledgeFavoriteService favoriteService;
 
     /**
      * 分页查询知识库列表
@@ -207,5 +214,62 @@ public class KnowledgeController {
         } catch (Exception e) {
             return ApiResponse.error("删除失败：" + e.getMessage());
         }
+    }
+
+    /**
+     * 添加收藏
+     */
+    @PostMapping("/favorite")
+    public ApiResponse<Boolean> addFavorite(@RequestParam Long knowledgeId, @RequestParam(required = false) String remark) {
+        Long userId = UserContext.getRequiredCurrentUserId();
+        boolean result = favoriteService.addFavorite(userId, knowledgeId, remark);
+        return ApiResponse.success(result);
+    }
+
+    /**
+     * 取消收藏
+     */
+    @PostMapping("/unfavorite")
+    public ApiResponse<Boolean> cancelFavorite(@RequestParam Long knowledgeId) {
+        Long userId = UserContext.getRequiredCurrentUserId();
+        boolean result = favoriteService.cancelFavorite(userId, knowledgeId);
+        return ApiResponse.success(result);
+    }
+
+    /**
+     * 查询我的收藏（返回知识库条目详情+收藏备注和时间）
+     */
+    @GetMapping("/favorite/list")
+    public ApiResponse<List<KnowledgeFavoriteVO>> getMyFavoriteList() {
+        Long userId = UserContext.getRequiredCurrentUserId();
+        List<KnowledgeFavorite> favorites = favoriteService.getUserFavorites(userId);
+        List<KnowledgeFavoriteVO> voList = favorites.stream()
+                .map(fav -> {
+                    KnowledgeBase kb = knowledgeBaseService.getKnowledgeDetail(fav.getKnowledgeId());
+                    if (kb == null) return null;
+                    KnowledgeFavoriteVO vo = new KnowledgeFavoriteVO();
+                    vo.setKnowledgeId(kb.getId());
+                    vo.setTitle(kb.getTitle());
+                    vo.setAuthor(kb.getAuthor());
+                    vo.setLinkUrl(kb.getLinkUrl());
+                    vo.setImagePath(kb.getImagePath());
+                    vo.setRemark(fav.getRemark());
+                    vo.setFavoriteTime(fav.getFavoriteTime() != null ?
+                        new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fav.getFavoriteTime()) : null);
+                    return vo;
+                })
+                .filter(java.util.Objects::nonNull)
+                .collect(java.util.stream.Collectors.toList());
+        return ApiResponse.success(voList);
+    }
+
+    /**
+     * 查询某条是否已收藏
+     */
+    @GetMapping("/favorite/status")
+    public ApiResponse<Boolean> isFavorite(@RequestParam Long knowledgeId) {
+        Long userId = UserContext.getRequiredCurrentUserId();
+        boolean result = favoriteService.isFavorite(userId, knowledgeId);
+        return ApiResponse.success(result);
     }
 }

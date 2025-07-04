@@ -33,7 +33,6 @@ public class CourseServiceImpl implements CourseService {
     private final CourseDao courseDao;
     private final CourseVideoDao courseVideoDao;
     private final StudyRecordDao studyRecordDao;
-    // 移除 RedisTemplate 注入
     private final FileStorageService fileStorageService;
 
     @Value("${app.upload.course-cover-folder}")
@@ -42,8 +41,6 @@ public class CourseServiceImpl implements CourseService {
     private String defaultCourseCoverUrl;
     @Value("${app.upload.video-folder}")
     private String videoFolder;
-
-    // 移除 Redis 缓存相关的常量定义
 
     @Override
     public PageResult<CourseVO> listCourses(Long userId, Integer pageNum, Integer pageSize) {
@@ -321,10 +318,86 @@ public class CourseServiceImpl implements CourseService {
         return true;
     }
 
+    @Override
+    public PageResult<CourseVO> listCoursesForAdmin(Long userId,Integer pageNum, Integer pageSize){
+        // 计算偏移量
+        int offset = (pageNum - 1) * pageSize;
 
-    // 移除所有清除缓存的方法，因为不再使用 Redis
-    // public void clearCoursesListCache() { ... }
-    // public void clearCourseDetailCache(Long courseId) { ... }
-    // public void clearUserCourseDetailCache(Long courseId, Long userId) { ... }
-    // public void onStudyRecordUpdated(Long userId, Long videoId) { ... }
+        // 查询总记录数
+        int total = courseDao.countCoursesForAdmin();
+
+        // 如果没有记录，返回空结果
+        if (total == 0) {
+            return PageResult.of(new ArrayList<>(), 0, pageNum, pageSize);
+        }
+
+        // 1. 获取分页课程数据
+        List<Course> courses = courseDao.findCoursesByPageForAdmin(offset, pageSize);
+        if (courses.isEmpty()) {
+            return PageResult.of(new ArrayList<>(), total, pageNum, pageSize);
+        }
+
+        // 2. 获取所有课程ID
+        List<Long> courseIds = courses.stream()
+                .map(Course::getId)
+                .collect(Collectors.toList());
+
+        // 3. 获取所有课程的视频
+        List<CourseVideo> allVideos = courseVideoDao.findVideosByCourseIds(courseIds);
+
+        // 4. 统计每个课程的视频
+        Map<Long, List<CourseVideo>> courseVideoMap = allVideos.stream()
+                .collect(Collectors.groupingBy(CourseVideo::getCourseId));
+
+        // 5. 获取视频ID列表
+        List<Long> videoIds = allVideos.stream()
+                .map(CourseVideo::getId)
+                .collect(Collectors.toList());
+
+        // 6. 获取用户学习记录
+        List<StudyRecord> studyRecords = new ArrayList<>();
+
+        // 7. 按视频ID分组学习记录
+        Map<Long, List<StudyRecord>> videoStudyMap = studyRecords.stream()
+                .collect(Collectors.groupingBy(StudyRecord::getVideoId));
+
+        // 8. 转换为VO
+        List<CourseVO> voList = courses.stream().map(course -> {
+            CourseVO vo = new CourseVO();
+            BeanUtils.copyProperties(course, vo);
+
+            // 设置教师名称
+            vo.setTeacherName(course.getTeacherName());
+
+            // 设置视频数量
+            List<CourseVideo> videos = courseVideoMap.getOrDefault(course.getId(), new ArrayList<>());
+            vo.setVideoCount(videos.size());
+
+            // 计算学习进度
+            if (!videos.isEmpty()) {
+                int totalVideos = videos.size();
+                int completedVideos = 0;
+
+                for (CourseVideo video : videos) {
+                    List<StudyRecord> records = videoStudyMap.getOrDefault(video.getId(), new ArrayList<>());
+                    if (!records.isEmpty() && records.get(0).getCompleted() == 1) {
+                        completedVideos++;
+                    }
+                }
+
+                vo.setStudyProgress(totalVideos > 0 ? (int) ((float) completedVideos / totalVideos * 100) : 0);
+            } else {
+                vo.setStudyProgress(0);
+            }
+
+            return vo;
+        }).collect(Collectors.toList());
+
+        // 创建分页结果
+        PageResult<CourseVO> result = PageResult.of(voList, total, pageNum, pageSize);
+
+        // 移除缓存结果的逻辑
+
+        return result;
+    }
 }

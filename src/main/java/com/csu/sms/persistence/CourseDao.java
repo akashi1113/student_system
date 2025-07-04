@@ -22,4 +22,8 @@ public interface CourseDao {
     int countCourses();
 
     List<Course> findByIds(@Param("list") List<Long> distinctCourseIds);
+
+    List<Course> findCoursesByPageForAdmin(@Param("offset") int offset,@Param("limit") Integer limit);
+
+    int countCoursesForAdmin();
 }

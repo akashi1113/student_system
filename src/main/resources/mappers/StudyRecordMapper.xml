@@ -48,4 +48,8 @@
         WHERE user_id = #{userId} AND video_id = #{videoId}
     </update>
 
+    <select id="findAllByUserId" resultType="com.csu.sms.model.course.StudyRecord">
+        SELECT * FROM study_record WHERE user_id = #{userId}
+    </select>
+
 </mapper>

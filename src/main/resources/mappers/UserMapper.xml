@@ -65,6 +65,10 @@
         SELECT * FROM user WHERE role = #{role}
     </select>
 
+    <delete id="deleteUser" parameterType="long">
+        DELETE FROM user WHERE id = #{id}
+    </delete>
+
 </mapper>
 
         <!--<?xml version="1.0" encoding="UTF-8" ?>-->

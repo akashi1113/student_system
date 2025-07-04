@@ -13,4 +13,6 @@ public interface CourseService {
     Long createCourse(Course course, MultipartFile coverImageFile);
     boolean updateCourse(Course course, MultipartFile coverImageFile);
     boolean deleteCourse(Long id);
+
+    PageResult<CourseVO> listCoursesForAdmin(Long userId,Integer pageNum, Integer pageSize);
 }

@@ -105,6 +105,7 @@
         FROM operation_logs
         WHERE 1=1
             <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="username != null and username != ''">AND username = #{username}</if>
             <if test="startTime != null">AND create_time &gt;= #{startTime}</if>
             <if test="endTime != null">AND create_time &lt;= #{endTime}</if>
             <if test="operation != null and operation != ''">AND operation = #{operation}</if>
@@ -121,6 +122,7 @@
             FROM operation_logs
             WHERE 1=1
                 <if test="userId != null">AND user_id = #{userId}</if>
+                <if test="username != null and username != ''">AND username = #{username}</if>
                 <if test="startTime != null">AND create_time &gt;= #{startTime}</if>
                 <if test="endTime != null">AND create_time &lt;= #{endTime}</if>
                 <if test="operation != null and operation != ''">AND operation = #{operation}</if>

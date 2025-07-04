@@ -45,8 +45,12 @@ public interface OperationLogMapper {
      */
     int deleteBeforeDate(@Param("date") String date);
 
+    /**
+     * 审计报表查询
+     */
     List<OperationLogReportVO> auditReport(
         @Param("userId") Long userId,
+        @Param("username") String username,
         @Param("startTime") String startTime,
         @Param("endTime") String endTime,
         @Param("operation") String operation,
@@ -55,8 +59,12 @@ public interface OperationLogMapper {
         @Param("size") int size
     );
 
+    /**
+     * 审计报表总数
+     */
     int auditReportCount(
         @Param("userId") Long userId,
+        @Param("username") String username,
         @Param("startTime") String startTime,
         @Param("endTime") String endTime,
         @Param("operation") String operation,
