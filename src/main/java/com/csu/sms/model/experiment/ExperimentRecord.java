@@ -1,18 +1,23 @@
 package com.csu.sms.model.experiment;
 
+import lombok.Data;
 import java.time.LocalDateTime;
 
+@Data
 public class ExperimentRecord {
     private Long id;
-    private Long bookingId;
-    private String stepData; // JSON格式存储实验步骤
-    private String parameters; // JSON格式存储参数设置
-    private String resultData; // JSON格式存储实验结果
+    private Long experimentId;
+    private Long userId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private String status; // RUNNING, COMPLETED, CANCELLED
+    private String finalCode;
+    private String finalLanguage;
+    private String executionResult; // JSON
+    private String reportData; // JSON
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -21,36 +26,20 @@ public class ExperimentRecord {
         this.id = id;
     }
 
-    public Long getBookingId() {
-        return bookingId;
+    public Long getExperimentId() {
+        return experimentId;
     }
 
-    public void setBookingId(Long bookingId) {
-        this.bookingId = bookingId;
+    public void setExperimentId(Long experimentId) {
+        this.experimentId = experimentId;
     }
 
-    public String getStepData() {
-        return stepData;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setStepData(String stepData) {
-        this.stepData = stepData;
-    }
-
-    public String getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(String parameters) {
-        this.parameters = parameters;
-    }
-
-    public String getResultData() {
-        return resultData;
-    }
-
-    public void setResultData(String resultData) {
-        this.resultData = resultData;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public LocalDateTime getStartTime() {
@@ -69,6 +58,46 @@ public class ExperimentRecord {
         this.endTime = endTime;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getFinalCode() {
+        return finalCode;
+    }
+
+    public void setFinalCode(String finalCode) {
+        this.finalCode = finalCode;
+    }
+
+    public String getFinalLanguage() {
+        return finalLanguage;
+    }
+
+    public void setFinalLanguage(String finalLanguage) {
+        this.finalLanguage = finalLanguage;
+    }
+
+    public String getExecutionResult() {
+        return executionResult;
+    }
+
+    public void setExecutionResult(String executionResult) {
+        this.executionResult = executionResult;
+    }
+
+    public String getReportData() {
+        return reportData;
+    }
+
+    public void setReportData(String reportData) {
+        this.reportData = reportData;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -77,17 +106,11 @@ public class ExperimentRecord {
         this.createdAt = createdAt;
     }
 
-    @Override
-    public String toString() {
-        return "ExperimentRecord{" +
-                "id=" + id +
-                ", bookingId=" + bookingId +
-                ", stepData='" + stepData + '\'' +
-                ", parameters='" + parameters + '\'' +
-                ", resultData='" + resultData + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", createdAt=" + createdAt +
-                '}';
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

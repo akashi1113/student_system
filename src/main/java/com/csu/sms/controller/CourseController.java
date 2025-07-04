@@ -89,6 +89,23 @@ public class CourseController {
         }
     }
 
+    @GetMapping("/admin")
+    public ApiControllerResponse<PageResult<CourseVO>> listCoursesForAdmin(
+            @RequestParam(defaultValue = "1") Long userId,
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize
+    ) {
+        try {
+            return ApiControllerResponse.success(courseService.listCoursesForAdmin(userId,pageNum, pageSize));
+        } catch (ServiceException e) {
+            log.warn("Failed to list courses: {}", e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while listing courses: {}", e.getMessage(), e);
+            return ApiControllerResponse.error(500, "服务器内部错误，获取课程列表失败。");
+        }
+    }
+
     // 更新课程 (管理员接口，支持文件上传)
     @PutMapping("/admin/{id}")
     @LogOperation(module = "课程管理", operation = "修改课程", description = "管理员修改课程信息")

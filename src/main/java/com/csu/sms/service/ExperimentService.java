@@ -1,13 +1,15 @@
 package com.csu.sms.service;
 
+import com.csu.sms.controller.ExperimentController;
 import com.csu.sms.dto.ExperimentBookingDTO;
 import com.csu.sms.dto.ExperimentDTO;
-import com.csu.sms.dto.ExperimentRecordDTO;
-import com.csu.sms.dto.ExperimentReportDTO;
-import org.springframework.web.multipart.MultipartFile;
+import com.csu.sms.model.experiment.CodeHistory;
+import com.csu.sms.model.experiment.Experiment;
+import com.csu.sms.model.experiment.ExperimentRecord;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface ExperimentService {
     // 实验项目管理
@@ -18,18 +20,51 @@ public interface ExperimentService {
                                         LocalDateTime startTime, LocalDateTime endTime);
     ExperimentBookingDTO getBooking(Long bookingId);
 
-    // 实验记录管理
-    ExperimentRecordDTO startExperiment(Long bookingId);
-    ExperimentRecordDTO saveExperimentRecord(ExperimentRecordDTO recordDTO);
-    ExperimentRecordDTO endExperiment(Long recordId);
-    ExperimentRecordDTO getRecord(Long recordId);
-
-    // 实验报告管理
-    ExperimentReportDTO generateReport(ExperimentReportDTO reportDTO);
-    String exportReport(Long reportId, String format);
-
-    // 数据导入
-    ExperimentRecordDTO importExperimentData(Long recordId, MultipartFile file);
-
     ExperimentDTO getExperimentById(Long id);
+
+    /**
+     * 开始实验
+     */
+    ExperimentRecord startExperiment(Long experimentId, Long userId);
+
+    /**
+     * 保存代码历史
+     */
+    void saveCodeHistory(Long experimentRecordId, String code, String language, String actionType, Object executionResult);
+
+    /**
+     * 完成实验
+     */
+    void completeExperiment(Long experimentRecordId, String finalCode, String finalLanguage, Object executionResult);
+
+    /**
+     * 获取代码历史
+     */
+    List<CodeHistory> getCodeHistory(Long experimentRecordId);
+
+    /**
+     * 获取实验记录详情
+     */
+    Map<String, Object> getExperimentRecordDetail(Long experimentRecordId);
+
+    /**
+     * 更新步骤记录
+     */
+    void updateStepRecord(ExperimentController.StepRecordRequest request);
+
+    /**
+     * 生成报告数据
+     */
+    Map<String, Object> generateReportData(Long experimentRecordId);
+
+    /**
+     * 获取用户实验记录
+     */
+    List<ExperimentRecord> getUserExperimentRecords(Long userId);
+
+
+    /**
+     * 获取实验记录
+     */
+    ExperimentRecord getExperimentRecordById(Long experimentRecordId);
 }
