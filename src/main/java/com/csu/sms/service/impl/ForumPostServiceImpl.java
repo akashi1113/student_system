@@ -1024,6 +1024,7 @@ import com.csu.sms.service.ForumPostService;
 import com.csu.sms.service.NotificationService;
 import com.csu.sms.vo.CommentVO;
 import com.csu.sms.vo.PostVO;
+import com.csu.sms.vo.ReportVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -1209,6 +1210,37 @@ public class ForumPostServiceImpl implements ForumPostService {
     }
 
     @Override
+    public PostVO getPostDetailForAdmin(Long id) {
+        ForumPost post = forumPostDao.findById(id);
+        if (post == null) {
+            return null;
+        }
+
+        // 获取用户信息
+        User user = userDao.findById(post.getUserId());
+
+        // 转换为VO
+        PostVO detailPostVO = new PostVO();
+        BeanUtils.copyProperties(post, detailPostVO);
+
+        // 设置状态描述
+        detailPostVO.setStatus(post.getStatus().getCode());
+        detailPostVO.setStatusDesc(post.getStatus().getDescription());
+
+        // 设置用户信息
+        if (user != null) {
+            detailPostVO.setUserId(user.getId());
+            detailPostVO.setUserName(user.getUsername());
+            detailPostVO.setUserAvatar(user.getAvatar());
+        }
+
+        // 默认未点赞
+        detailPostVO.setIsLiked(false);
+
+        return detailPostVO;
+    }
+
+    @Override
     @Transactional
     public Long createPost(ForumPostDTO forumPostDTO) {
         // 创建帖子
@@ -1248,7 +1280,7 @@ public class ForumPostServiceImpl implements ForumPostService {
         // 检查权限（只有作者或管理员可以修改）
         if (!existingPost.getUserId().equals(forumPostDTO.getUserId())) {
             // 检查是否为管理员
-            User user = userDao.findById(forumPostDTO.getUserId());
+            User user = userDao.findById(existingPost.getUserId());
             if (user == null || user.getRole() != UserRole.ADMIN.getCode()) {
                 return false;
             }
@@ -1471,6 +1503,10 @@ public class ForumPostServiceImpl implements ForumPostService {
                 vo.setUserName(user.getUsername());
                 vo.setUserAvatar(user.getAvatar());
             }
+
+            // 查询这条评论有多少条子评论，并设置 replyCount
+            Integer replyCount = forumCommentDao.countRepliesByParentId(comment.getId());
+            vo.setReplyCount(replyCount);
 
             // 设置评论点赞数 (直接从数据库ForumComment对象的likeCount字段获取)
             // String likeCountKey = String.format(COMMENT_LIKE_COUNT_KEY, comment.getId()); // 移除
@@ -1877,6 +1913,62 @@ public class ForumPostServiceImpl implements ForumPostService {
     //         redisTemplate.delete(keys);
     //     }
     // }
+    @Override
+    @Transactional
+    public PageResult<ReportVO> getPendingReports(int page, int size){
+        // 计算偏移量
+        int offset = (page - 1) * size;
+
+        // 查询总记录数
+        int total = postReportDao.countReports(ReportStatus.PENDING);
+
+        // 如果没有记录，返回空结果
+        if (total == 0) {
+            return PageResult.of(new ArrayList<>(), 0, page, size);
+        }
+
+        // 查询举报列表
+        List<PostReport> reports = postReportDao.findReportsByPage(ReportStatus.PENDING, offset, size);
+        if (reports.isEmpty())
+            return PageResult.of(new ArrayList<>(), total, page, size);
+        // 获取所有用户ID
+        List<Long> userIds = reports.stream()
+               .map(PostReport::getReporterId)
+               .distinct()
+               .collect(Collectors.toList());
+        // 批量查询用户信息
+        List<User> users = userDao.findUsersByIds(userIds);
+        Map<Long, User> userMap = users.stream()
+              .collect(Collectors.toMap(User::getId, user -> user));
+        // 获取所有帖子ID
+        List<Long> postIds = reports.stream()
+              .map(PostReport::getPostId)
+              .distinct()
+              .collect(Collectors.toList());
+        // 批量查询帖子信息
+        List<ForumPost> posts = forumPostDao.findPostsByIds(postIds);
+        Map<Long, ForumPost> postMap = posts.stream()
+             .collect(Collectors.toMap(ForumPost::getId, post -> post));
+        // 转换为VO
+        List<ReportVO> voList = reports.stream().map(report -> {
+            ReportVO vo = new ReportVO();
+            BeanUtils.copyProperties(report, vo);
+            vo.setReportTime(report.getCreateTime());
+            // 设置用户信息
+            User user = userMap.get(report.getReporterId());
+            if (user!= null) {
+                vo.setReporterName(user.getUsername());
+            }
+            // 设置帖子信息
+            ForumPost post = postMap.get(report.getPostId());
+            if (post != null) {
+                vo.setPostTitle(post.getTitle());
+            }
+            return vo;
+        }).collect(Collectors.toList());
+        return PageResult.of(voList, total, page, size);
+    }
+
 
     @Override
     @Transactional

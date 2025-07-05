@@ -57,7 +57,7 @@
     <select id="findUsersByIds" resultType="com.csu.sms.model.user.User">
         SELECT * FROM user WHERE id IN
         <foreach item="id" collection="userIds" open="(" separator="," close=")">
-            #{userIds}
+            #{id}
         </foreach>
     </select>
 

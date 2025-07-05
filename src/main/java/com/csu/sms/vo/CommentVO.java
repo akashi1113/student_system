@@ -18,4 +18,5 @@ public class CommentVO {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private Boolean isLiked;
+    private Integer replyCount;
 }

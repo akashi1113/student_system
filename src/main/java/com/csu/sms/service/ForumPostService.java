@@ -5,8 +5,11 @@ import com.csu.sms.dto.ForumCommentDTO;
 import com.csu.sms.dto.ForumPostDTO;
 import com.csu.sms.vo.CommentVO;
 import com.csu.sms.vo.PostVO;
+import com.csu.sms.vo.ReportVO;
 
 public interface ForumPostService {
+    PageResult<ReportVO> getPendingReports(int page, int size);
+
     PageResult<PostVO> listPosts(String category, String keyword, Integer page, Integer size);
     PostVO getPostDetailAndIncreaseView(Long id);
     Long createPost(ForumPostDTO forumPostDTO);
@@ -19,6 +22,7 @@ public interface ForumPostService {
     boolean approvePost(Long postId, Long adminId);
     boolean rejectPost(Long postId, Long adminId, String reason);
     PageResult<PostVO> getPendingPosts(Integer page, Integer size);
+    PostVO getPostDetailForAdmin(Long id);
 
     // 举报功能
     boolean reportPost(Long reportId, Long userId, String reason);
