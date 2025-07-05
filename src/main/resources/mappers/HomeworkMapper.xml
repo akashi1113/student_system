@@ -102,7 +102,7 @@
     </delete>
 
     <select id="selectHomeworkById" parameterType="java.lang.Long" resultMap="HomeworkResultMap">
-        SELECT h.*, u.real_name AS teacher_name, c.title AS course_title
+        SELECT h.*, u.username AS teacher_name, c.title AS course_title
         FROM homework h
                  LEFT JOIN user u ON h.teacher_id = u.id
                  LEFT JOIN course c ON h.course_id = c.id
@@ -110,7 +110,7 @@
     </select>
 
     <select id="selectHomeworkByTeacherId" parameterType="java.lang.Long" resultMap="HomeworkResultMap">
-        SELECT h.*, u.real_name AS teacher_name, c.title AS course_title
+        SELECT h.*, u.username AS teacher_name, c.title AS course_title
         FROM homework h
                  LEFT JOIN user u ON h.teacher_id = u.id
                  LEFT JOIN course c ON h.course_id = c.id
@@ -119,7 +119,7 @@
     </select>
 
     <select id="selectHomeworkByCourseId" parameterType="java.lang.Long" resultMap="HomeworkResultMap">
-        SELECT h.*, u.real_name AS teacher_name, c.title AS course_title
+        SELECT h.*, u.username AS teacher_name, c.title AS course_title
         FROM homework h
                  LEFT JOIN user u ON h.teacher_id = u.id
                  LEFT JOIN course c ON h.course_id = c.id
@@ -128,7 +128,7 @@
     </select>
 
     <select id="selectAvailableHomeworkByStudentId" parameterType="java.lang.Long" resultMap="HomeworkResultMap">
-        SELECT h.*, u.real_name AS teacher_name, c.title AS course_title
+        SELECT h.*, u.username AS teacher_name, c.title AS course_title
         FROM homework h
                  LEFT JOIN user u ON h.teacher_id = u.id
                  LEFT JOIN course c ON h.course_id = c.id
@@ -141,7 +141,7 @@
     </select>
 
     <select id="selectHomeworkByStudentId" parameterType="java.lang.Long" resultMap="HomeworkResultMap">
-        SELECT h.*, u.real_name AS teacher_name, c.title AS course_title
+        SELECT h.*, u.username AS teacher_name, c.title AS course_title
         FROM homework h
                  LEFT JOIN user u ON h.teacher_id = u.id
                  LEFT JOIN course c ON h.course_id = c.id
@@ -276,7 +276,7 @@
     </update>
 
     <select id="selectHomeworkSubmissionById" parameterType="java.lang.Long" resultMap="HomeworkSubmissionResultMap">
-        SELECT hs.*, u.real_name AS student_name
+        SELECT hs.*, u.username AS student_name
         FROM homework_submissions hs
                  LEFT JOIN user u ON hs.student_id = u.id
         WHERE hs.id = #{id}
@@ -285,7 +285,7 @@
     <select id="selectHomeworkSubmissionsByHomeworkIdAndStudentId" resultMap="HomeworkSubmissionResultMap">
         SELECT
             hs.*,
-            u.real_name AS student_name,
+            u.username AS student_name,
             h.title AS homework_title,
             c.title AS course_title
         FROM homework_submissions hs
@@ -297,7 +297,7 @@
     </select>
 
     <select id="selectHomeworkSubmissionsByHomeworkId" parameterType="java.lang.Long" resultMap="HomeworkSubmissionResultMap">
-        SELECT hs.*, u.real_name AS student_name
+        SELECT hs.*, u.username AS student_name
         FROM homework_submissions hs
                  LEFT JOIN user u ON hs.student_id = u.id
         WHERE hs.homework_id = #{homeworkId}
@@ -307,11 +307,11 @@
     <select id="selectHomeworkSubmissionsByStudentId" parameterType="java.lang.Long" resultMap="HomeworkSubmissionResultMap">
         SELECT
             hs.*,
-            u.real_name AS student_name,
+            u.username AS student_name,
             h.title AS homework_title,
             c.id AS course_id,
             c.title AS course_title,
-            g.real_name AS grader_name
+            g.username AS grader_name
         FROM homework_submissions hs
                  LEFT JOIN user u ON hs.student_id = u.id
                  LEFT JOIN homework h ON hs.homework_id = h.id
@@ -322,7 +322,7 @@
     </select>
 
     <select id="selectHomeworkSubmissionsByCourseId" parameterType="java.lang.Long" resultMap="HomeworkSubmissionResultMap">
-        SELECT hs.*, u.real_name AS student_name
+        SELECT hs.*, u.username AS student_name
         FROM homework_submissions hs
                  LEFT JOIN user u ON hs.student_id = u.id
                  LEFT JOIN homework h ON hs.homework_id = h.id
