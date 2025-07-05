@@ -76,14 +76,6 @@
         WHERE id = #{id}
     </select>
 
-    <!-- 根据类型查询考试 -->
-<!--    <select id="findByType" parameterType="string" resultMap="ExamResultMap">-->
-<!--        SELECT <include refid="examColumns"/>-->
-<!--        FROM exams-->
-<!--        WHERE exam_type = #{type}-->
-<!--        ORDER BY created_at DESC-->
-<!--    </select>-->
-
     <!-- 根据课程ID查询考试 -->
     <select id="findByCourseId" parameterType="long" resultMap="ExamResultMap">
         SELECT <include refid="examColumns"/>

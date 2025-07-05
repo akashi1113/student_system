@@ -9,9 +9,11 @@ public class CreateExamRequest {
     private Integer duration; // 考试时长（分钟）
     private String examMode; // ONLINE 或 OFFLINE
     private String type; // 考试类型
+    private Integer totalScore;
     private Integer passingScore;
     private Integer maxAttempts;
     private List<QuestionCreateDTO> questions; // 线上考试需要的题目
+
 
     public Long getCourseId() { return courseId; }
     public void setCourseId(Long courseId) { this.courseId = courseId; }
@@ -39,4 +41,7 @@ public class CreateExamRequest {
 
     public List<QuestionCreateDTO> getQuestions() { return questions; }
     public void setQuestions(List<QuestionCreateDTO> questions) { this.questions = questions; }
+
+    public Integer getTotalScore() { return totalScore; }
+    public void setTotalScore(Integer totalScore) { this.totalScore = totalScore; }
 }
