@@ -259,4 +259,45 @@ public class ExamService {
         return examRecord;
     }
 
+    // 创建考试
+    @Transactional
+    public Exam createExam(Exam exam) {
+        // 设置创建时间
+        exam.setCreatedAt(LocalDateTime.now());
+        examMapper.insert(exam);
+        return exam;
+    }
+
+    // 根据创建者获取考试列表
+    public List<Exam> getExamsByCreator(Long createdBy) {
+        return examMapper.findByCreatedBy(createdBy);
+    }
+
+    // 根据创建者和状态获取考试列表
+    public List<Exam> getExamsByCreatorAndStatus(Long createdBy, String status) {
+        return examMapper.findByCreatedByAndStatus(createdBy, status);
+    }
+
+    // 更新考试
+    @Transactional
+    public Exam updateExam(Exam exam) {
+        exam.setUpdatedAt(LocalDateTime.now());
+        examMapper.update(exam);
+        return exam;
+    }
+
+    // 检查考试是否有参与者
+    public boolean hasParticipants(Long examId) {
+        int count = examMapper.countParticipants(examId);
+        return count > 0;
+    }
+
+    // 删除考试
+    @Transactional
+    public void deleteExam(Long examId) {
+        // 先删除相关的考试记录
+        examMapper.deleteExamRecordsByExamId(examId);
+        // 删除考试
+        examMapper.deleteById(examId);
+    }
 }

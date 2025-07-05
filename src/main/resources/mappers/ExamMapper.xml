@@ -348,4 +348,156 @@
         ORDER BY start_time ASC
     </select>
 
+    <!-- 根据创建者和状态查询考试列表 -->
+    <select id="findByCreatedByAndStatus" resultMap="ExamResultMap">
+        SELECT <include refid="examColumns"/>
+        FROM exams
+        WHERE created_by = #{createdBy} AND status = #{status}
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 获取考试的总分（通过题目计算） -->
+    <select id="getTotalScoreByExamId" parameterType="long" resultType="int">
+        SELECT COALESCE(SUM(score), 0)
+        FROM questions
+        WHERE exam_id = #{examId}
+    </select>
+
+    <!-- 计算考试记录的总分 -->
+    <select id="calculateTotalScoreByExamRecordId" parameterType="long" resultType="int">
+        SELECT COALESCE(SUM(ar.score), 0)
+        FROM answer_records ar
+        WHERE ar.exam_record_id = #{examRecordId}
+    </select>
+
+    <!-- 检查考试是否有题目 -->
+    <select id="hasQuestions" parameterType="long" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM questions
+        WHERE exam_id = #{examId}
+    </select>
+
+    <!-- 根据考试ID和用户ID查询考试记录 -->
+    <select id="findExamRecordByExamAndUser" resultMap="ExamRecordResultMap">
+        SELECT <include refid="examRecordColumns"/>
+        FROM exam_records
+        WHERE exam_id = #{examId} AND user_id = #{userId}
+        ORDER BY created_at DESC
+        LIMIT 1
+    </select>
+
+    <!-- 检查用户是否可以开始考试 -->
+    <select id="canUserStartExam" resultType="boolean">
+        SELECT CASE
+                   WHEN COUNT(*) = 0 THEN TRUE
+                   WHEN COUNT(*) > 0 AND MAX(status) != 'SUBMITTED' THEN FALSE
+                   WHEN COUNT(*) >= (SELECT max_attempts FROM exams WHERE id = #{examId}) THEN FALSE
+                   ELSE TRUE
+                   END
+        FROM exam_records
+        WHERE exam_id = #{examId} AND user_id = #{userId}
+    </select>
+
+    <!-- 获取用户在特定考试的尝试次数 -->
+    <select id="getUserExamAttempts" resultType="int">
+        SELECT COUNT(*)
+        FROM exam_records
+        WHERE exam_id = #{examId} AND user_id = #{userId}
+    </select>
+
+    <!-- 获取考试的最大尝试次数 -->
+    <select id="getExamMaxAttempts" parameterType="long" resultType="int">
+        SELECT max_attempts
+        FROM exams
+        WHERE id = #{examId}
+    </select>
+
+    <!-- 批量更新考试状态 -->
+    <update id="batchUpdateExamsByStatus">
+        UPDATE exams
+        SET status = #{newStatus}, updated_at = NOW()
+        WHERE status = #{oldStatus}
+        <if test="createdBy != null">
+            AND created_by = #{createdBy}
+        </if>
+    </update>
+
+    <!-- 根据课程ID和状态查询考试 -->
+    <select id="findByCourseIdAndStatus" resultMap="ExamResultMap">
+        SELECT <include refid="examColumns"/>
+        FROM exams
+        WHERE course_id = #{courseId} AND status = #{status}
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 查询即将开始的考试（用于提醒） -->
+    <select id="findUpcomingExams" resultMap="ExamResultMap">
+        SELECT <include refid="examColumns"/>
+        FROM exams
+        WHERE status = 'PUBLISHED'
+        AND start_time BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL #{hours} HOUR)
+        ORDER BY start_time ASC
+    </select>
+
+    <!-- 查询过期的考试（用于自动处理） -->
+    <select id="findExpiredExams" resultMap="ExamResultMap">
+        SELECT <include refid="examColumns"/>
+        FROM exams
+        WHERE status = 'PUBLISHED'
+        AND end_time &lt; NOW()
+        ORDER BY end_time ASC
+    </select>
+
+    <!-- 统计教师创建的考试数量 -->
+    <select id="countExamsByCreator" parameterType="long" resultType="int">
+        SELECT COUNT(*)
+        FROM exams
+        WHERE created_by = #{createdBy}
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+    </select>
+
+    <!-- 获取考试参与统计 -->
+    <select id="getExamParticipationStats" parameterType="long" resultType="map">
+        SELECT
+            COUNT(DISTINCT er.user_id) as totalParticipants,
+            COUNT(CASE WHEN er.status = 'SUBMITTED' THEN 1 END) as completedCount,
+            COUNT(CASE WHEN er.status = 'IN_PROGRESS' THEN 1 END) as inProgressCount,
+            ROUND(AVG(CASE WHEN er.status = 'SUBMITTED' THEN er.score END), 2) as averageScore
+        FROM exam_records er
+        WHERE er.exam_id = #{examId}
+    </select>
+
+    <!-- 软删除考试（标记为删除状态） -->
+    <update id="softDeleteExam" parameterType="long">
+        UPDATE exams
+        SET status = 'DELETED', updated_at = NOW()
+        WHERE id = #{examId}
+    </update>
+
+    <!-- 恢复软删除的考试 -->
+    <update id="restoreExam" parameterType="long">
+        UPDATE exams
+        SET status = 'DRAFT', updated_at = NOW()
+        WHERE id = #{examId} AND status = 'DELETED'
+    </update>
+
+    <!-- 复制考试 -->
+    <insert id="copyExam" parameterType="map" useGeneratedKeys="true" keyProperty="newExamId">
+        INSERT INTO exams (
+            title, description, duration, total_score, passing_score,
+            exam_type, max_attempts, created_by, course_id, exam_mode,
+            status, booking_status, created_at
+        )
+        SELECT
+            CONCAT(title, ' (副本)') as title,
+            description, duration, total_score, passing_score,
+            exam_type, max_attempts, #{newCreatedBy} as created_by,
+            course_id, exam_mode, 'DRAFT' as status,
+            'UNAVAILABLE' as booking_status, NOW() as created_at
+        FROM exams
+        WHERE id = #{originalExamId}
+    </insert>
+
 </mapper>
