@@ -21,7 +21,7 @@ spring:
 #    url: "jdbc:mysql://localhost:3306/student_knowledge_system?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8"
     url: jdbc:mysql://127.0.0.1:3306/student_system
     username: root
-    password: amy20041113  # 请根据实际情况修改
+    password: 123456  # 请根据实际情况修改
     hikari:
       minimum-idle: 5
       maximum-pool-size: 20
@@ -85,6 +85,7 @@ spring:
 mybatis:
   mapper-locations: classpath:mappers/*.xml
   type-aliases-package: com.csu.sms.model
+  type-handlers-package: com.csu.sms.handler
   configuration:
     lazy-loading-enabled: false
     map-underscore-to-camel-case: true

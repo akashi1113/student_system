@@ -38,4 +38,6 @@ public interface ForumPostDao {
     void incrementCommentCount(@Param("postId") Long postId);
 
     void decrementCommentCount(@Param("postId") Long postId);
+
+    List<ForumPost> findPostsByIds(@Param("postIds") List<Long> postIds);
 }
