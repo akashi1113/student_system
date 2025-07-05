@@ -65,7 +65,6 @@
         SELECT <include refid="examColumns"/>
         FROM exams
         WHERE status = 'PUBLISHED'
-        AND end_time &gt;= NOW()
         ORDER BY created_at DESC
     </select>
 
