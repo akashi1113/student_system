@@ -12,10 +12,7 @@ spring:
       pool:
         size: 5
       thread-name-prefix: exam-booking-task-
-  # AI评分配置
-#  autoconfigure:
-#    exclude:
-#      - org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration
+
 
   # 数据源配置
   datasource:
@@ -78,6 +75,11 @@ spring:
       chat:
         options:
           model: deepseek-chat
+  # RestTemplate配置
+  http:
+    timeout:
+      connection: 5000
+      read: 30000
 
 # MyBatis配置
 mybatis:
@@ -151,3 +153,8 @@ baidu:
     secret-key: 9VS65XEDezLcpRHkENxeXILREKCC0HOp  # 请替换为你在百度云控制台申请的Secret Key
     group-id: student_system   # 建议与项目名一致，或自定义分组名
 
+judge0:
+  api:
+    url: https://judge0-ce.p.rapidapi.com
+    key: ${JUDGE0_API}
+    host: judge0-ce.p.rapidapi.com
