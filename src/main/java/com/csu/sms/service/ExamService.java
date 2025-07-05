@@ -4,6 +4,8 @@ import com.csu.sms.model.booking.ExamBooking;
 import com.csu.sms.model.booking.ExamTimeSlot;
 import com.csu.sms.model.exam.Exam;
 import com.csu.sms.model.exam.ExamRecord;
+import com.csu.sms.model.homework.Homework;
+import com.csu.sms.model.homework.HomeworkQuestion;
 import com.csu.sms.model.question.Question;
 import com.csu.sms.persistence.ExamBookingMapper;
 import com.csu.sms.persistence.ExamMapper;
@@ -256,4 +258,5 @@ public class ExamService {
 
         return examRecord;
     }
+
 }
