@@ -11,6 +11,7 @@ import com.csu.sms.model.exam.ExamScoreResult;
 import com.csu.sms.model.question.Question;
 import com.csu.sms.service.ExamService;
 import com.csu.sms.service.QuestionService;
+import com.csu.sms.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,9 @@ public class ExamController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @GetMapping
     public ApiResponse<List<Exam>> getAllExams() {

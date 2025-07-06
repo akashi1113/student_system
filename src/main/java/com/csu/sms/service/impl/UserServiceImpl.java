@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 生成JWT令牌
-        String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getTokenVersion());
+        String token = jwtUtil.generateToken(user.getId(), user.getUsername(),user.getRoleString(),user.getTokenVersion());
         
         // 设置用户上下文和登录类型
         UserContext.setCurrentUserId(user.getId());
@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 生成JWT令牌
-        String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getTokenVersion());
+        String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRoleString(),user.getTokenVersion());
         
         // 设置用户上下文和登录类型
         UserContext.setCurrentUserId(user.getId());
