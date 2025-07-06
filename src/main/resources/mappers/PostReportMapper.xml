@@ -21,4 +21,14 @@
         SELECT * FROM post_report WHERE id = #{reportId}
     </select>
 
+    <select id="countReports" parameterType="com.csu.sms.model.enums.ReportStatus" resultType="int">
+        SELECT COUNT(*) FROM post_report WHERE status = #{reportStatus}
+    </select>
+
+    <select id="findReportsByPage" resultType="com.csu.sms.model.post.PostReport">
+        SELECT * FROM post_report WHERE status = #{reportStatus}
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
 </mapper>

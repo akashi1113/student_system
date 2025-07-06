@@ -16,7 +16,7 @@ public interface ForumCommentDao {
 
     int insertComment(ForumComment comment);
 
-    int updateCommentStatus(@Param("commentId") Long commentId, int status);
+    int updateCommentStatus(@Param("commentId") Long commentId,@Param("status") int status);
 
     int updateComment(ForumComment comment);
 

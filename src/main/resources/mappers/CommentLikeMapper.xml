@@ -23,4 +23,8 @@
         DELETE FROM comment_like WHERE comment_id = #{commentId} AND user_id = #{userId}
     </delete>
 
+    <select id="checkUserLiked" resultType="int">
+        SELECT COUNT(*) FROM comment_like WHERE comment_id = #{commentId} AND user_id = #{userId}
+    </select>
+
 </mapper>

@@ -2,13 +2,17 @@ package com.csu.sms.controller;
 
 import com.csu.sms.dto.exam.AnswerDTO;
 import com.csu.sms.dto.ApiResponse;
+import com.csu.sms.dto.exam.CreateExamRequest;
+import com.csu.sms.dto.exam.QuestionCreateDTO;
 import com.csu.sms.dto.exam.ViolationRequest;
 import com.csu.sms.dto.ExamListDTO;
 import com.csu.sms.model.exam.Exam;
 import com.csu.sms.model.exam.ExamRecord;
 import com.csu.sms.model.exam.ExamScoreResult;
+import com.csu.sms.model.question.Question;
 import com.csu.sms.service.ExamService;
 import com.csu.sms.service.QuestionService;
+import com.csu.sms.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
@@ -27,6 +31,9 @@ public class ExamController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @GetMapping
     public ApiResponse<List<Exam>> getAllExams() {
@@ -236,6 +243,189 @@ public class ExamController {
 
         } catch (Exception e) {
             return ApiResponse.error("获取成绩失败: " + e.getMessage());
+        }
+    }
+
+    // 创建考试
+    @PostMapping
+    @LogOperation(module = "考试管理", operation = "创建考试", description = "教师创建新考试")
+    public ApiResponse<Exam> createExam(@RequestBody CreateExamRequest request,
+                                        Authentication auth) {
+        try {
+            Long teacherId = getUserIdFromAuth(auth);
+
+            // 验证请求参数
+            if (request.getTitle() == null || request.getTitle().trim().isEmpty()) {
+                return ApiResponse.error("考试标题不能为空", "INVALID_TITLE");
+            }
+
+            if (request.getDuration() == null || request.getDuration() <= 0) {
+                return ApiResponse.error("考试时长必须大于0", "INVALID_DURATION");
+            }
+
+            if (request.getExamMode() == null ||
+                    (!request.getExamMode().equals("ONLINE") && !request.getExamMode().equals("OFFLINE"))) {
+                return ApiResponse.error("考试模式必须为 ONLINE 或 OFFLINE", "INVALID_EXAM_MODE");
+            }
+
+            // 线上考试必须包含题目
+            if ("ONLINE".equals(request.getExamMode())) {
+                if (request.getQuestions() == null || request.getQuestions().isEmpty()) {
+                    return ApiResponse.error("线上考试必须包含题目", "NO_QUESTIONS_FOR_ONLINE");
+                }
+            }
+
+            // 创建考试对象
+            Exam exam = new Exam();
+            exam.setTitle(request.getTitle());
+            exam.setDescription(request.getDescription());
+            exam.setDuration(request.getDuration());
+            exam.setExamMode(request.getExamMode());
+            exam.setType(request.getType() != null ? request.getType() : "REGULAR");
+            exam.setPassingScore(request.getPassingScore() != null ? request.getPassingScore() : 60);
+            exam.setMaxAttempts(request.getMaxAttempts() != null ? request.getMaxAttempts() : 1);
+            exam.setCourseId(request.getCourseId());
+            exam.setCreatedBy(teacherId);
+            exam.setStatus("DRAFT"); // 初始状态为草稿
+            exam.setBookingStatus("UNAVAILABLE"); // 初始不可预约，需要设置时间段后才可预约
+
+            // 计算总分（如果是线上考试）
+            if ("ONLINE".equals(request.getExamMode()) && request.getQuestions() != null) {
+                int totalScore = request.getQuestions().stream()
+                        .mapToInt(q -> q.getScore() != null ? q.getScore() : 0)
+                        .sum();
+                exam.setTotalScore(totalScore);
+            } else {
+                // 线下考试总分后续设置
+                exam.setTotalScore(request.getPassingScore() != null ?
+                        (int)(request.getPassingScore() / 0.6) : 100);
+            }
+
+            // 保存考试
+            Exam createdExam = examService.createExam(exam);
+
+            // 如果是线上考试，创建题目
+            if ("ONLINE".equals(request.getExamMode()) && request.getQuestions() != null) {
+                for (int i = 0; i < request.getQuestions().size(); i++) {
+                    QuestionCreateDTO questionDTO = request.getQuestions().get(i);
+                    questionDTO.setExamId(createdExam.getId());
+                    questionDTO.setOrderNum(i + 1);
+                    questionService.createQuestion(questionDTO);
+                }
+            }
+
+            return ApiResponse.success("考试创建成功", createdExam);
+
+        } catch (Exception e) {
+            return ApiResponse.error("创建考试失败: " + e.getMessage());
+        }
+    }
+
+    // 获取教师创建的考试列表
+    @GetMapping("/created")
+    public ApiResponse<List<Exam>> getCreatedExams(Authentication auth,
+                                                   @RequestParam(defaultValue = "ALL") String status) {
+        try {
+            Long teacherId = getUserIdFromAuth(auth);
+            List<Exam> exams;
+
+            if ("ALL".equals(status)) {
+                exams = examService.getExamsByCreator(teacherId);
+            } else {
+                exams = examService.getExamsByCreatorAndStatus(teacherId, status);
+            }
+
+            return ApiResponse.success(exams);
+        } catch (Exception e) {
+            return ApiResponse.error("获取考试列表失败: " + e.getMessage());
+        }
+    }
+
+    // 添加/编辑考试题目（仅限线上考试）
+    @PostMapping("/{examId}/questions")
+    @LogOperation(module = "考试管理", operation = "添加题目", description = "为线上考试添加题目")
+    public ApiResponse<Question> addQuestionToExam(@PathVariable Long examId,
+                                                   @RequestBody QuestionCreateDTO questionDTO,
+                                                   Authentication auth) {
+        try {
+            Long teacherId = getUserIdFromAuth(auth);
+
+            // 获取考试信息
+            Exam exam = examService.getExamById(examId);
+            if (exam == null) {
+                return ApiResponse.error("考试不存在", "EXAM_NOT_FOUND");
+            }
+
+            // 验证权限
+            if (!exam.getCreatedBy().equals(teacherId)) {
+                return ApiResponse.error("无权限操作此考试", "PERMISSION_DENIED");
+            }
+
+            // 验证考试模式
+            if (!"ONLINE".equals(exam.getExamMode())) {
+                return ApiResponse.error("只有线上考试可以添加题目", "OFFLINE_EXAM_NO_QUESTIONS");
+            }
+
+            // 验证考试状态
+            if ("PUBLISHED".equals(exam.getStatus())) {
+                return ApiResponse.error("已发布的考试不能修改题目", "PUBLISHED_EXAM_READONLY");
+            }
+
+            questionDTO.setExamId(examId);
+            Question question = questionService.createQuestion(questionDTO);
+
+            // 重新计算考试总分
+            Integer newTotalScore = questionService.getTotalScore(examId);
+            exam.setTotalScore(newTotalScore);
+            examService.updateExam(exam);
+
+            return ApiResponse.success("题目添加成功", question);
+
+        } catch (Exception e) {
+            return ApiResponse.error("添加题目失败: " + e.getMessage());
+        }
+    }
+
+    // 发布考试
+    @PostMapping("/{examId}/publish")
+    @LogOperation(module = "考试管理", operation = "发布考试", description = "教师发布考试")
+    public ApiResponse<Exam> publishExam(@PathVariable Long examId,
+                                         Authentication auth) {
+        try {
+            Long teacherId = getUserIdFromAuth(auth);
+
+            Exam exam = examService.getExamById(examId);
+            if (exam == null) {
+                return ApiResponse.error("考试不存在", "EXAM_NOT_FOUND");
+            }
+
+            // 验证权限
+            if (!exam.getCreatedBy().equals(teacherId)) {
+                return ApiResponse.error("无权限发布此考试", "PERMISSION_DENIED");
+            }
+
+            // 验证考试状态
+            if (!"DRAFT".equals(exam.getStatus())) {
+                return ApiResponse.error("只有草稿状态的考试可以发布", "INVALID_STATUS");
+            }
+
+            // 验证线上考试是否有题目
+            if ("ONLINE".equals(exam.getExamMode())) {
+                Integer totalScore = questionService.getTotalScore(examId);
+                if (totalScore == null || totalScore == 0) {
+                    return ApiResponse.error("线上考试必须包含题目才能发布", "NO_QUESTIONS");
+                }
+            }
+
+            // 发布考试
+            exam.setStatus("PUBLISHED");
+            // 注意：这里不设置为 AVAILABLE，因为还需要设置考试时间段
+            Exam publishedExam = examService.updateExam(exam);
+
+            return ApiResponse.success("考试发布成功，请设置考试时间段后开放预约", publishedExam);
+
+        } catch (Exception e) {
+            return ApiResponse.error("发布考试失败: " + e.getMessage());
         }
     }
 }

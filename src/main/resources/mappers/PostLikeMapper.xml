@@ -11,4 +11,11 @@
         DELETE FROM post_like WHERE post_id = #{postId} AND user_id = #{userId}
     </delete>
 
+   <select id="countLikesByPostId" parameterType="long" resultType="int">
+           SELECT COUNT(*) FROM post_like WHERE post_id = #{postId}  AND user_id = #{userId}
+    </select>
+
+    <select id="checkUserLiked" resultType="int">
+        SELECT COUNT(*) FROM post_like WHERE post_id = #{postId} AND user_id = #{userId}
+    </select>
 </mapper>
