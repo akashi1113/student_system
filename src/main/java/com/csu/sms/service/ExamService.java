@@ -318,4 +318,8 @@ public class ExamService {
         // 删除考试
         examMapper.deleteById(examId);
     }
+
+    public ExamRecord getExamRecordById(Long examRecordId) {
+        return examMapper.findExamRecordById(examRecordId);
+    }
 }

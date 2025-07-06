@@ -10,7 +10,6 @@ public class BookingRequestDTO {
     @NotNull(message = "时间段ID不能为空")
     private Long timeSlotId;
 
-    @NotNull(message = "用户ID不能为空")
     private Long userId;
 
     @Pattern(regexp = "^1[3-9]\\d{9}$", message = "手机号格式不正确")

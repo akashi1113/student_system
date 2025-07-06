@@ -182,7 +182,48 @@ public class ExperimentController {
         }
     }
 
+    /**
+     * 获取学生最后一次提交的实验报告
+     * @param experimentId 实验ID
+     * @param studentId 学生ID
+     * @return 统一响应体
+     */
+    @GetMapping("/reports/{experimentId}/{studentId}")
+    public ApiResponse<Map<String, Object>> getStudentFinalReport(
+            @PathVariable Long experimentId,
+            @PathVariable Long studentId) {
+        try {
+            Map<String, Object> report = experimentService.getStudentFinalReport(experimentId, studentId);
+            return ApiResponse.success("获取报告成功", report);
+        } catch (Exception e) {
+            return ApiResponse.error(400, e.getMessage());
+        }
+    }
 
+    /**
+     * 获取实验所有学生的报告列表
+     * @param experimentId 实验ID
+     * @return 统一响应体
+     */
+    @GetMapping("/reports/{experimentId}")
+    public ApiResponse<List<Map<String, Object>>> getExperimentReports(@PathVariable("experimentId") Long experimentId) {
+        try {
+            List<ExperimentRecord> records = experimentService.getExperimentRecords(experimentId);
+
+            List<Map<String, Object>> reports = new ArrayList<>();
+            for (ExperimentRecord record : records) {
+                if ("COMPLETED".equals(record.getStatus())) {
+                    Map<String, Object> report = experimentService.getStudentFinalReport(
+                            experimentId, record.getUserId());
+                    reports.add(report);
+                }
+            }
+
+            return ApiResponse.success("获取报告列表成功", reports);
+        } catch (Exception e) {
+            return ApiResponse.error(400, e.getMessage());
+        }
+    }
 
     // 请求对象
     public static class CodeHistoryRequest {
@@ -245,49 +286,6 @@ public class ExperimentController {
         // getter and setter
         public Long getExperimentRecordId() { return experimentRecordId; }
         public void setExperimentRecordId(Long experimentRecordId) { this.experimentRecordId = experimentRecordId; }
-    }
-
-    /**
-     * 获取学生最后一次提交的实验报告
-     * @param experimentId 实验ID
-     * @param studentId 学生ID
-     * @return 统一响应体
-     */
-    @GetMapping("/reports/{experimentId}/{studentId}")
-    public ApiResponse<Map<String, Object>> getStudentFinalReport(
-            @PathVariable Long experimentId,
-            @PathVariable Long studentId) {
-        try {
-            Map<String, Object> report = experimentService.getStudentFinalReport(experimentId, studentId);
-            return ApiResponse.success("获取报告成功", report);
-        } catch (Exception e) {
-            return ApiResponse.error(400, e.getMessage());
-        }
-    }
-
-    /**
-     * 获取实验所有学生的报告列表
-     * @param experimentId 实验ID
-     * @return 统一响应体
-     */
-    @GetMapping("/reports/{experimentId}")
-    public ApiResponse<List<Map<String, Object>>> getExperimentReports(@PathVariable("experimentId") Long experimentId) {
-        try {
-            List<ExperimentRecord> records = experimentService.getExperimentRecords(experimentId);
-
-            List<Map<String, Object>> reports = new ArrayList<>();
-            for (ExperimentRecord record : records) {
-                if ("COMPLETED".equals(record.getStatus())) {
-                    Map<String, Object> report = experimentService.getStudentFinalReport(
-                            experimentId, record.getUserId());
-                    reports.add(report);
-                }
-            }
-
-            return ApiResponse.success("获取报告列表成功", reports);
-        } catch (Exception e) {
-            return ApiResponse.error(400, e.getMessage());
-        }
     }
 
 }

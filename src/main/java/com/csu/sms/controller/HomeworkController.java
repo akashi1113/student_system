@@ -9,6 +9,7 @@ import com.csu.sms.model.homework.HomeworkSubmission;
 import com.csu.sms.model.homework.HomeworkAnswer;
 import com.csu.sms.service.HomeworkService;
 import com.csu.sms.annotation.LogOperation;
+import com.csu.sms.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,8 @@ public class HomeworkController {
     @Autowired
     private HomeworkService homeworkService;
 
-    // ================ 作业管理接口 ================
+    @Autowired
+    private JwtUtil jwtUtil;
 
     /**
      * 创建作业（基于课程）
@@ -34,10 +36,14 @@ public class HomeworkController {
     @PostMapping
     @LogOperation(module = "作业管理", operation = "创建作业", description = "教师创建作业")
     public ResponseEntity<Map<String, Object>> createHomework(
-            @Valid @RequestBody HomeworkCreateRequest request) {
+            @Valid @RequestBody HomeworkCreateRequest request,
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Long homeworkId = homeworkService.createHomework(request.getHomework(), request.getQuestions());
+            Long userId=jwtUtil.extractUserId(token);
+            Homework homework=request.getHomework();
+            homework.setTeacherId(userId);
+            Long homeworkId = homeworkService.createHomework(homework, request.getQuestions());
             response.put("success", true);
             response.put("message", "作业创建成功");
             response.put("data", homeworkId);
@@ -56,10 +62,13 @@ public class HomeworkController {
     @LogOperation(module = "作业管理", operation = "修改作业", description = "教师修改作业")
     public ResponseEntity<Map<String, Object>> updateHomework(
             @PathVariable Long id,
-            @Valid @RequestBody HomeworkUpdateRequest request) {
+            @Valid @RequestBody HomeworkUpdateRequest request,
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long userId = jwtUtil.extractUserId(token);
             request.getHomework().setId(id);
+            request.getHomework().setTeacherId(userId);
             homeworkService.updateHomework(request.getHomework(), request.getQuestions());
             response.put("success", true);
             response.put("message", "作业更新成功");
@@ -76,9 +85,12 @@ public class HomeworkController {
      */
     @DeleteMapping("/{id}")
     @LogOperation(module = "作业管理", operation = "删除作业", description = "教师删除作业")
-    public ResponseEntity<Map<String, Object>> deleteHomework(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> deleteHomework(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long userId = jwtUtil.extractUserId(token);
             homeworkService.deleteHomework(id);
             response.put("success", true);
             response.put("message", "作业删除成功");
@@ -116,10 +128,12 @@ public class HomeworkController {
     /**
      * 获取教师发布的作业列表
      */
-    @GetMapping("/teacher/{teacherId}")
-    public ResponseEntity<Map<String, Object>> getHomeworkByTeacher(@PathVariable Long teacherId) {
+    @GetMapping("/teacher")
+    public ResponseEntity<Map<String, Object>> getHomeworkByTeacher(
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long teacherId = jwtUtil.extractUserId(token);
             List<Homework> homeworkList = homeworkService.getHomeworkByTeacher(teacherId);
             response.put("success", true);
             response.put("data", homeworkList);
@@ -152,10 +166,12 @@ public class HomeworkController {
     /**
      * 获取学生可用的作业列表（未截止的）
      */
-    @GetMapping("/student/{studentId}/available")
-    public ResponseEntity<Map<String, Object>> getAvailableHomework(@PathVariable Long studentId) {
+    @GetMapping("/student/available")
+    public ResponseEntity<Map<String, Object>> getAvailableHomework(
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long studentId = jwtUtil.extractUserId(token);
             List<Homework> homeworkList = homeworkService.getAvailableHomeworkByStudent(studentId);
             response.put("success", true);
             response.put("data", homeworkList);
@@ -170,10 +186,12 @@ public class HomeworkController {
     /**
      * 获取学生的所有作业列表
      */
-    @GetMapping("/student/{studentId}")
-    public ResponseEntity<Map<String, Object>> getHomeworkByStudent(@PathVariable Long studentId) {
+    @GetMapping("/student")
+    public ResponseEntity<Map<String, Object>> getHomeworkByStudent(
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long studentId = jwtUtil.extractUserId(token);
             List<Homework> homeworkList = homeworkService.getHomeworkByStudent(studentId);
             response.put("success", true);
             response.put("data", homeworkList);
@@ -246,10 +264,11 @@ public class HomeworkController {
     /**
      * 获取教师的课程列表
      */
-    @GetMapping("/teacher/{teacherId}/courses")
-    public ResponseEntity<Map<String, Object>> getCoursesByTeacher(@PathVariable Long teacherId) {
+    @GetMapping("/teacher/courses")
+    public ResponseEntity<Map<String, Object>> getCoursesByTeacher(@RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long teacherId = jwtUtil.extractUserId(token);
             List<Map<String, Object>> courses = homeworkService.getCoursesByTeacher(teacherId);
             response.put("success", true);
             response.put("data", courses);
@@ -264,10 +283,11 @@ public class HomeworkController {
     /**
      * 获取学生的课程列表
      */
-    @GetMapping("/student/{studentId}/courses")
-    public ResponseEntity<Map<String, Object>> getCoursesByStudent(@PathVariable Long studentId) {
+    @GetMapping("/student/courses")
+    public ResponseEntity<Map<String, Object>> getCoursesByStudent(@RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long studentId = jwtUtil.extractUserId(token);
             List<Map<String, Object>> courses = homeworkService.getCoursesByStudent(studentId);
             response.put("success", true);
             response.put("data", courses);
@@ -288,10 +308,12 @@ public class HomeworkController {
     @LogOperation(module = "作业管理", operation = "提交作业", description = "学生提交作业")
     public ResponseEntity<Map<String, Object>> submitHomework(
             @PathVariable Long homeworkId,
-            @RequestBody HomeworkSubmitRequest request) {
+            @RequestBody HomeworkSubmitRequest request,
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Long submissionId = homeworkService.submitHomework(homeworkId, request.getStudentId(), request.getAnswers());
+            Long studentId = jwtUtil.extractUserId(token);
+            Long submissionId = homeworkService.submitHomework(homeworkId, studentId, request.getAnswers());
             response.put("success", true);
             response.put("message", "作业提交成功");
             response.put("data", submissionId);
@@ -306,17 +328,22 @@ public class HomeworkController {
     /**
      * 获取学生作业提交情况
      */
-    @GetMapping("/{homeworkId}/submission/student/{studentId}")
+    @GetMapping("/{homeworkId}/submission/student")
     public ResponseEntity<Map<String, Object>> getStudentSubmissions(
             @PathVariable Long homeworkId,
-            @PathVariable Long studentId) {
-        List<HomeworkSubmission> submissions = homeworkService.getStudentSubmissions(homeworkId, studentId);
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("success", true);
-        result.put("data", submissions);
-
-        return ResponseEntity.ok(result);
+            @RequestHeader("Authorization") String token) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Long studentId = jwtUtil.extractUserId(token);
+            List<HomeworkSubmission> submissions = homeworkService.getStudentSubmissions(homeworkId, studentId);
+            response.put("success", true);
+            response.put("data", submissions);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "获取提交记录失败：" + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     /**
@@ -358,10 +385,12 @@ public class HomeworkController {
     /**
      * 获取学生的所有作业提交记录
      */
-    @GetMapping("/student/{studentId}/submissions")
-    public ResponseEntity<Map<String, Object>> getStudentSubmissions(@PathVariable Long studentId) {
+    @GetMapping("/student/submissions")
+    public ResponseEntity<Map<String, Object>> getStudentSubmissions(
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long studentId = jwtUtil.extractUserId(token);
             List<HomeworkSubmission> submissions = homeworkService.getStudentSubmissions(studentId);
             response.put("success", true);
             response.put("data", submissions);
@@ -394,12 +423,13 @@ public class HomeworkController {
     /**
      * 检查是否可以重新提交
      */
-    @GetMapping("/{homeworkId}/student/{studentId}/can-resubmit")
+    @GetMapping("/{homeworkId}/student/can-resubmit")
     public ResponseEntity<Map<String, Object>> canResubmit(
             @PathVariable Long homeworkId,
-            @PathVariable Long studentId) {
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long studentId = jwtUtil.extractUserId(token);
             boolean canResubmit = homeworkService.canResubmit(homeworkId, studentId);
             response.put("success", true);
             response.put("data", canResubmit);
@@ -420,11 +450,13 @@ public class HomeworkController {
     @LogOperation(module = "作业管理", operation = "批改作业", description = "教师批改作业")
     public ResponseEntity<Map<String, Object>> gradeHomework(
             @PathVariable Long submissionId,
-            @RequestBody HomeworkGradeRequest request) {
+            @RequestBody HomeworkGradeRequest request,
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long teacherId = jwtUtil.extractUserId(token);
             homeworkService.gradeHomework(submissionId, request.getAnswers(),
-                    request.getFeedback(), request.getTeacherId());
+                    request.getFeedback(), teacherId);
             response.put("success", true);
             response.put("message", "作业批改成功");
             return ResponseEntity.ok(response);
@@ -434,6 +466,7 @@ public class HomeworkController {
             return ResponseEntity.badRequest().body(response);
         }
     }
+
 
     /**
      * 获取提交的答案详情
@@ -494,10 +527,11 @@ public class HomeworkController {
     /**
      * 获取学生作业进度
      */
-    @GetMapping("/student/{studentId}/progress")
-    public ResponseEntity<Map<String, Object>> getStudentProgress(@PathVariable Long studentId) {
+    @GetMapping("/student/progress")
+    public ResponseEntity<Map<String, Object>> getStudentProgress(@RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long studentId=jwtUtil.extractUserId(token);
             List<Map<String, Object>> progress = homeworkService.getStudentProgress(studentId);
             response.put("success", true);
             response.put("data", progress);
@@ -568,12 +602,13 @@ public class HomeworkController {
     /**
      * 检查学生是否有权限访问作业
      */
-    @GetMapping("/{homeworkId}/student/{studentId}/access")
+    @GetMapping("/{homeworkId}/student/access")
     public ResponseEntity<Map<String, Object>> checkHomeworkAccess(
             @PathVariable Long homeworkId,
-            @PathVariable Long studentId) {
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long studentId = jwtUtil.extractUserId(token);
             boolean hasAccess = homeworkService.hasHomeworkAccess(homeworkId, studentId);
             response.put("success", true);
             response.put("data", hasAccess);
@@ -588,12 +623,13 @@ public class HomeworkController {
     /**
      * 检查教师是否有权限管理作业
      */
-    @GetMapping("/{homeworkId}/teacher/{teacherId}/manage-access")
+    @GetMapping("/{homeworkId}/teacher/manage-access")
     public ResponseEntity<Map<String, Object>> checkHomeworkManageAccess(
             @PathVariable Long homeworkId,
-            @PathVariable Long teacherId) {
+            @RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Long teacherId = jwtUtil.extractUserId(token);
             boolean hasAccess = homeworkService.hasHomeworkManageAccess(homeworkId, teacherId);
             response.put("success", true);
             response.put("data", hasAccess);
