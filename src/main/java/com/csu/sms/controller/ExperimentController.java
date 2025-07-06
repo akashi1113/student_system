@@ -10,6 +10,7 @@ import com.csu.sms.model.experiment.CodeHistory;
 import com.csu.sms.model.experiment.Experiment;
 import com.csu.sms.model.experiment.ExperimentRecord;
 import com.csu.sms.service.ExperimentService;
+import com.csu.sms.util.JwtUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class ExperimentController {
 
     @Autowired
     private ExperimentService experimentService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     // 获取所有实验项目
     @GetMapping("/projects")
@@ -71,12 +75,13 @@ public class ExperimentController {
         return ApiResponse.success(experimentService.getExperimentById(id));
     }
 
-    //注意考试的step格式
+    //开始实验，注意step格式
     @PostMapping("/{experimentId}/start")
     public ApiResponse<ExperimentRecord> startExperiment(
             @PathVariable Long experimentId,
-            @RequestParam(required = false, defaultValue = "1") Long userId) {
+            @RequestHeader("Authorization") String token) {
         try {
+            Long userId=jwtUtil.extractUserId(token);
             ExperimentRecord record = experimentService.startExperiment(experimentId, userId);
             return ApiResponse.success("实验开始成功", record);
         } catch (Exception e) {
@@ -160,8 +165,9 @@ public class ExperimentController {
 
     @GetMapping("/user-records")
     public ApiResponse<List<ExperimentRecord>> getUserExperimentRecords(
-            @RequestParam(required = false, defaultValue = "1") Long userId) {
+            @RequestHeader("Authorization") String token) {
         try {
+            Long userId=jwtUtil.extractUserId(token);
             List<ExperimentRecord> records = experimentService.getUserExperimentRecords(userId);
             return ApiResponse.success("获取用户实验记录成功", records);
         } catch (Exception e) {
@@ -184,15 +190,13 @@ public class ExperimentController {
 
     /**
      * 获取学生最后一次提交的实验报告
-     * @param experimentId 实验ID
-     * @param studentId 学生ID
-     * @return 统一响应体
      */
-    @GetMapping("/reports/{experimentId}/{studentId}")
+    @GetMapping("/reports/{experimentId}")
     public ApiResponse<Map<String, Object>> getStudentFinalReport(
             @PathVariable Long experimentId,
-            @PathVariable Long studentId) {
+            @RequestHeader("Authorization") String token) {
         try {
+            Long studentId=jwtUtil.extractUserId(token);
             Map<String, Object> report = experimentService.getStudentFinalReport(experimentId, studentId);
             return ApiResponse.success("获取报告成功", report);
         } catch (Exception e) {
