@@ -5,6 +5,7 @@ import com.csu.sms.common.PageResult;
 import com.csu.sms.model.OperationLog;
 import com.csu.sms.model.SystemLog;
 import com.csu.sms.service.LogService;
+import com.csu.sms.util.UserContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,11 @@ public class LogController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         
+        // 权限检查：只有管理员可以查看日志
+        if (!UserContext.isAdmin()) {
+            return ApiResponse.error("权限不足，只有管理员可以查看日志", "PERMISSION_DENIED");
+        }
+        
         try {
             PageResult<OperationLog> result = logService.getOperationLogs(
                 userId, module, operation, status, startTime, endTime, page, size);
@@ -57,6 +63,11 @@ public class LogController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         
+        // 权限检查：只有管理员可以查看日志
+        if (!UserContext.isAdmin()) {
+            return ApiResponse.error("权限不足，只有管理员可以查看日志", "PERMISSION_DENIED");
+        }
+        
         try {
             PageResult<SystemLog> result = logService.getSystemLogs(
                 level, type, source, startTime, endTime, page, size);
@@ -72,6 +83,11 @@ public class LogController {
      */
     @DeleteMapping("/cleanup")
     public ApiResponse<String> cleanupLogs(@RequestParam(defaultValue = "30") int days) {
+        // 权限检查：只有管理员可以清理日志
+        if (!UserContext.isAdmin()) {
+            return ApiResponse.error("权限不足，只有管理员可以清理日志", "PERMISSION_DENIED");
+        }
+        
         try {
             logService.cleanupExpiredLogs(days);
             return ApiResponse.success("清理过期日志成功");
