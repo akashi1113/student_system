@@ -98,4 +98,7 @@ public interface ExamMapper {
     // 根据状态查询考试记录
     List<ExamRecord> findExamRecordsByStatus(@Param("status") String status);
 
+    // 查询学生成绩较低的考试记录
+    List<ExamRecord> findLowScoreExamsByUserId(@Param("userId") Long userId, @Param("threshold") Double threshold);
+
 }

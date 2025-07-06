@@ -53,6 +53,8 @@ public class GradeAnalysisDTO {
     public LocalDateTime getEndDate() { return endDate; }
     public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
 
+
+
     public BigDecimal getAverageScore() { return averageScore; }
     public void setAverageScore(BigDecimal averageScore) { this.averageScore = averageScore; }
 

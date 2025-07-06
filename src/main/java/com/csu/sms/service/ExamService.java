@@ -8,6 +8,7 @@ import com.csu.sms.model.question.Question;
 import com.csu.sms.persistence.ExamBookingMapper;
 import com.csu.sms.persistence.ExamMapper;
 import com.csu.sms.persistence.QuestionMapper;
+import com.csu.sms.dto.ExamListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -255,5 +256,22 @@ public class ExamService {
         updateExamRecord(examRecord);
 
         return examRecord;
+    }
+
+    /**
+     * 获取考试列表（简化版，用于前端下拉选择）
+     */
+    public List<ExamListDTO> getExamList() {
+        List<Exam> exams = examMapper.findAvailableExams();
+        
+        // 转换为DTO
+        return exams.stream()
+                .map(exam -> {
+                    ExamListDTO dto = new ExamListDTO();
+                    dto.setId(exam.getId());
+                    dto.setName(exam.getTitle()); // 使用title字段作为name
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }

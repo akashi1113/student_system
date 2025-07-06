@@ -348,4 +348,15 @@
         ORDER BY start_time ASC
     </select>
 
+    <!-- 查询学生成绩较低的考试记录 -->
+    <select id="findLowScoreExamsByUserId" resultMap="ExamRecordResultMap">
+        SELECT er.*
+        FROM exam_records er
+        JOIN exams e ON er.exam_id = e.id
+        WHERE er.user_id = #{userId} 
+        AND er.score IS NOT NULL 
+        AND er.score &lt; (e.total_score * #{threshold})
+        ORDER BY (er.score / e.total_score) ASC
+    </select>
+
 </mapper>

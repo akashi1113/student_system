@@ -3,6 +3,7 @@ package com.csu.sms.controller;
 import com.csu.sms.dto.exam.AnswerDTO;
 import com.csu.sms.dto.ApiResponse;
 import com.csu.sms.dto.exam.ViolationRequest;
+import com.csu.sms.dto.ExamListDTO;
 import com.csu.sms.model.exam.Exam;
 import com.csu.sms.model.exam.ExamRecord;
 import com.csu.sms.model.exam.ExamScoreResult;
@@ -30,6 +31,19 @@ public class ExamController {
     @GetMapping
     public ApiResponse<List<Exam>> getAllExams() {
         return ApiResponse.success(examService.getAllAvailableExams());
+    }
+
+    /**
+     * 获取考试列表（简化版，用于前端下拉选择）
+     */
+    @GetMapping("/list")
+    public ApiResponse<List<ExamListDTO>> getExamList() {
+        try {
+            List<ExamListDTO> examList = examService.getExamList();
+            return ApiResponse.success(examList);
+        } catch (Exception e) {
+            return ApiResponse.error("获取考试列表失败: " + e.getMessage());
+        }
     }
 
     @GetMapping("/bookable")

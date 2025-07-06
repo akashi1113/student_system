@@ -4,8 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum UserRole {
-    USER(0, "普通用户"),
-    ADMIN(1, "管理员");
+    STUDENT(0, "学生"),
+    TEACHER(1, "教师"),
+    ADMIN(2, "管理员");
 
     private final int code;
     private final String description;
@@ -21,6 +22,6 @@ public enum UserRole {
                 return role;
             }
         }
-        return USER; // 默认为普通用户
+        return STUDENT; // 默认为学生
     }
 }

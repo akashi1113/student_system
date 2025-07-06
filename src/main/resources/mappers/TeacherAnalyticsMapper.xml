@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.TeacherAnalyticsMapper">
+    
+    <!-- 获取总体统计 -->
+    <select id="getOverviewStats" resultType="java.util.Map">
+        SELECT 
+            COUNT(DISTINCT u.id) as totalStudents,
+            COUNT(DISTINCT e.id) as totalExams,
+            COUNT(er.id) as totalExamRecords,
+            AVG(er.score) as averageScore,
+            COUNT(CASE WHEN er.score >= e.passing_score THEN 1 END) * 100.0 / NULLIF(COUNT(er.id), 0) as passRate,
+            COUNT(DISTINCT er.user_id) * 100.0 / NULLIF(COUNT(DISTINCT u.id), 0) as participationRate
+        FROM user u
+        LEFT JOIN exam_records er ON u.id = er.user_id
+        LEFT JOIN exams e ON er.exam_id = e.id
+        WHERE u.role = 0
+        <if test="startTime != null">
+            AND er.submit_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND er.submit_time &lt;= #{endTime}
+        </if>
+        <if test="courseIds != null and courseIds.size() > 0">
+            AND e.course_id IN
+            <foreach collection="courseIds" item="courseId" open="(" separator="," close=")">
+                #{courseId}
+            </foreach>
+        </if>
+        <if test="examIds != null and examIds.size() > 0">
+            AND e.id IN
+            <foreach collection="examIds" item="examId" open="(" separator="," close=")">
+                #{examId}
+            </foreach>
+        </if>
+        <if test="studentIds != null and studentIds.size() > 0">
+            AND u.id IN
+            <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+                #{studentId}
+            </foreach>
+        </if>
+    </select>
+    
+    <!-- 获取成绩分布 -->
+    <select id="getScoreDistribution" resultType="java.util.Map">
+        SELECT 
+            COUNT(CASE WHEN er.score >= 90 THEN 1 END) as excellentCount,
+            COUNT(CASE WHEN er.score >= 80 AND er.score &lt; 90 THEN 1 END) as goodCount,
+            COUNT(CASE WHEN er.score >= 70 AND er.score &lt; 80 THEN 1 END) as averageCount,
+            COUNT(CASE WHEN er.score >= 60 AND er.score &lt; 70 THEN 1 END) as passCount,
+            COUNT(CASE WHEN er.score &lt; 60 THEN 1 END) as failCount
+        FROM exam_records er
+        LEFT JOIN exams e ON er.exam_id = e.id
+        WHERE er.score IS NOT NULL
+        <if test="startTime != null">
+            AND er.submit_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND er.submit_time &lt;= #{endTime}
+        </if>
+        <if test="courseIds != null and courseIds.size() > 0">
+            AND e.course_id IN
+            <foreach collection="courseIds" item="courseId" open="(" separator="," close=")">
+                #{courseId}
+            </foreach>
+        </if>
+        <if test="examIds != null and examIds.size() > 0">
+            AND e.id IN
+            <foreach collection="examIds" item="examId" open="(" separator="," close=")">
+                #{examId}
+            </foreach>
+        </if>
+        <if test="studentIds != null and studentIds.size() > 0">
+            AND er.user_id IN
+            <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+                #{studentId}
+            </foreach>
+        </if>
+    </select>
+    
+    <!-- 获取课程对比数据 -->
+    <select id="getCourseComparisons" resultType="java.util.Map">
+        SELECT 
+            e.course_id as courseId,
+            CONCAT('课程', e.course_id) as courseName,
+            COUNT(DISTINCT e.id) as examCount,
+            AVG(er.score) as averageScore,
+            COUNT(CASE WHEN er.score >= e.passing_score THEN 1 END) * 100.0 / NULLIF(COUNT(er.id), 0) as passRate,
+            COUNT(DISTINCT er.user_id) as studentCount,
+            (100 - AVG(er.score)) / 100.0 as difficultyLevel
+        FROM exams e
+        LEFT JOIN exam_records er ON e.id = er.exam_id
+        WHERE er.score IS NOT NULL
+        <if test="startTime != null">
+            AND er.submit_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND er.submit_time &lt;= #{endTime}
+        </if>
+        <if test="courseIds != null and courseIds.size() > 0">
+            AND e.course_id IN
+            <foreach collection="courseIds" item="courseId" open="(" separator="," close=")">
+                #{courseId}
+            </foreach>
+        </if>
+        <if test="examIds != null and examIds.size() > 0">
+            AND e.id IN
+            <foreach collection="examIds" item="examId" open="(" separator="," close=")">
+                #{examId}
+            </foreach>
+        </if>
+        <if test="studentIds != null and studentIds.size() > 0">
+            AND er.user_id IN
+            <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+                #{studentId}
+            </foreach>
+        </if>
+        GROUP BY e.course_id
+        ORDER BY averageScore DESC
+    </select>
+    
+    <!-- 获取趋势数据 -->
+    <select id="getTrendData" resultType="java.util.Map">
+        SELECT 
+            <choose>
+                <when test="timeGranularity == 'DAY'">
+                    DATE(er.submit_time) as timePoint
+                </when>
+                <when test="timeGranularity == 'WEEK'">
+                    YEARWEEK(er.submit_time) as timePoint
+                </when>
+                <when test="timeGranularity == 'MONTH'">
+                    DATE_FORMAT(er.submit_time, '%Y-%m') as timePoint
+                </when>
+                <otherwise>
+                    DATE_FORMAT(er.submit_time, '%Y-%m') as timePoint
+                </otherwise>
+            </choose>,
+            AVG(er.score) as averageScore,
+            COUNT(DISTINCT e.id) as examCount,
+            COUNT(DISTINCT er.user_id) as studentCount,
+            COUNT(CASE WHEN er.score >= e.passing_score THEN 1 END) * 100.0 / NULLIF(COUNT(er.id), 0) as passRate
+        FROM exam_records er
+        LEFT JOIN exams e ON er.exam_id = e.id
+        WHERE er.score IS NOT NULL
+        <if test="startTime != null">
+            AND er.submit_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND er.submit_time &lt;= #{endTime}
+        </if>
+        <if test="courseIds != null and courseIds.size() > 0">
+            AND e.course_id IN
+            <foreach collection="courseIds" item="courseId" open="(" separator="," close=")">
+                #{courseId}
+            </foreach>
+        </if>
+        <if test="examIds != null and examIds.size() > 0">
+            AND e.id IN
+            <foreach collection="examIds" item="examId" open="(" separator="," close=")">
+                #{examId}
+            </foreach>
+        </if>
+        <if test="studentIds != null and studentIds.size() > 0">
+            AND er.user_id IN
+            <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+                #{studentId}
+            </foreach>
+        </if>
+        GROUP BY 
+        <choose>
+            <when test="timeGranularity == 'DAY'">
+                DATE(er.submit_time)
+            </when>
+            <when test="timeGranularity == 'WEEK'">
+                YEARWEEK(er.submit_time)
+            </when>
+            <when test="timeGranularity == 'MONTH'">
+                DATE_FORMAT(er.submit_time, '%Y-%m')
+            </when>
+            <otherwise>
+                DATE_FORMAT(er.submit_time, '%Y-%m')
+            </otherwise>
+        </choose>
+        ORDER BY timePoint
+    </select>
+    
+    <!-- 获取学生排名 -->
+    <select id="getStudentRankings" resultType="java.util.Map">
+        SELECT 
+            u.id as studentId,
+            u.username as studentName,
+            AVG(er.score) as averageScore,
+            COUNT(er.id) as examCount,
+            RANK() OVER (ORDER BY AVG(er.score) DESC) as `rank`
+        FROM user u
+        LEFT JOIN exam_records er ON u.id = er.user_id
+        WHERE u.role = 0 AND er.score IS NOT NULL
+        <if test="startTime != null">
+            AND er.submit_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND er.submit_time &lt;= #{endTime}
+        </if>
+        <if test="courseIds != null and courseIds.size() > 0">
+            AND er.exam_id IN (SELECT id FROM exams WHERE course_id IN
+            <foreach collection="courseIds" item="courseId" open="(" separator="," close=")">
+                #{courseId}
+            </foreach>)
+        </if>
+        <if test="examIds != null and examIds.size() > 0">
+            AND er.exam_id IN
+            <foreach collection="examIds" item="examId" open="(" separator="," close=")">
+                #{examId}
+            </foreach>
+        </if>
+        <if test="studentIds != null and studentIds.size() > 0">
+            AND u.id IN
+            <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+                #{studentId}
+            </foreach>
+        </if>
+        GROUP BY u.id, u.username
+        ORDER BY averageScore DESC
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+    </select>
+    
+    <!-- 获取活跃学生数 -->
+    <select id="getActiveStudentsCount" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT u.id)
+        FROM user u
+        LEFT JOIN exam_records er ON u.id = er.user_id
+        WHERE u.role = 0
+        <if test="startTime != null">
+            AND er.submit_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND er.submit_time &lt;= #{endTime}
+        </if>
+    </select>
+    
+    <!-- 获取已完成考试数 -->
+    <select id="getCompletedExamsCount" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM exam_records er
+        WHERE er.score IS NOT NULL
+        <if test="startTime != null">
+            AND er.submit_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND er.submit_time &lt;= #{endTime}
+        </if>
+    </select>
+    
+    <!-- 获取考试对比数据 -->
+    <select id="getExamComparisons" resultType="java.util.Map">
+        SELECT 
+            e.title as examName,
+            ROUND(AVG(er.score), 1) as averageScore
+        FROM exams e
+        LEFT JOIN exam_records er ON e.id = er.exam_id
+        WHERE er.score IS NOT NULL
+        <if test="startTime != null">
+            AND er.submit_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND er.submit_time &lt;= #{endTime}
+        </if>
+        <if test="courseIds != null and courseIds.size() > 0">
+            AND e.course_id IN
+            <foreach collection="courseIds" item="courseId" open="(" separator="," close=")">
+                #{courseId}
+            </foreach>
+        </if>
+        <if test="examIds != null and examIds.size() > 0">
+            AND e.id IN
+            <foreach collection="examIds" item="examId" open="(" separator="," close=")">
+                #{examId}
+            </foreach>
+        </if>
+        <if test="studentIds != null and studentIds.size() > 0">
+            AND er.user_id IN
+            <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+                #{studentId}
+            </foreach>
+        </if>
+        GROUP BY e.id, e.title
+        ORDER BY e.start_time ASC
+    </select>
+    
+</mapper> 

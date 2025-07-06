@@ -205,7 +205,7 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setStatus(UserStatus.ACTIVE.getCode());
-        user.setRole(UserRole.USER.getCode());
+        user.setRole(UserRole.STUDENT.getCode());
 
         int rows = userDao.insertUser(user);
         if (rows <= 0) {
@@ -365,7 +365,7 @@ public class UserServiceImpl implements UserService {
         if (admin == null || admin.getRole() != UserRole.ADMIN.getCode()) {
             throw new ServiceException(403, "权限不足，只有管理员可以操作。");
         }
-        if (role != UserRole.USER.getCode() && role != UserRole.ADMIN.getCode()) {
+        if (role != UserRole.STUDENT.getCode() && role != UserRole.TEACHER.getCode() && role != UserRole.ADMIN.getCode()) {
             throw new ServiceException(400, "无效的角色值。");
         }
         boolean success = userDao.updateUserRole(userId, role) > 0;
@@ -403,8 +403,6 @@ public class UserServiceImpl implements UserService {
         return vo;
     }
 }
-
-//package com.csu.sms.service.impl;
 //
 //import com.csu.sms.common.PageResult;
 //import com.csu.sms.dto.UserDTO;
