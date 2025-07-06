@@ -209,7 +209,7 @@ public class ExperimentController {
      * @param experimentId 实验ID
      * @return 统一响应体
      */
-    @GetMapping("/reports/{experimentId}")
+    @GetMapping("/reports/{experimentId}/all")
     public ApiResponse<List<Map<String, Object>>> getExperimentReports(@PathVariable("experimentId") Long experimentId) {
         try {
             List<ExperimentRecord> records = experimentService.getExperimentRecords(experimentId);
