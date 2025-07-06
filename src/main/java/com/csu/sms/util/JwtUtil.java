@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JwtUtil {
     private String secret="6v9y$B&E)H@McQfTjWnZr4u7x!A%D*G-";
-
     private Long expiration=86400L;
 
     //内存缓存黑名单
@@ -30,9 +29,10 @@ public class JwtUtil {
     }
 
     //生成token
-    public String generateToken(Long userid,String username,int tokenVersion) {
+    public String generateToken(Long userid, String username, String role, int tokenVersion) {
         return Jwts.builder()
                 .claim("user_id", userid)
+                .claim("role", role)
                 .claim("ver", tokenVersion)
                 .subject(username)
                 .issuedAt(new Date())
@@ -59,6 +59,11 @@ public class JwtUtil {
         return extractClaim(token).getSubject();
     }
 
+    //从token中提取角色
+    public String extractRole(String token) {
+        return extractClaim(token).get("role", String.class);
+    }
+
     //从token中提取版本号
     public int extractTokenVersion(String token) {
         return extractClaim(token).get("ver", Integer.class);
@@ -74,8 +79,12 @@ public class JwtUtil {
     }
 
     //验证token
-    public boolean validateToken(String token, Long userid, String username, int tokenVersion) {
-        return (extractUserId(token).equals(userid)&&extractUsername(token).equals(username) &&extractTokenVersion(token)>=tokenVersion&& !isTokenExpired(token));
+    public boolean validateToken(String token, Long userid, String username, String role, int tokenVersion) {
+        return (extractUserId(token).equals(userid) &&
+                extractUsername(token).equals(username) &&
+                extractRole(token).equals(role) &&
+                extractTokenVersion(token) >= tokenVersion &&
+                !isTokenExpired(token));
     }
 
     public boolean isTokenValid(String token) {
@@ -96,5 +105,4 @@ public class JwtUtil {
     private boolean isTokenBlacklisted(String token) {
         return tokenBlacklist.getIfPresent(token) != null;
     }
-
 }
