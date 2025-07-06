@@ -40,9 +40,6 @@ public class ExamController {
         return ApiResponse.success(examService.getAllAvailableExams());
     }
 
-    /**
-     * 获取考试列表（简化版，用于前端下拉选择）
-     */
     @GetMapping("/list")
     public ApiResponse<List<ExamListDTO>> getExamList() {
         try {
@@ -59,8 +56,8 @@ public class ExamController {
     }
 
     @GetMapping("/booked")
-    public ApiResponse<List<Exam>> getBookedExams(Authentication auth) {
-        Long userId = getUserIdFromAuth(auth);
+    public ApiResponse<List<Exam>> getBookedExams(@RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
         return ApiResponse.success(examService.getBookedExams(userId));
     }
 
@@ -73,8 +70,8 @@ public class ExamController {
     @PostMapping("/{examId}/start")
     @LogOperation(module = "考试管理", operation = "开始考试", description = "学生开始考试")
     public ApiResponse<ExamRecord> startExam(@PathVariable Long examId,
-                                             Authentication auth) {
-        Long userId = getUserIdFromAuth(auth);
+                                             @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
         if(!examService.canStartExam(examId, userId)) {
             return ApiResponse.success("您已经完成该考试，无法再次开始",examService.getExamRecord(examId, userId));
         }
@@ -84,27 +81,20 @@ public class ExamController {
 
     @GetMapping("/{examId}/status")
     public ApiResponse<ExamRecord> getExamStatus(@PathVariable Long examId,
-                                                 Authentication auth) {
-        Long userId = getUserIdFromAuth(auth);
+                                                 @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
         ExamRecord record = examService.getExamRecord(examId, userId);
         return ApiResponse.success(record);
     }
 
-    private Long getUserIdFromAuth(Authentication auth) {
-        // 从JWT token中获取用户ID
-        return 3L; // 简化处理
-    }
-
-    // 提交考试答案
     @PostMapping("/{examId}/submit")
     @LogOperation(module = "考试管理", operation = "提交考试", description = "学生提交考试答案")
     public ApiResponse<ExamScoreResult> submitExam(@PathVariable Long examId,
                                                    @RequestBody List<AnswerDTO> answers,
-                                                   Authentication auth) {
+                                                   @RequestHeader("Authorization") String token) {
         try {
-            Long userId = getUserIdFromAuth(auth);
+            Long userId = jwtUtil.extractUserId(token);
 
-            // 获取考试记录
             ExamRecord examRecord = examService.getExamRecord(examId, userId);
             if (examRecord == null) {
                 return ApiResponse.error("考试记录不存在", "EXAM_RECORD_NOT_FOUND");
@@ -114,13 +104,9 @@ public class ExamController {
                 return ApiResponse.error("考试已结束，无法提交答案", "EXAM_ALREADY_ENDED");
             }
 
-            // 保存答案并评分
             questionService.scoreAnswersWithAI(examRecord.getId(), answers);
-
-            // 计算总分
             int totalScore = examService.calculateTotalScore(examRecord.getId());
 
-            // 计算实际用时
             if (examRecord.getStartTime() != null) {
                 long duration = java.time.Duration.between(
                         examRecord.getStartTime(),
@@ -129,18 +115,16 @@ public class ExamController {
                 examRecord.setDuration((int) duration);
             }
 
-            // 更新考试记录
             examRecord.setScore(totalScore);
             examRecord.setStatus("SUBMITTED");
             examRecord.setSubmitTime(LocalDateTime.now());
             examService.updateExamRecord(examRecord);
 
-            // 构建返回结果
             ExamScoreResult result = new ExamScoreResult();
             result.setExamRecordId(examRecord.getId());
             result.setTotalScore(totalScore);
             result.setMaxScore(questionService.getTotalScore(examId));
-            result.setPassingScore((int) (result.getMaxScore() * 0.6)); // 60%及格
+            result.setPassingScore((int) (result.getMaxScore() * 0.6));
             result.setPassed(totalScore >= result.getPassingScore());
 
             return ApiResponse.success("提交考试成功", result);
@@ -150,16 +134,14 @@ public class ExamController {
         }
     }
 
-    // 记录违规行为
     @PostMapping("/{examId}/violation")
     @LogOperation(module = "考试管理", operation = "记录违规", description = "记录考试违规行为")
     public ApiResponse<Void> recordViolation(@PathVariable Long examId,
                                              @RequestBody ViolationRequest violation,
-                                             Authentication auth) {
+                                             @RequestHeader("Authorization") String token) {
         try {
-            Long userId = getUserIdFromAuth(auth);
+            Long userId = jwtUtil.extractUserId(token);
 
-            // 获取考试记录
             ExamRecord examRecord = examService.getExamRecord(examId, userId);
             if (examRecord == null) {
                 return ApiResponse.error("考试记录不存在", "EXAM_RECORD_NOT_FOUND");
@@ -169,17 +151,13 @@ public class ExamController {
                 return ApiResponse.success("考试已结束", null);
             }
 
-            // 增加违规次数
             int currentViolations = examRecord.getViolationCount() != null ? examRecord.getViolationCount() : 0;
             examRecord.setViolationCount(currentViolations + 1);
 
-            // 检查是否达到违规上限
             if (examRecord.getViolationCount() >= 3) {
-                // 自动提交考试
                 examService.autoSubmitExam(examId, userId, "VIOLATION");
                 return ApiResponse.success("违规次数过多，考试已自动提交", null);
             } else {
-                // 只更新违规次数
                 examService.updateExamRecord(examRecord);
                 return ApiResponse.success("违规记录已保存", null);
             }
@@ -189,18 +167,15 @@ public class ExamController {
         }
     }
 
-    // 考试超时处理
     @PostMapping("/{examId}/timeout")
     @LogOperation(module = "考试管理", operation = "超时处理", description = "考试超时自动提交")
     public ApiResponse<ExamScoreResult> handleTimeout(@PathVariable Long examId,
-                                                      Authentication auth) {
+                                                      @RequestHeader("Authorization") String token) {
         try {
-            Long userId = getUserIdFromAuth(auth);
+            Long userId = jwtUtil.extractUserId(token);
 
-            // 自动提交考试
             ExamRecord examRecord = examService.autoSubmitExam(examId, userId, "TIMEOUT");
 
-            // 构建返回结果
             ExamScoreResult result = new ExamScoreResult();
             result.setExamRecordId(examRecord.getId());
             result.setTotalScore(examRecord.getScore() != null ? examRecord.getScore() : 0);
@@ -215,12 +190,11 @@ public class ExamController {
         }
     }
 
-    // 获取考试成绩
     @GetMapping("/{examId}/score")
     public ApiResponse<ExamScoreResult> getExamScore(@PathVariable Long examId,
-                                                     Authentication auth) {
+                                                     @RequestHeader("Authorization") String token) {
         try {
-            Long userId = getUserIdFromAuth(auth);
+            Long userId = jwtUtil.extractUserId(token);
 
             ExamRecord examRecord = examService.getExamRecord(examId, userId);
             if (examRecord == null) {
@@ -231,7 +205,6 @@ public class ExamController {
                 return ApiResponse.error("考试尚未结束", "EXAM_IN_PROGRESS");
             }
 
-            // 构建成绩结果
             ExamScoreResult result = new ExamScoreResult();
             result.setExamRecordId(examRecord.getId());
             result.setTotalScore(examRecord.getScore() != null ? examRecord.getScore() : 0);
@@ -246,15 +219,13 @@ public class ExamController {
         }
     }
 
-    // 创建考试
     @PostMapping
     @LogOperation(module = "考试管理", operation = "创建考试", description = "教师创建新考试")
     public ApiResponse<Exam> createExam(@RequestBody CreateExamRequest request,
-                                        Authentication auth) {
+                                        @RequestHeader("Authorization") String token) {
         try {
-            Long teacherId = getUserIdFromAuth(auth);
+            Long teacherId = jwtUtil.extractUserId(token);
 
-            // 验证请求参数
             if (request.getTitle() == null || request.getTitle().trim().isEmpty()) {
                 return ApiResponse.error("考试标题不能为空", "INVALID_TITLE");
             }
@@ -268,14 +239,12 @@ public class ExamController {
                 return ApiResponse.error("考试模式必须为 ONLINE 或 OFFLINE", "INVALID_EXAM_MODE");
             }
 
-            // 线上考试必须包含题目
             if ("ONLINE".equals(request.getExamMode())) {
                 if (request.getQuestions() == null || request.getQuestions().isEmpty()) {
                     return ApiResponse.error("线上考试必须包含题目", "NO_QUESTIONS_FOR_ONLINE");
                 }
             }
 
-            // 创建考试对象
             Exam exam = new Exam();
             exam.setTitle(request.getTitle());
             exam.setDescription(request.getDescription());
@@ -286,25 +255,21 @@ public class ExamController {
             exam.setMaxAttempts(request.getMaxAttempts() != null ? request.getMaxAttempts() : 1);
             exam.setCourseId(request.getCourseId());
             exam.setCreatedBy(teacherId);
-            exam.setStatus("DRAFT"); // 初始状态为草稿
-            exam.setBookingStatus("UNAVAILABLE"); // 初始不可预约，需要设置时间段后才可预约
+            exam.setStatus("DRAFT");
+            exam.setBookingStatus("UNAVAILABLE");
 
-            // 计算总分（如果是线上考试）
             if ("ONLINE".equals(request.getExamMode()) && request.getQuestions() != null) {
                 int totalScore = request.getQuestions().stream()
                         .mapToInt(q -> q.getScore() != null ? q.getScore() : 0)
                         .sum();
                 exam.setTotalScore(totalScore);
             } else {
-                // 线下考试总分后续设置
                 exam.setTotalScore(request.getPassingScore() != null ?
                         (int)(request.getPassingScore() / 0.6) : 100);
             }
 
-            // 保存考试
             Exam createdExam = examService.createExam(exam);
 
-            // 如果是线上考试，创建题目
             if ("ONLINE".equals(request.getExamMode()) && request.getQuestions() != null) {
                 for (int i = 0; i < request.getQuestions().size(); i++) {
                     QuestionCreateDTO questionDTO = request.getQuestions().get(i);
@@ -321,12 +286,11 @@ public class ExamController {
         }
     }
 
-    // 获取教师创建的考试列表
     @GetMapping("/created")
-    public ApiResponse<List<Exam>> getCreatedExams(Authentication auth,
+    public ApiResponse<List<Exam>> getCreatedExams(@RequestHeader("Authorization") String token,
                                                    @RequestParam(defaultValue = "ALL") String status) {
         try {
-            Long teacherId = getUserIdFromAuth(auth);
+            Long teacherId = jwtUtil.extractUserId(token);
             List<Exam> exams;
 
             if ("ALL".equals(status)) {
@@ -341,32 +305,27 @@ public class ExamController {
         }
     }
 
-    // 添加/编辑考试题目（仅限线上考试）
     @PostMapping("/{examId}/questions")
     @LogOperation(module = "考试管理", operation = "添加题目", description = "为线上考试添加题目")
     public ApiResponse<Question> addQuestionToExam(@PathVariable Long examId,
                                                    @RequestBody QuestionCreateDTO questionDTO,
-                                                   Authentication auth) {
+                                                   @RequestHeader("Authorization") String token) {
         try {
-            Long teacherId = getUserIdFromAuth(auth);
+            Long teacherId = jwtUtil.extractUserId(token);
 
-            // 获取考试信息
             Exam exam = examService.getExamById(examId);
             if (exam == null) {
                 return ApiResponse.error("考试不存在", "EXAM_NOT_FOUND");
             }
 
-            // 验证权限
             if (!exam.getCreatedBy().equals(teacherId)) {
                 return ApiResponse.error("无权限操作此考试", "PERMISSION_DENIED");
             }
 
-            // 验证考试模式
             if (!"ONLINE".equals(exam.getExamMode())) {
                 return ApiResponse.error("只有线上考试可以添加题目", "OFFLINE_EXAM_NO_QUESTIONS");
             }
 
-            // 验证考试状态
             if ("PUBLISHED".equals(exam.getStatus())) {
                 return ApiResponse.error("已发布的考试不能修改题目", "PUBLISHED_EXAM_READONLY");
             }
@@ -374,7 +333,6 @@ public class ExamController {
             questionDTO.setExamId(examId);
             Question question = questionService.createQuestion(questionDTO);
 
-            // 重新计算考试总分
             Integer newTotalScore = questionService.getTotalScore(examId);
             exam.setTotalScore(newTotalScore);
             examService.updateExam(exam);
@@ -386,30 +344,26 @@ public class ExamController {
         }
     }
 
-    // 发布考试
     @PostMapping("/{examId}/publish")
     @LogOperation(module = "考试管理", operation = "发布考试", description = "教师发布考试")
     public ApiResponse<Exam> publishExam(@PathVariable Long examId,
-                                         Authentication auth) {
+                                         @RequestHeader("Authorization") String token) {
         try {
-            Long teacherId = getUserIdFromAuth(auth);
+            Long teacherId = jwtUtil.extractUserId(token);
 
             Exam exam = examService.getExamById(examId);
             if (exam == null) {
                 return ApiResponse.error("考试不存在", "EXAM_NOT_FOUND");
             }
 
-            // 验证权限
             if (!exam.getCreatedBy().equals(teacherId)) {
                 return ApiResponse.error("无权限发布此考试", "PERMISSION_DENIED");
             }
 
-            // 验证考试状态
             if (!"DRAFT".equals(exam.getStatus())) {
                 return ApiResponse.error("只有草稿状态的考试可以发布", "INVALID_STATUS");
             }
 
-            // 验证线上考试是否有题目
             if ("ONLINE".equals(exam.getExamMode())) {
                 Integer totalScore = questionService.getTotalScore(examId);
                 if (totalScore == null || totalScore == 0) {
@@ -417,9 +371,7 @@ public class ExamController {
                 }
             }
 
-            // 发布考试
             exam.setStatus("PUBLISHED");
-            // 注意：这里不设置为 AVAILABLE，因为还需要设置考试时间段
             Exam publishedExam = examService.updateExam(exam);
 
             return ApiResponse.success("考试发布成功，请设置考试时间段后开放预约", publishedExam);

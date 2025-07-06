@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class CancelBookingDTO {
 
-    @NotNull(message = "用户ID不能为空")
     private Long userId;
 
     @NotBlank(message = "取消原因不能为空")

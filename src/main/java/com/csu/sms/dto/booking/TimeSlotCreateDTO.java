@@ -53,8 +53,6 @@ public class TimeSlotCreateDTO {
 
     private String requirements;
     private String equipmentNeeded;
-
-    @NotNull(message = "创建者ID不能为空")
     private Long createdBy;
 
     public TimeSlotCreateDTO() {}
