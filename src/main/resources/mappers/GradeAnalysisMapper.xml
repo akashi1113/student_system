@@ -52,7 +52,7 @@
     <!-- 获取用户学习记录列表 (带分页) -->
     <select id="getUserStudyRecordsWithPaging" resultType="com.csu.sms.dto.StudyRecordDTO">
         SELECT sr.id, sr.user_id, sr.video_id, cv.title AS video_title,
-               cv.course_id, c.title AS course_title, sr.progress, sr.duration, sr.completed, sr.last_study_time, cv.duration AS video_duration
+               cv.course_id, c.title AS course_title, sr.progress, sr.progress, sr.is_completed, sr.last_study_time, sr.video_duration AS video_duration
         FROM study_record sr
         LEFT JOIN course_video cv ON sr.video_id = cv.id
         LEFT JOIN course c ON cv.course_id = c.id
@@ -101,10 +101,10 @@
     <select id="getUserStudyStats" resultType="java.util.Map">
         SELECT 
             COUNT(DISTINCT DATE(last_study_time)) as totalStudyDays,
-            IFNULL(SUM(duration), 0) as totalStudyDuration,
-            IFNULL(AVG(duration), 0) as averageDailyDuration,
+            IFNULL(SUM(progress), 0) as totalStudyDuration,
+            IFNULL(AVG(progress), 0) as averageDailyDuration,
             COUNT(*) as totalVideos,
-            IFNULL(SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END), 0) as completedVideos
+            IFNULL(SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END), 0) as completedVideos
         FROM study_record
         WHERE user_id = #{userId}
     </select>
@@ -149,9 +149,9 @@
     <select id="getUserDailyStudyData" resultType="java.util.Map">
         SELECT 
             DATE(last_study_time) as studyDate,
-            SUM(duration) as totalDuration,
+            SUM(progress) as totalDuration,
             COUNT(*) as videoCount,
-            SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completedVideos
+            SUM(CASE WHEN is_completed = 1 THEN 1 ELSE 0 END) as completedVideos
         FROM study_record
         WHERE user_id = #{userId}
         <if test="startDate != null">

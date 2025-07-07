@@ -147,73 +147,46 @@ public class StudyRecordServiceImpl implements StudyRecordService {
             return false;
         }
 
-        // 如果记录不存在（可能是get接口没预创建，或者并发等情况），在这里创建一条
-        if (record == null) {
-            record = new StudyRecord();
-            record.setUserId(dto.getUserId());
-            record.setVideoId(dto.getVideoId());
-            record.setVideoDuration(video.getDuration());
-            record.setIsCompleted(false);
-            record.setLastPlaybackPosition(0);
-            record.setMaxProgress(0);
-            record.setTotalWatchTime(0);
-            // 对于新记录，我们走插入逻辑
-            return createNewRecord(record, dto);
+        LocalDateTime now = LocalDateTime.now();
+
+        // 查询是否已有学习记录
+        StudyRecord existingRecord = studyRecordDao.getStudyRecordByUserIdAndVideoId(
+                dto.getUserId(), dto.getVideoId());
+
+        if (existingRecord == null) {
+            // 创建新记录
+            StudyRecord newRecord = new StudyRecord();
+            newRecord.setUserId(dto.getUserId());
+            newRecord.setVideoId(dto.getVideoId());
+            newRecord.setProgress(dto.getProgress());
+            newRecord.setVideoDuration(dto.getVideoDuration());
+            newRecord.setLastStudyTime(now);
+            newRecord.setCreateTime(now);
+            newRecord.setUpdateTime(now);
+
+            // 判断是否完成学习
+            boolean isCompleted = dto.getProgress() >= video.getDuration();
+            newRecord.setCompleted(isCompleted ? 1 : 0);
+
+            int rows = studyRecordDao.insertStudyRecord(newRecord);
+            return rows > 0;
+        } else {
+            // 更新记录
+            existingRecord.setProgress(dto.getProgress());
+            existingRecord.setVideoDuration(existingRecord.getVideoDuration() + dto.getVideoDuration());
+            existingRecord.setLastStudyTime(now);
+            existingRecord.setUpdateTime(now);
+
+            // 判断是否完成学习
+            boolean isCompleted = dto.getProgress() >= video.getDuration();
+            if (isCompleted) {
+                existingRecord.setCompleted(1);
+            }
+
+            int rows = studyRecordDao.updateStudyRecord(existingRecord);
+            return rows > 0;
         }
-
-        // 2. 如果视频已经标记为“已完成”，则不再更新进度和完成状态
-        //    只更新“最后播放位置”和“累计观看时长”，以便了解用户是否在复习
-        if (record.getIsCompleted()) {
-            record.setLastPlaybackPosition(dto.getCurrentPlaybackPosition());
-            record.setTotalWatchTime(record.getTotalWatchTime() + dto.getWatchDurationSinceLastSave());
-            record.setUpdateTime(LocalDateTime.now());
-            return studyRecordDao.updateStudyRecord(record) > 0;
-        }
-
-        // 3. 更新常规信息
-        record.setLastPlaybackPosition(dto.getCurrentPlaybackPosition());
-        record.setTotalWatchTime(record.getTotalWatchTime() + dto.getWatchDurationSinceLastSave());
-
-        // 4. 更新最远进度（只增不减）
-        if (dto.getCurrentPlaybackPosition() > record.getMaxProgress()) {
-            record.setMaxProgress(dto.getCurrentPlaybackPosition());
-        }
-
-        // 5. 判断是否达到完成阈值
-        //    通常我们不要求100%，比如95%，因为片尾可能很长。这里我用95%举例。
-        double completionThreshold = record.getVideoDuration() * 0.95;
-        if (!record.getIsCompleted() && record.getMaxProgress() >= completionThreshold) {
-            record.setIsCompleted(true);
-            // 标记完成后，可以将最远进度直接设置为视频总时长，让其显示为100%
-            record.setMaxProgress(record.getVideoDuration());
-        }
-
-        record.setUpdateTime(LocalDateTime.now());
-
-        // 6. 保存到数据库
-        return studyRecordDao.updateStudyRecord(record) > 0;
     }
-
-    // 辅助方法，用于处理首次创建记录的逻辑
-    private boolean createNewRecord(StudyRecord newRecord, StudyRecordDTO dto) {
-        // 更新从DTO来的初始信息
-        newRecord.setLastPlaybackPosition(dto.getCurrentPlaybackPosition());
-        newRecord.setTotalWatchTime(dto.getWatchDurationSinceLastSave());
-        newRecord.setMaxProgress(dto.getCurrentPlaybackPosition());
-
-        // 首次上报时也可能直接拖到最后完成了
-        double completionThreshold = newRecord.getVideoDuration() * 0.95;
-        if (newRecord.getMaxProgress() >= completionThreshold) {
-            newRecord.setIsCompleted(true);
-            newRecord.setMaxProgress(newRecord.getVideoDuration());
-        }
-
-        newRecord.setCreateTime(LocalDateTime.now());
-        newRecord.setUpdateTime(LocalDateTime.now());
-
-        return studyRecordDao.insertStudyRecord(newRecord) > 0;
-    }
-
 
     //    @Override
 //    public List<StudyRecordVO> getStudyRecordsByUserId(Long userId) {
@@ -281,29 +254,29 @@ public class StudyRecordServiceImpl implements StudyRecordService {
 
         // 6. 在内存中组装数据，不再进行循环查询
         return records.stream().map(record -> {
-            // 使用我们新的VO
             StudyRecordVO vo = new StudyRecordVO();
             vo.setUserId(record.getUserId());
             vo.setVideoId(record.getVideoId());
-
-            // --- 关键：使用新的字段进行映射 ---
-            // 注意：这里的 record 对象应该是你已经修改过的、包含新字段的 StudyRecord 实体类
+            // 合并双方字段
             vo.setLastPlaybackPosition(record.getLastPlaybackPosition());
             vo.setMaxProgress(record.getMaxProgress());
-            vo.setIsCompleted(record.getIsCompleted()); // 假设数据库中 1=true, 0=false
+            vo.setIsCompleted(record.getIsCompleted());
+            vo.setProgress(record.getProgress());
             vo.setVideoDuration(record.getVideoDuration());
             vo.setTotalWatchTime(record.getTotalWatchTime());
-
-            // 使用 record 的 updateTime 作为最后学习时间
-            vo.setLastStudyTime(record.getUpdateTime() != null ?
-                    record.getUpdateTime().format(formatter) : null);
-
-            // 从Map中高效获取关联信息
+            // 优先用 lastStudyTime 字段，否则用 updateTime
+            if (record.getLastStudyTime() != null) {
+                vo.setLastStudyTime(record.getLastStudyTime().format(formatter));
+            } else if (record.getUpdateTime() != null) {
+                vo.setLastStudyTime(record.getUpdateTime().format(formatter));
+            } else {
+                vo.setLastStudyTime(null);
+            }
+            // 关联视频和课程信息
             CourseVideo video = videoMap.get(record.getVideoId());
             if (video != null) {
                 vo.setVideoTitle(video.getTitle());
                 vo.setCourseId(video.getCourseId());
-
                 Course course = courseMap.get(video.getCourseId());
                 if (course != null) {
                     vo.setCourseTitle(course.getTitle());

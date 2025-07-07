@@ -9,16 +9,37 @@ public class StudyRecordVO {
     private String courseTitle;
     private Long videoId;
     private String videoTitle;
-    //上次播放位置 (秒)，用于断点续传
     private Integer lastPlaybackPosition;
-    //最远播放进度 (秒)，用于计算单个视频的完成百分比
     private Integer maxProgress;
     private Boolean isCompleted;
-    //视频总时长 (秒)
+    private Integer progress;
     private Integer videoDuration;
-    //用户在该视频上的累计学习时长 (秒)
     private Integer totalWatchTime;
-    //最后一次学习时间
     private String lastStudyTime;
-}
 
+    // getter/setter
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
+    public Long getCourseId() { return courseId; }
+    public void setCourseId(Long courseId) { this.courseId = courseId; }
+    public String getCourseTitle() { return courseTitle; }
+    public void setCourseTitle(String courseTitle) { this.courseTitle = courseTitle; }
+    public Long getVideoId() { return videoId; }
+    public void setVideoId(Long videoId) { this.videoId = videoId; }
+    public String getVideoTitle() { return videoTitle; }
+    public void setVideoTitle(String videoTitle) { this.videoTitle = videoTitle; }
+    public Integer getLastPlaybackPosition() { return lastPlaybackPosition; }
+    public void setLastPlaybackPosition(Integer lastPlaybackPosition) { this.lastPlaybackPosition = lastPlaybackPosition; }
+    public Integer getMaxProgress() { return maxProgress; }
+    public void setMaxProgress(Integer maxProgress) { this.maxProgress = maxProgress; }
+    public Boolean getIsCompleted() { return isCompleted; }
+    public void setIsCompleted(Boolean isCompleted) { this.isCompleted = isCompleted; }
+    public Integer getProgress() { return progress; }
+    public void setProgress(Integer progress) { this.progress = progress; }
+    public Integer getVideoDuration() { return videoDuration; }
+    public void setVideoDuration(Integer videoDuration) { this.videoDuration = videoDuration; }
+    public Integer getTotalWatchTime() { return totalWatchTime; }
+    public void setTotalWatchTime(Integer totalWatchTime) { this.totalWatchTime = totalWatchTime; }
+    public String getLastStudyTime() { return lastStudyTime; }
+    public void setLastStudyTime(String lastStudyTime) { this.lastStudyTime = lastStudyTime; }
+}

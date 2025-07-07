@@ -19,10 +19,20 @@ public class StudyRecord {
     //是否已完成
     //一旦为 `true`，**永不回退**。
     private Boolean isCompleted;
+    //已完成（int，兼容新老逻辑）
+    private Integer completed;
     //累计观看时长（秒）
     //记录用户在这个视频上总共花了多长时间，可用于数据分析。
     private Integer totalWatchTime;
+    //最后学习时间
+    private LocalDateTime lastStudyTime;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
+
+    public Integer getProgress() { return progress; }
+    public void setProgress(Integer progress) { this.progress = progress; }
+
+    public Integer getVideoDuration() { return videoDuration; }
+    public void setVideoDuration(Integer videoDuration) { this.videoDuration = videoDuration; }
 }
 
