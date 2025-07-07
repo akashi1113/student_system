@@ -50,9 +50,11 @@
         UPDATE course SET status = 1, update_time = NOW() WHERE id = #{id}
     </update>
 
+    <!-- 【新增】根据ID列表批量查询课程，用于性能优化 -->
     <select id="findByIds" resultType="com.csu.sms.model.course.Course">
-        SELECT * FROM course WHERE id IN
-        <foreach collection="list" item="id" open="(" separator="," close=")">
+        SELECT * FROM course
+        WHERE id IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>
     </select>
