@@ -15,4 +15,6 @@ public interface CourseService {
     boolean deleteCourse(Long id);
 
     PageResult<CourseVO> listCoursesForAdmin(Long userId,Integer pageNum, Integer pageSize);
+
+    double calculateCourseProgress(Long courseId, Long userId);
 }
