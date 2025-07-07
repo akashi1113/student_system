@@ -98,4 +98,10 @@
         WHERE id = #{postId}
     </select>
 
+    <select id="findHotPages"  parameterType="int" resultType="com.csu.sms.model.post.ForumPost">
+            SELECT * FROM forum_post
+            ORDER BY view_count DESC
+            LIMIT #{count}
+    </select>
+
 </mapper>
