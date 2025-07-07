@@ -188,4 +188,26 @@ public class CourseController {
             return ApiControllerResponse.error(500, "服务器内部错误，课程删除失败，请稍后再试。");
         }
     }
+
+    /**
+     * 获取指定课程的学习总进度
+     * @param courseId 课程ID
+     * @return 包含课程进度的响应，进度值为0-100之间的小数
+     */
+    @GetMapping("/{courseId}/progress")
+    public ApiControllerResponse<Double> getCourseProgress(
+            @PathVariable Long courseId,
+            @RequestParam(defaultValue = "1") Long userId ) {
+        try {
+            double progress = courseService.calculateCourseProgress(courseId, userId);
+            return ApiControllerResponse.success(progress);
+        } catch (ServiceException e) {
+            log.warn("Failed to get course progress for courseId {}: {}", courseId, e.getMessage());
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while getting course progress for courseId {}: {}", courseId, e.getMessage(), e);
+            return ApiControllerResponse.error(500, "服务器内部错误，获取课程进度失败。");
+        }
+    }
+
 }
