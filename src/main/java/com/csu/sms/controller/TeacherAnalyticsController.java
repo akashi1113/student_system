@@ -1,5 +1,6 @@
 package com.csu.sms.controller;
 
+import com.csu.sms.annotation.RequireTeacher;
 import com.csu.sms.common.ApiResponse;
 import com.csu.sms.dto.analytics.ExamAnalysisRequestDTO;
 import com.csu.sms.dto.analytics.ExamAnalysisResponseDTO;
@@ -7,7 +8,6 @@ import com.csu.sms.service.TeacherAnalyticsService;
 import com.csu.sms.util.UserContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +28,7 @@ public class TeacherAnalyticsController {
      * 获取总体概览统计
      */
     @PostMapping("/overview")
+    @RequireTeacher
     public ApiResponse<ExamAnalysisResponseDTO.OverviewStats> getOverviewStats(
             @Valid @RequestBody ExamAnalysisRequestDTO request) {
         log.info("用户 {} 请求总体统计", UserContext.getCurrentUserId());
@@ -48,6 +49,7 @@ public class TeacherAnalyticsController {
      * 获取成绩分布分析
      */
     @PostMapping("/score-distribution")
+    @RequireTeacher
     public ApiResponse<ExamAnalysisResponseDTO.ScoreDistribution> getScoreDistribution(
             @Valid @RequestBody ExamAnalysisRequestDTO request) {
         log.info("用户 {} 请求成绩分布分析", UserContext.getCurrentUserId());
@@ -67,6 +69,7 @@ public class TeacherAnalyticsController {
      * 获取课程对比分析
      */
     @PostMapping("/course-comparison")
+    @RequireTeacher
     public ApiResponse<java.util.List<ExamAnalysisResponseDTO.CourseComparison>> getCourseComparisons(
             @Valid @RequestBody ExamAnalysisRequestDTO request) {
         log.info("用户 {} 请求课程对比分析", UserContext.getCurrentUserId());
@@ -87,6 +90,7 @@ public class TeacherAnalyticsController {
      * 获取考试对比分析
      */
     @PostMapping("/exam-comparison")
+    @RequireTeacher
     public ApiResponse<java.util.List<ExamAnalysisResponseDTO.ExamComparison>> getExamComparisons(
             @Valid @RequestBody ExamAnalysisRequestDTO request) {
         log.info("用户 {} 请求考试对比分析", UserContext.getCurrentUserId());
@@ -107,6 +111,7 @@ public class TeacherAnalyticsController {
      * 获取趋势分析
      */
     @PostMapping("/trend")
+    @RequireTeacher
     public ApiResponse<java.util.List<ExamAnalysisResponseDTO.TrendData>> getTrendAnalysis(
             @Valid @RequestBody ExamAnalysisRequestDTO request) {
         log.info("用户 {} 请求趋势分析", UserContext.getCurrentUserId());
@@ -127,6 +132,7 @@ public class TeacherAnalyticsController {
      * 获取学生排名
      */
     @PostMapping("/student-rankings")
+    @RequireTeacher
     public ApiResponse<java.util.List<ExamAnalysisResponseDTO.StudentRanking>> getStudentRankings(
             @Valid @RequestBody ExamAnalysisRequestDTO request) {
         log.info("用户 {} 请求学生排名", UserContext.getCurrentUserId());
@@ -147,6 +153,7 @@ public class TeacherAnalyticsController {
      * 获取完整分析报告 (POST)
      */
     @PostMapping("/complete-analysis")
+    @RequireTeacher
     public ApiResponse<ExamAnalysisResponseDTO> getCompleteAnalysis(
             @Valid @RequestBody ExamAnalysisRequestDTO request) {
         log.info("用户 {} 请求完整分析报告", UserContext.getCurrentUserId());
@@ -166,6 +173,7 @@ public class TeacherAnalyticsController {
      * 获取完整分析报告 (GET)
      */
     @GetMapping("/complete-analysis")
+    @RequireTeacher
     public ApiResponse<ExamAnalysisResponseDTO> getCompleteAnalysisByGet(
             @RequestParam(required = false) String startTime,
             @RequestParam(required = false) String endTime,
@@ -239,6 +247,7 @@ public class TeacherAnalyticsController {
      * 获取快速概览（简化版统计）
      */
     @GetMapping("/quick-overview")
+    @RequireTeacher
     public ApiResponse<ExamAnalysisResponseDTO.OverviewStats> getQuickOverview(
             @RequestParam(required = false) String startTime,
             @RequestParam(required = false) String endTime) {
@@ -269,6 +278,7 @@ public class TeacherAnalyticsController {
      * 测试接口 - 获取基本统计信息
      */
     @GetMapping("/test")
+    @RequireTeacher
     public ApiResponse<String> test() {
         return ApiResponse.success("教师分析功能已成功实现！");
     }

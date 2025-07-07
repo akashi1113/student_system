@@ -39,6 +39,13 @@ public class GlobalExceptionHandler {
         return ApiResponse.error("参数验证失败: " + e.getMessage(), "VALIDATION_ERROR");
     }
 
+    //处理服务异常
+    @ExceptionHandler(ServiceException.class)
+    public ApiResponse<String> handleServiceException(ServiceException e) {
+        recordSystemExceptionLog("服务异常", e);
+        return ApiResponse.error(e.getMessage(), e.getErrorCode());
+    }
+
     //处理运行时异常
     @ExceptionHandler(RuntimeException.class)
     public ApiResponse<String> handleRuntimeException(RuntimeException e) {
