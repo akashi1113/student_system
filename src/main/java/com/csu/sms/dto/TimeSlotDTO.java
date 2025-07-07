@@ -6,11 +6,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class ExperimentBookingDTO {
+public class TimeSlotDTO {
     private Long id;
     private Long experimentId;
-    private String experimentName;
-    private Long userId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
@@ -18,12 +16,7 @@ public class ExperimentBookingDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
 
+    private Integer maxCapacity;
+    private Integer currentCapacity;
     private Integer status;
-    private Integer approvalStatus;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
-
-    // 关联实验信息
-    private ExperimentDTO experiment;
 }

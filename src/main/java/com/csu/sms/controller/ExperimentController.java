@@ -1,11 +1,7 @@
 package com.csu.sms.controller;
 
 import com.csu.sms.annotation.LogOperation;
-import com.csu.sms.dto.ApiResponse;
-import com.csu.sms.dto.ExperimentBookingDTO;
-import com.csu.sms.dto.ExperimentDTO;
-import com.csu.sms.dto.ExperimentRecordDTO;
-import com.csu.sms.dto.ExperimentReportDTO;
+import com.csu.sms.dto.*;
 import com.csu.sms.service.ExperimentService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -17,6 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@CrossOrigin(origins = {"http://localhost:5173"},
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+        allowCredentials = "true")
 @RestController
 @RequestMapping("/api/experiment")
 public class ExperimentController {
@@ -27,7 +27,17 @@ public class ExperimentController {
     // 获取所有实验项目
     @GetMapping("/projects")
     public ApiResponse<List<ExperimentDTO>> getAllExperiments() {
-        return ApiResponse.success(experimentService.getAllExperiments());
+        List<ExperimentDTO> experiments = experimentService.getAllExperiments();
+        // 为每个实验添加预约状态信息
+        experiments.forEach(exp -> {
+            List<ExperimentBookingDTO> bookings = experimentService.getBookingsByExperimentId(exp.getId());
+            if (!bookings.isEmpty()) {
+                // 假设我们只关心最新的预约状态
+                exp.setStatus(bookings.get(0).getStatus());
+                exp.setApprovalStatus(bookings.get(0).getApprovalStatus());
+            }
+        });
+        return ApiResponse.success(experiments);
     }
 
     // 获取预约详情
@@ -35,6 +45,18 @@ public class ExperimentController {
     public ApiResponse<ExperimentBookingDTO> getBooking(@PathVariable Long bookingId) {
         System.out.println("Received bookingId: " + bookingId); // 添加日志
         return ApiResponse.success(experimentService.getBooking(bookingId));
+    }
+
+    // 新增基于时间段的预约方法
+    @PostMapping("/book-with-slot")
+    @LogOperation(module = "实验管理", operation = "预约实验(时间段)", description = "学生通过时间段预约实验")
+    public ApiResponse<ExperimentBookingDTO> bookExperimentWithSlot(@RequestBody BookingWithSlotRequest request) {
+        System.out.println("Received: " + request);
+        return ApiResponse.success(experimentService.bookExperimentWithTimeSlot(
+                request.getExperimentId(),
+                request.getUserId(),
+                request.getTimeSlotId()
+        ));
     }
 
     // 预约实验
@@ -48,6 +70,13 @@ public class ExperimentController {
         private LocalDateTime endTime;
     }
 
+    @Data
+    public static class BookingWithSlotRequest {
+        private Long experimentId;
+        private Long userId;
+        private Long timeSlotId;
+    }
+
     @PostMapping("/book")
     @LogOperation(module = "实验管理", operation = "预约实验", description = "学生预约实验")
     public ApiResponse<ExperimentBookingDTO> bookExperiment(@RequestBody BookingRequest request) {
@@ -59,6 +88,7 @@ public class ExperimentController {
                 request.getEndTime()
         ));
     }
+
 
     // 开始实验
     @PostMapping("/start/{bookingId}")
@@ -110,6 +140,26 @@ public class ExperimentController {
     @GetMapping("/{id}")
     public ApiResponse<ExperimentDTO> getExperimentById(@PathVariable Long id) {
         return ApiResponse.success(experimentService.getExperimentById(id));
+    }
+
+    @GetMapping("/published")
+    public ApiResponse<List<ExperimentDTO>> getPublishedExperiments() {
+        return ApiResponse.success(experimentService.getPublishedExperiments());
+    }
+
+    @GetMapping("/{experimentId}/time-slots")
+    public ApiResponse<List<TimeSlotDTO>> getTimeSlotsByExperimentId(@PathVariable Long experimentId) {
+        List<TimeSlotDTO> timeSlots = experimentService.getTimeSlotsByExperimentId(experimentId);
+        return ApiResponse.success(timeSlots);
+    }
+
+    @PutMapping("/{id}/status")
+    @LogOperation(module = "实验管理", operation = "更新实验状态", description = "更新实验状态")
+    public ApiResponse<Void> updateExperimentStatus(
+            @PathVariable Long id,
+            @RequestParam Integer status) {
+        experimentService.updateExperimentStatus(id, status);
+        return ApiResponse.success(null);
     }
 
 }

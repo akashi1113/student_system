@@ -2,10 +2,7 @@ package com.csu.sms.service.impl;
 
 import com.csu.sms.common.FileStorageUtil;
 import com.csu.sms.dto.*;
-import com.csu.sms.model.experiment.Experiment;
-import com.csu.sms.model.experiment.ExperimentBooking;
-import com.csu.sms.model.experiment.ExperimentRecord;
-import com.csu.sms.model.experiment.ExperimentReport;
+import com.csu.sms.model.experiment.*;
 import com.csu.sms.persistence.*;
 import com.csu.sms.model.*;
 import com.csu.sms.service.ExperimentService;
@@ -38,6 +35,9 @@ public class ExperimentServiceImpl implements ExperimentService {
     private ExperimentReportMapper reportMapper;
 
     @Autowired
+    private TimeSlotMapper timeSlotMapper;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
@@ -46,7 +46,7 @@ public class ExperimentServiceImpl implements ExperimentService {
     @Override
     public List<ExperimentDTO> getAllExperiments() {
         List<Experiment> experiments = experimentMapper.selectAll();
-//        System.out.println("从数据库获取的实验数量: " + experiments.size()); // 调试输出
+        System.out.println("从数据库获取的实验数量: " + experiments.size()); // 调试输出
         return experiments.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -82,33 +82,36 @@ public class ExperimentServiceImpl implements ExperimentService {
     @Transactional
     public ExperimentBookingDTO bookExperiment(Long experimentId, Long userId,
                                                LocalDateTime startTime, LocalDateTime endTime) {
-        // 获取实验信息
-        Experiment experiment = experimentMapper.selectById(experimentId);
-        if (experiment == null) {
-            throw new RuntimeException("实验不存在");
-        }
-        // 检查时间冲突
-//        List<ExperimentBooking> conflicts = bookingMapper.findConflicts(userId, startTime, endTime);
-//        if (!conflicts.isEmpty()) {
-//            throw new RuntimeException("该时间段已有其他预约");
+//        // 获取实验信息
+//        // Experiment experiment = experimentMapper.selectById(experimentId);
+//        if (experiment == null) {
+//            throw new RuntimeException("实验不存在");
 //        }
+//        // 检查时间冲突
+////        List<ExperimentBooking> conflicts = bookingMapper.findConflicts(userId, startTime, endTime);
+////        if (!conflicts.isEmpty()) {
+////            throw new RuntimeException("该时间段已有其他预约");
+////        }
+//
+//        ExperimentBooking booking = new ExperimentBooking();
+//        booking.setExperimentId(experimentId);
+//        booking.setExperimentName(experiment.getName());
+//        booking.setUserId(userId);
+//        booking.setStartTime(startTime);
+//        booking.setEndTime(endTime);
+//        booking.setStatus(1); // 待进行
+//        booking.setCreatedAt(LocalDateTime.now());
+//
+//        bookingMapper.insert(booking);
+//        // 更新实验状态为已预约(0)
+//
+//        experiment.setStatus(0);
+//        experimentMapper.update(experiment);
+//
+//        return convertToDTO(booking);
 
-        ExperimentBooking booking = new ExperimentBooking();
-        booking.setExperimentId(experimentId);
-        booking.setExperimentName(experiment.getName());
-        booking.setUserId(userId);
-        booking.setStartTime(startTime);
-        booking.setEndTime(endTime);
-        booking.setStatus(1); // 待进行
-        booking.setCreatedAt(LocalDateTime.now());
-
-        bookingMapper.insert(booking);
-        // 更新实验状态为已预约(0)
-
-        experiment.setStatus(0);
-        experimentMapper.update(experiment);
-
-        return convertToDTO(booking);
+        // 改为使用时间段ID预约
+        throw new UnsupportedOperationException("请使用基于时间段的预约方法");
     }
 
 
@@ -242,16 +245,74 @@ public class ExperimentServiceImpl implements ExperimentService {
         }
     }
 
+    // 新增基于时间段的预约方法
+    @Override
+    @Transactional
+    public ExperimentBookingDTO bookExperimentWithTimeSlot(Long experimentId, Long userId, Long timeSlotId) {
+        // 获取时间段信息
+        TimeSlot timeSlot = timeSlotMapper.findById(timeSlotId);
+        if (timeSlot == null) {
+            throw new RuntimeException("时间段不存在");
+        }
+
+        // 检查容量
+        if (timeSlot.getCurrentCapacity() >= timeSlot.getMaxCapacity()) {
+            throw new RuntimeException("该时间段已满");
+        }
+
+        // 获取实验信息
+        Experiment experiment = experimentMapper.selectById(experimentId);
+        if (experiment == null) {
+            throw new RuntimeException("实验不存在");
+        }
+
+        // 创建预约记录
+        ExperimentBooking booking = new ExperimentBooking();
+        booking.setExperimentId(experimentId);
+        booking.setExperimentName(experiment.getName());
+        booking.setUserId(userId);
+        booking.setTimeSlotId(timeSlotId);
+        booking.setStartTime(timeSlot.getStartTime());
+        booking.setEndTime(timeSlot.getEndTime());
+        booking.setStatus(1); // 初始状态
+        booking.setApprovalStatus(1); // 待审批
+        booking.setCreatedAt(LocalDateTime.now());
+        bookingMapper.insert(booking);
+
+        // 更新时间段当前容量
+        timeSlot.setCurrentCapacity(timeSlot.getCurrentCapacity() + 1);
+        timeSlotMapper.update(timeSlot);
+        return convertToDTO(booking);
+    }
+
+    @Override
+    @Transactional
+    public void togglePublishStatus(Long experimentId, boolean isPublished) {
+        experimentMapper.updatePublishStatus(experimentId, isPublished,
+                isPublished ? LocalDateTime.now() : null);
+    }
+
+    @Override
+    public List<ExperimentDTO> getPublishedExperiments() {
+        List<Experiment> experiments = experimentMapper.selectPublishedExperiments();
+        return experiments.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     // 转换方法
     private ExperimentDTO convertToDTO(Experiment experiment) {
         ExperimentDTO dto = new ExperimentDTO();
         BeanUtils.copyProperties(experiment, dto);
+        dto.setDescription(experiment.getDescription());
+        dto.setStatus(experiment.getStatus());
         return dto;
     }
 
     private ExperimentBookingDTO convertToDTO(ExperimentBooking booking) {
         ExperimentBookingDTO dto = new ExperimentBookingDTO();
         BeanUtils.copyProperties(booking, dto);
+        dto.setApprovalStatus(booking.getApprovalStatus());
         return dto;
     }
 
@@ -273,6 +334,35 @@ public class ExperimentServiceImpl implements ExperimentService {
         return record;
     }
 
+    @Override
+    @Transactional
+    public void updateExperimentStatus(Long experimentId, Integer status) {
+        Experiment experiment = experimentMapper.selectById(experimentId);
+        if (experiment == null) {
+            throw new RuntimeException("实验不存在");
+        }
+        experiment.setStatus(status);
+        experimentMapper.update(experiment);
+    }
+
+    @Override
+    public List<TimeSlotDTO> getTimeSlotsByExperimentId(Long experimentId) {
+        return timeSlotMapper.findByExperimentId(experimentId).stream()
+                .map(slot -> {
+                    TimeSlotDTO dto = new TimeSlotDTO();
+                    BeanUtils.copyProperties(slot, dto);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ExperimentBookingDTO> getBookingsByExperimentId(Long experimentId) {
+        List<ExperimentBooking> bookings = bookingMapper.selectActiveByExperimentId(experimentId);
+        return bookings.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
     // 内部类用于初始化实验数据
     private static class ExperimentStepData {
         private int currentStep = 0;

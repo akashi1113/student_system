@@ -15,6 +15,13 @@ public class ExperimentDTO {
 
     private Integer status;  // 0-禁用, 1-可预约, 2-已满额, 3-已关闭
 
+    private Boolean isPublished;
+
+    private Integer approvalStatus;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime publishTime;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 

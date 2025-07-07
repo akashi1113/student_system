@@ -23,6 +23,8 @@ public class Result<T> {
      */
     private T data;
 
+
+
     /**
      * 成功响应
      */
@@ -31,6 +33,13 @@ public class Result<T> {
         result.setCode(200);
         result.setMessage("操作成功");
         result.setData(data);
+        return result;
+    }
+
+    public static <T> Result<T> success() {
+        Result<T> result = new Result<>();
+        result.setCode(200);
+        result.setMessage("操作成功");
         return result;
     }
 

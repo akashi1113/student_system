@@ -10,6 +10,8 @@ public class ExperimentBooking {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Integer status; // 0-待进行, 1-进行中, 2-已完成, 3-已取消
+    private Integer approvalStatus; // 0-待审批, 1-已通过, 2-已拒绝
+    private Long timeSlotId; // 新增时间段ID
     private LocalDateTime createdAt;
 
     // Getters and Setters
@@ -69,6 +71,22 @@ public class ExperimentBooking {
         this.status = status;
     }
 
+    public Integer getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(Integer approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
+
+    public Long getTimeSlotId() {
+        return timeSlotId;
+    }
+
+    public void setTimeSlotId(Long timeSlotId) {
+        this.timeSlotId = timeSlotId;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -86,7 +104,11 @@ public class ExperimentBooking {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", status=" + status +
+                ", approvalStatus=" + approvalStatus +
+                ", timeSlotId=" + timeSlotId +
                 ", createdAt=" + createdAt +
                 '}';
     }
+
+
 }

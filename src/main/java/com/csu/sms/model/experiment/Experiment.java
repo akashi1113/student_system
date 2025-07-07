@@ -15,6 +15,8 @@ public class Experiment {
     private Integer duration;
     private String steps;
     private Integer status; // 0-禁用, 1-启用
+    private Boolean isPublished;
+    private LocalDateTime publishTime;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -74,6 +76,11 @@ public class Experiment {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    public Boolean getIsPublished() { return isPublished; }
+    public void setIsPublished(Boolean isPublished) { this.isPublished = isPublished; }
+    public LocalDateTime getPublishTime() { return publishTime; }
+    public void setPublishTime(LocalDateTime publishTime) { this.publishTime = publishTime; }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

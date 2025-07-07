@@ -3,13 +3,19 @@ package com.csu.sms.persistence;
 import com.csu.sms.model.experiment.Experiment;
 import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
 public interface ExperimentMapper {
 
 
-    @Select("SELECT * FROM experiment WHERE status = 1 ORDER BY created_at DESC")
+    // @Select("SELECT * FROM experiment WHERE status = 1 ORDER BY created_at DESC")
+    @Select("SELECT id, name, subject, " +
+            "CAST(description AS CHAR) AS description, " +  // 显式转换BLOB为字符串
+            "CAST(steps AS CHAR) AS steps, " +
+            "duration, status, created_at, updated_at " +
+            "FROM experiment WHERE status = 1 ORDER BY created_at DESC")
     List<Experiment> selectAll();
 
     @Select("SELECT * FROM experiment WHERE id = #{id}")
@@ -32,4 +38,22 @@ public interface ExperimentMapper {
 
     @Update("UPDATE experiment SET steps=#{steps} WHERE id=#{id}")
     void updateSteps(@Param("id") Long id, @Param("steps") String steps);
+
+    // 添加发布状态更新方法
+    @Update("UPDATE experiment SET is_published=#{isPublished}, publish_time=#{publishTime} WHERE id=#{id}")
+    void updatePublishStatus(@Param("id") Long id,
+                             @Param("isPublished") Boolean isPublished,
+                             @Param("publishTime") LocalDateTime publishTime);
+
+    // 添加获取已发布实验的方法
+    @Select("SELECT * FROM experiment WHERE is_published = 1 AND status = 1") // 只获取已发布且可预约的实验
+    List<Experiment> selectPublishedExperiments();
+
+    @Update("UPDATE experiment SET status=#{status} WHERE id=#{id}")
+    void updateStatus(@Param("id") Long id, @Param("status") Integer status);
+
+    @Select("SELECT * FROM experiment WHERE is_published = true AND status = #{status} ORDER BY created_at DESC")
+    List<Experiment> selectPublishedByStatus(@Param("status") Integer status);
+
+
 }
