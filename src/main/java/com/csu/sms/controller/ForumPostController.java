@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/post")
@@ -32,6 +34,13 @@ public class ForumPostController {
     ){
         PageResult<PostVO> response = forumPostService.listPosts(category, keyword, page, size);
         return ApiControllerResponse.success(response);
+    }
+
+    @GetMapping("/hot")
+    public ApiControllerResponse<List<PostVO>> getHotPosts(
+            @RequestParam(defaultValue = "5") int count) {
+        List<PostVO> hotPosts = forumPostService.getHotPosts(count);
+        return ApiControllerResponse.success(hotPosts);
     }
 
     @GetMapping("/{id}")
