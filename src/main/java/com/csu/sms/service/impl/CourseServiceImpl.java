@@ -109,7 +109,7 @@ public class CourseServiceImpl implements CourseService {
 
                 for (CourseVideo video : videos) {
                     List<StudyRecord> records = videoStudyMap.getOrDefault(video.getId(), new ArrayList<>());
-                    if (!records.isEmpty() && records.get(0).getCompleted() == 1) {
+                    if (!records.isEmpty() && records.get(0).getIsCompleted() == true) {
                         completedVideos++;
                     }
                 }
@@ -380,7 +380,7 @@ public class CourseServiceImpl implements CourseService {
 
                 for (CourseVideo video : videos) {
                     List<StudyRecord> records = videoStudyMap.getOrDefault(video.getId(), new ArrayList<>());
-                    if (!records.isEmpty() && records.get(0).getCompleted() == 1) {
+                    if (!records.isEmpty() && records.get(0).getIsCompleted() == true) {
                         completedVideos++;
                     }
                 }
@@ -400,4 +400,51 @@ public class CourseServiceImpl implements CourseService {
 
         return result;
     }
+
+    @Override
+    public double calculateCourseProgress(Long courseId, Long userId) {
+        // 1. 获取该课程下的所有视频列表
+        List<CourseVideo> videosInCourse = courseVideoDao.findVideosByCourseId(courseId);
+        if (videosInCourse == null || videosInCourse.isEmpty()) {
+            return 0.0; // 如果课程没有视频，进度为0
+        }
+        int totalVideos = videosInCourse.size();
+
+        // 2. 获取用户对这些视频的所有学习记录
+        List<Long> videoIds = videosInCourse.stream().map(CourseVideo::getId).collect(Collectors.toList());
+        List<StudyRecord> studyRecords = studyRecordDao.findByUserIdAndVideoIds(userId, videoIds);
+
+        // 为了方便查找，将List转为Map
+        Map<Long, StudyRecord> recordMap = studyRecords.stream()
+                .collect(Collectors.toMap(StudyRecord::getVideoId, record -> record));
+
+        double totalProgressPercentage = 0.0;
+
+        // 3. 遍历课程下的每一个视频，计算其贡献的进度
+        for (CourseVideo video : videosInCourse) {
+            StudyRecord record = recordMap.get(video.getId());
+
+            if (record != null) {
+                // 如果记录存在
+                if (record.getIsCompleted()) {
+                    // 如果已完成，该视频进度贡献为100%
+                    totalProgressPercentage += 1.0;
+                } else {
+                    // 如果未完成，按最远进度计算
+                    if (record.getVideoDuration() > 0) {
+                        totalProgressPercentage += (double) record.getMaxProgress() / record.getVideoDuration();
+                    }
+                }
+            }
+            // 如果 record 为 null，说明用户还没看过这个视频，进度贡献为0，所以不用加。
+        }
+
+        // 4. 计算最终的课程总进度（百分比）
+        if (totalVideos > 0) {
+            return (totalProgressPercentage / totalVideos) * 100;
+        }
+
+        return 0.0;
+    }
+
 }
