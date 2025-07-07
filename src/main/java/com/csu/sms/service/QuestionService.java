@@ -180,53 +180,95 @@ public class QuestionService {
     @Transactional
     public ApiResponse<Void> scoreAnswersWithAI(Long examRecordId, List<AnswerDTO> answers) {
         try {
+            // 参数校验
+            if (examRecordId == null || answers == null || answers.isEmpty()) {
+                return ApiResponse.error("参数不能为空");
+            }
+
             List<AnswerRecord> answerRecords = new ArrayList<>();
 
             for (AnswerDTO answerDTO : answers) {
-                Question question = questionMapper.findById(answerDTO.getQuestionId());
-                if (question == null) continue;
+                try {
+                    // 校验单个答案
+                    if (answerDTO.getQuestionId() == null) {
+                        continue;
+                    }
 
-                AnswerRecord record = new AnswerRecord();
-                record.setExamRecordId(examRecordId);
-                record.setQuestionId(answerDTO.getQuestionId());
-                record.setAnswer(answerDTO.getAnswer());
+                    Question question = questionMapper.findById(answerDTO.getQuestionId());
+                    if (question == null) {
+                        continue;
+                    }
 
-                if (isSubjectiveQuestion(question.getType())) {
-                    // 主观题使用AI评分
-                    ApiResponse<AIGradingResponse> aiResult = gradeSubjectiveQuestion(question, answerDTO.getAnswer());
-                    if (aiResult.isSuccess()) {
-                        AIGradingResponse gradingResult = aiResult.getData();
-                        record.setScore(gradingResult.getScore());
-                        record.setIsCorrect(gradingResult.getScore() == question.getScore());
-                        record.setAiFeedback(gradingResult.getFeedback());
-                        record.setAiScoreRatio(gradingResult.getScoreRatio());
-                        record.setGradingMethod("AI");
+                    AnswerRecord record = new AnswerRecord();
+                    record.setExamRecordId(examRecordId);
+                    record.setQuestionId(answerDTO.getQuestionId());
+
+                    // 安全处理答案数据
+                    String answerText = null;
+                    if (answerDTO.getAnswer() != null) {
+                        answerText = answerDTO.getAnswer().toString().trim();
+                        // 如果答案为空字符串，设置为null
+                        if (answerText.isEmpty()) {
+                            answerText = null;
+                        }
+                    }
+                    record.setAnswer(answerText);
+
+                    if (isSubjectiveQuestion(question.getType())) {
+                        // 主观题使用AI评分
+                        ApiResponse<AIGradingResponse> aiResult = gradeSubjectiveQuestion(question, answerDTO.getAnswer());
+                        if (aiResult.isSuccess()) {
+                            AIGradingResponse gradingResult = aiResult.getData();
+                            record.setScore(gradingResult.getScore());
+                            record.setIsCorrect(gradingResult.getScore() == question.getScore());
+                            record.setAiFeedback(gradingResult.getFeedback());
+                            record.setAiScoreRatio(gradingResult.getScoreRatio());
+                            record.setGradingMethod("AI");
+                        } else {
+                            record.setScore(0);
+                            record.setIsCorrect(false);
+                            record.setAiFeedback("AI评分失败: " + aiResult.getMessage());
+                            record.setGradingMethod("AUTO");
+                        }
+                        record.setCorrectAnswer(question.getAnalysis());
                     } else {
-                        record.setScore(0);
-                        record.setIsCorrect(false);
-                        record.setAiFeedback("AI评分失败: " + aiResult.getMessage());
+                        // 客观题使用传统评分
+                        String correctAnswer = questionMapper.getCorrectAnswersByQuestionId(question.getId());
+                        int score = scoreObjectiveQuestion(question, answerDTO.getAnswer());
+                        record.setScore(score);
+                        record.setIsCorrect(score == question.getScore());
+                        record.setCorrectAnswer(correctAnswer);
                         record.setGradingMethod("AUTO");
                     }
-                    record.setCorrectAnswer(question.getAnalysis());
-                } else {
-                    // 客观题使用传统评分
-                    String correctAnswer = questionMapper.getCorrectAnswersByQuestionId(question.getId());
-                    int score = scoreObjectiveQuestion(question, answerDTO.getAnswer());
-                    record.setScore(score);
-                    record.setIsCorrect(score == question.getScore());
-                    record.setCorrectAnswer(correctAnswer);
-                    record.setGradingMethod("AUTO");
+
+                    answerRecords.add(record);
+
+                } catch (Exception e) {
+                    // 记录单个答案处理失败，但不影响其他答案
+                    System.err.println("处理答案失败，问题ID: " + answerDTO.getQuestionId() + ", 错误: " + e.getMessage());
+                    e.printStackTrace();
                 }
-                answerRecords.add(record);
             }
 
+            // 批量插入
             if (!answerRecords.isEmpty()) {
-                questionMapper.batchInsertAnswerRecords(answerRecords);
+                try {
+                    int affectedRows = questionMapper.batchInsertAnswerRecords(answerRecords);
+                    if (affectedRows != answerRecords.size()) {
+                        System.err.println("批量插入数量不匹配，预期: " + answerRecords.size() + ", 实际: " + affectedRows);
+                    }
+                } catch (Exception e) {
+                    System.err.println("批量插入失败: " + e.getMessage());
+                    e.printStackTrace();
+                    throw new RuntimeException("数据库插入失败", e);
+                }
             }
 
-            return ApiResponse.success("评分完成",null);
+            return ApiResponse.success("评分完成", null);
 
         } catch (Exception e) {
+            System.err.println("评分过程发生错误: " + e.getMessage());
+            e.printStackTrace();
             return ApiResponse.error("评分过程中发生错误: " + e.getMessage());
         }
     }

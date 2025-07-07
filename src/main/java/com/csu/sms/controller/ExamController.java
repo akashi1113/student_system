@@ -195,7 +195,6 @@ public class ExamController {
                                                      @RequestHeader("Authorization") String token) {
         try {
             Long userId = jwtUtil.extractUserId(token);
-
             ExamRecord examRecord = examService.getExamRecord(examId, userId);
             if (examRecord == null) {
                 return ApiResponse.error("考试记录不存在", "EXAM_RECORD_NOT_FOUND");

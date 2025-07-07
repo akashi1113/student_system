@@ -479,7 +479,7 @@
     <select id="getUserBookingStats" parameterType="long" resultType="java.util.Map">
         SELECT
             COUNT(*) as total_bookings,
-            SUM(CASE WHEN status = 'BOOKED' THEN 1 ELSE 0 END) as active_bookings,
+            SUM(CASE WHEN status != 'CANCELLED' THEN 1 ELSE 0 END) as active_bookings,
             SUM(CASE WHEN status = 'COMPLETED' THEN 1 ELSE 0 END) as completed_bookings,
             SUM(CASE WHEN status = 'CANCELLED' THEN 1 ELSE 0 END) as cancelled_bookings,
             SUM(CASE WHEN check_in_status = 'ABSENT' THEN 1 ELSE 0 END) as absent_count
