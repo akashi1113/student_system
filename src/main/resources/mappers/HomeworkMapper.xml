@@ -165,10 +165,10 @@
         WHERE course_id = #{courseId} AND status = 1
     </select>
 
-    <select id="selectCoursesByTeacherId" parameterType="java.lang.Long" resultType="map">
+    <select id="selectCoursesByTeacherId" resultType="map">
         SELECT id, title, description, cover_img, teacher_name, status, create_time, update_time
         FROM course
-        WHERE teacher_id = #{teacherId}
+        WHERE teacher_name = #{teacherName}
         ORDER BY create_time DESC
     </select>
 
@@ -388,15 +388,25 @@
 
     <!-- ================ 统计查询SQL ================ -->
     <select id="selectHomeworkStatistics" parameterType="java.lang.Long" resultType="map">
+        WITH latest_submissions AS (
+            SELECT
+                hs.student_id,
+                hs.status,
+                hs.total_score,
+                ROW_NUMBER() OVER (PARTITION BY hs.student_id ORDER BY hs.submit_time DESC) as rn
+            FROM homework_submissions hs
+            WHERE hs.homework_id = #{homeworkId}
+        )
         SELECT
-            COUNT(DISTINCT hs.student_id) AS submitted_count,
+            COUNT(DISTINCT ls.student_id) AS submitted_count,
             COUNT(DISTINCT sc.student_id) AS total_student_count,
-            AVG(hs.total_score) AS avg_score,
-            MAX(hs.total_score) AS max_score,
-            MIN(hs.total_score) AS min_score
+            AVG(CASE WHEN ls.rn = 1 THEN ls.total_score ELSE NULL END) AS avg_score,
+            MAX(CASE WHEN ls.rn = 1 THEN ls.total_score ELSE NULL END) AS max_score,
+            MIN(CASE WHEN ls.rn = 1 THEN ls.total_score ELSE NULL END) AS min_score,
+            COUNT(DISTINCT CASE WHEN ls.rn = 1 AND ls.status = 'GRADED' THEN ls.student_id ELSE NULL END) AS graded_count
         FROM homework h
                  LEFT JOIN student_course sc ON h.course_id = sc.course_id AND sc.status = 1
-                 LEFT JOIN homework_submissions hs ON h.id = hs.homework_id
+                 LEFT JOIN latest_submissions ls ON ls.rn = 1
         WHERE h.id = #{homeworkId}
     </select>
 

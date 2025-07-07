@@ -268,8 +268,8 @@ public class HomeworkController {
     public ResponseEntity<Map<String, Object>> getCoursesByTeacher(@RequestHeader("Authorization") String token) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Long teacherId = jwtUtil.extractUserId(token);
-            List<Map<String, Object>> courses = homeworkService.getCoursesByTeacher(teacherId);
+            String teacherName=jwtUtil.extractUsername(token);
+            List<Map<String, Object>> courses = homeworkService.getCoursesByTeacher(teacherName);
             response.put("success", true);
             response.put("data", courses);
             return ResponseEntity.ok(response);

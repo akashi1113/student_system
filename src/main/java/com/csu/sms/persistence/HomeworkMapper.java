@@ -26,7 +26,7 @@ public interface HomeworkMapper {
 
     // ================ 课程相关 ================
     List<Long> selectStudentIdsByCourseId(Long courseId);
-    List<Map<String, Object>> selectCoursesByTeacherId(Long teacherId);
+    List<Map<String, Object>> selectCoursesByTeacherId(String teacherName);
     List<Map<String, Object>> selectCoursesByStudentId(Long studentId);
     boolean checkStudentCourseAccess(@Param("studentId") Long studentId, @Param("courseId") Long courseId);
     boolean checkTeacherCourseAccess(@Param("teacherId") Long teacherId, @Param("courseId") Long courseId);

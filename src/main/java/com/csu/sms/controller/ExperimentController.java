@@ -135,302 +135,302 @@ public class ExperimentController {
 
     }
 
-        //开始实验，注意step格式
-        @PostMapping("/{experimentId}/start")
-        public ApiResponse<ExperimentRecord> startExperiment (
-                @PathVariable Long experimentId,
-                @RequestHeader("Authorization") String token){
-            try {
-                Long userId = jwtUtil.extractUserId(token);
-                ExperimentRecord record = experimentService.startExperiment(experimentId, userId);
-                return ApiResponse.success("实验开始成功", record);
-            } catch (Exception e) {
-                return ApiResponse.error(500, "开始实验失败: " + e.getMessage());
-            }
+    //开始实验，注意step格式
+    @PostMapping("/{experimentId}/start")
+    public ApiResponse<ExperimentRecord> startExperiment (
+            @PathVariable Long experimentId,
+            @RequestHeader("Authorization") String token){
+        try {
+            Long userId = jwtUtil.extractUserId(token);
+            ExperimentRecord record = experimentService.startExperiment(experimentId, userId);
+            return ApiResponse.success("实验开始成功", record);
+        } catch (Exception e) {
+            return ApiResponse.error(500, "开始实验失败: " + e.getMessage());
         }
+    }
 
-        @GetMapping("/record/{experimentRecordId}/detail")
-        public ApiResponse<Map<String, Object>> getExperimentDetail (@PathVariable Long experimentRecordId){
-            try {
-                Map<String, Object> detail = experimentService.getExperimentRecordDetail(experimentRecordId);
-                if (detail == null) {
-                    return ApiResponse.error(404, "实验记录不存在");
+    @GetMapping("/record/{experimentRecordId}/detail")
+    public ApiResponse<Map<String, Object>> getExperimentDetail (@PathVariable Long experimentRecordId){
+        try {
+            Map<String, Object> detail = experimentService.getExperimentRecordDetail(experimentRecordId);
+            if (detail == null) {
+                return ApiResponse.error(404, "实验记录不存在");
+            }
+            return ApiResponse.success("获取实验详情成功", detail);
+        } catch (Exception e) {
+            return ApiResponse.error(500, "获取实验详情失败: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/code-history")
+    public ApiResponse<Void> saveCodeHistory (@RequestBody CodeHistoryRequest request){
+        try {
+            experimentService.saveCodeHistory(
+                    request.getExperimentRecordId(),
+                    request.getCode(),
+                    request.getLanguage(),
+                    request.getActionType(),
+                    request.getExecutionResult()
+            );
+            return ApiResponse.success("代码历史保存成功", null);
+        } catch (Exception e) {
+            return ApiResponse.error(500, "保存代码历史失败: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/record/{experimentRecordId}/code-history")
+    public ApiResponse<List<CodeHistory>> getCodeHistory (@PathVariable Long experimentRecordId){
+        try {
+            List<CodeHistory> history = experimentService.getCodeHistory(experimentRecordId);
+            return ApiResponse.success("获取代码历史成功", history);
+        } catch (Exception e) {
+            return ApiResponse.error(500, "获取代码历史失败: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/step-record")
+    public ApiResponse<Void> updateStepRecord (@RequestBody StepRecordRequest request){
+        try {
+            experimentService.updateStepRecord(request);
+            return ApiResponse.success("步骤记录更新成功", null);
+        } catch (Exception e) {
+            return ApiResponse.error(500, "更新步骤记录失败: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/complete")
+    public ApiResponse<Void> completeExperiment (@RequestBody CompleteExperimentRequest request){
+        try {
+            experimentService.completeExperiment(
+                    request.getExperimentRecordId(),
+                    request.getFinalCode(),
+                    request.getFinalLanguage(),
+                    request.getExecutionResult()
+            );
+            return ApiResponse.success("实验完成成功", null);
+        } catch (Exception e) {
+            return ApiResponse.error(500, "完成实验失败: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/record/{experimentRecordId}/report")
+    public ApiResponse<Map<String, Object>> generateReport (@PathVariable Long experimentRecordId){
+        try {
+            Map<String, Object> reportData = experimentService.generateReportData(experimentRecordId);
+            return ApiResponse.success("报告生成成功", reportData);
+        } catch (Exception e) {
+            return ApiResponse.error(500, "生成报告失败: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/user-records")
+    public ApiResponse<List<ExperimentRecord>> getUserExperimentRecords (
+            @RequestHeader("Authorization") String token){
+        try {
+            Long userId = jwtUtil.extractUserId(token);
+            List<ExperimentRecord> records = experimentService.getUserExperimentRecords(userId);
+            return ApiResponse.success("获取用户实验记录成功", records);
+        } catch (Exception e) {
+            return ApiResponse.error(500, "获取用户实验记录失败: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/record/{experimentRecordId}")
+    public ApiResponse<ExperimentRecord> getExperimentRecord (@PathVariable Long experimentRecordId){
+        try {
+            ExperimentRecord record = experimentService.getExperimentRecordById(experimentRecordId);
+            if (record == null) {
+                return ApiResponse.error(404, "实验记录不存在");
+            }
+            return ApiResponse.success("获取实验记录成功", record);
+        } catch (Exception e) {
+            return ApiResponse.error(500, "获取实验记录失败: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取学生最后一次提交的实验报告
+     */
+    @GetMapping("/reports/{experimentId}")
+    public ApiResponse<Map<String, Object>> getStudentFinalReport (
+            @PathVariable Long experimentId,
+            @RequestHeader("Authorization") String token){
+        try {
+            Long studentId = jwtUtil.extractUserId(token);
+            Map<String, Object> report = experimentService.getStudentFinalReport(experimentId, studentId);
+            return ApiResponse.success("获取报告成功", report);
+        } catch (Exception e) {
+            return ApiResponse.error(400, e.getMessage());
+        }
+    }
+
+    /**
+     * 获取实验所有学生的报告列表
+     * @param experimentId 实验ID
+     * @return 统一响应体
+     */
+    @GetMapping("/reports/{experimentId}/all")
+    public ApiResponse<List<Map<String, Object>>> getExperimentReports (@PathVariable("experimentId") Long
+                                                                                experimentId){
+        try {
+            List<ExperimentRecord> records = experimentService.getExperimentRecords(experimentId);
+
+            List<Map<String, Object>> reports = new ArrayList<>();
+            for (ExperimentRecord record : records) {
+                if ("COMPLETED".equals(record.getStatus())) {
+                    Map<String, Object> report = experimentService.getStudentFinalReport(
+                            experimentId, record.getUserId());
+                    reports.add(report);
                 }
-                return ApiResponse.success("获取实验详情成功", detail);
-            } catch (Exception e) {
-                return ApiResponse.error(500, "获取实验详情失败: " + e.getMessage());
             }
+
+            return ApiResponse.success("获取报告列表成功", reports);
+        } catch (Exception e) {
+            return ApiResponse.error(400, e.getMessage());
+        }
+    }
+
+    // 请求对象
+    public static class CodeHistoryRequest {
+        private Long experimentRecordId;
+        private String code;
+        private String language;
+        private String actionType;
+        private Object executionResult;
+
+        // getter and setter
+        public Long getExperimentRecordId() {
+            return experimentRecordId;
         }
 
-        @PostMapping("/code-history")
-        public ApiResponse<Void> saveCodeHistory (@RequestBody CodeHistoryRequest request){
-            try {
-                experimentService.saveCodeHistory(
-                        request.getExperimentRecordId(),
-                        request.getCode(),
-                        request.getLanguage(),
-                        request.getActionType(),
-                        request.getExecutionResult()
-                );
-                return ApiResponse.success("代码历史保存成功", null);
-            } catch (Exception e) {
-                return ApiResponse.error(500, "保存代码历史失败: " + e.getMessage());
-            }
+        public void setExperimentRecordId(Long experimentRecordId) {
+            this.experimentRecordId = experimentRecordId;
         }
 
-        @GetMapping("/record/{experimentRecordId}/code-history")
-        public ApiResponse<List<CodeHistory>> getCodeHistory (@PathVariable Long experimentRecordId){
-            try {
-                List<CodeHistory> history = experimentService.getCodeHistory(experimentRecordId);
-                return ApiResponse.success("获取代码历史成功", history);
-            } catch (Exception e) {
-                return ApiResponse.error(500, "获取代码历史失败: " + e.getMessage());
-            }
+        public String getCode() {
+            return code;
         }
 
-        @PutMapping("/step-record")
-        public ApiResponse<Void> updateStepRecord (@RequestBody StepRecordRequest request){
-            try {
-                experimentService.updateStepRecord(request);
-                return ApiResponse.success("步骤记录更新成功", null);
-            } catch (Exception e) {
-                return ApiResponse.error(500, "更新步骤记录失败: " + e.getMessage());
-            }
+        public void setCode(String code) {
+            this.code = code;
         }
 
-        @PostMapping("/complete")
-        public ApiResponse<Void> completeExperiment (@RequestBody CompleteExperimentRequest request){
-            try {
-                experimentService.completeExperiment(
-                        request.getExperimentRecordId(),
-                        request.getFinalCode(),
-                        request.getFinalLanguage(),
-                        request.getExecutionResult()
-                );
-                return ApiResponse.success("实验完成成功", null);
-            } catch (Exception e) {
-                return ApiResponse.error(500, "完成实验失败: " + e.getMessage());
-            }
+        public String getLanguage() {
+            return language;
         }
 
-        @GetMapping("/record/{experimentRecordId}/report")
-        public ApiResponse<Map<String, Object>> generateReport (@PathVariable Long experimentRecordId){
-            try {
-                Map<String, Object> reportData = experimentService.generateReportData(experimentRecordId);
-                return ApiResponse.success("报告生成成功", reportData);
-            } catch (Exception e) {
-                return ApiResponse.error(500, "生成报告失败: " + e.getMessage());
-            }
+        public void setLanguage(String language) {
+            this.language = language;
         }
 
-        @GetMapping("/user-records")
-        public ApiResponse<List<ExperimentRecord>> getUserExperimentRecords (
-                @RequestHeader("Authorization") String token){
-            try {
-                Long userId = jwtUtil.extractUserId(token);
-                List<ExperimentRecord> records = experimentService.getUserExperimentRecords(userId);
-                return ApiResponse.success("获取用户实验记录成功", records);
-            } catch (Exception e) {
-                return ApiResponse.error(500, "获取用户实验记录失败: " + e.getMessage());
-            }
+        public String getActionType() {
+            return actionType;
         }
 
-        @GetMapping("/record/{experimentRecordId}")
-        public ApiResponse<ExperimentRecord> getExperimentRecord (@PathVariable Long experimentRecordId){
-            try {
-                ExperimentRecord record = experimentService.getExperimentRecordById(experimentRecordId);
-                if (record == null) {
-                    return ApiResponse.error(404, "实验记录不存在");
-                }
-                return ApiResponse.success("获取实验记录成功", record);
-            } catch (Exception e) {
-                return ApiResponse.error(500, "获取实验记录失败: " + e.getMessage());
-            }
+        public void setActionType(String actionType) {
+            this.actionType = actionType;
         }
 
-        /**
-         * 获取学生最后一次提交的实验报告
-         */
-        @GetMapping("/reports/{experimentId}")
-        public ApiResponse<Map<String, Object>> getStudentFinalReport (
-                @PathVariable Long experimentId,
-                @RequestHeader("Authorization") String token){
-            try {
-                Long studentId = jwtUtil.extractUserId(token);
-                Map<String, Object> report = experimentService.getStudentFinalReport(experimentId, studentId);
-                return ApiResponse.success("获取报告成功", report);
-            } catch (Exception e) {
-                return ApiResponse.error(400, e.getMessage());
-            }
+        public Object getExecutionResult() {
+            return executionResult;
         }
 
-        /**
-         * 获取实验所有学生的报告列表
-         * @param experimentId 实验ID
-         * @return 统一响应体
-         */
-        @GetMapping("/reports/{experimentId}/all")
-        public ApiResponse<List<Map<String, Object>>> getExperimentReports (@PathVariable("experimentId") Long
-        experimentId){
-            try {
-                List<ExperimentRecord> records = experimentService.getExperimentRecords(experimentId);
+        public void setExecutionResult(Object executionResult) {
+            this.executionResult = executionResult;
+        }
+    }
 
-                List<Map<String, Object>> reports = new ArrayList<>();
-                for (ExperimentRecord record : records) {
-                    if ("COMPLETED".equals(record.getStatus())) {
-                        Map<String, Object> report = experimentService.getStudentFinalReport(
-                                experimentId, record.getUserId());
-                        reports.add(report);
-                    }
-                }
+    public static class StepRecordRequest {
+        private Long experimentRecordId;
+        private Integer stepIndex;
+        private Boolean completed;
+        private String notes;
 
-                return ApiResponse.success("获取报告列表成功", reports);
-            } catch (Exception e) {
-                return ApiResponse.error(400, e.getMessage());
-            }
+        // getter and setter
+        public Long getExperimentRecordId() {
+            return experimentRecordId;
         }
 
-        // 请求对象
-        public static class CodeHistoryRequest {
-            private Long experimentRecordId;
-            private String code;
-            private String language;
-            private String actionType;
-            private Object executionResult;
-
-            // getter and setter
-            public Long getExperimentRecordId() {
-                return experimentRecordId;
-            }
-
-            public void setExperimentRecordId(Long experimentRecordId) {
-                this.experimentRecordId = experimentRecordId;
-            }
-
-            public String getCode() {
-                return code;
-            }
-
-            public void setCode(String code) {
-                this.code = code;
-            }
-
-            public String getLanguage() {
-                return language;
-            }
-
-            public void setLanguage(String language) {
-                this.language = language;
-            }
-
-            public String getActionType() {
-                return actionType;
-            }
-
-            public void setActionType(String actionType) {
-                this.actionType = actionType;
-            }
-
-            public Object getExecutionResult() {
-                return executionResult;
-            }
-
-            public void setExecutionResult(Object executionResult) {
-                this.executionResult = executionResult;
-            }
+        public void setExperimentRecordId(Long experimentRecordId) {
+            this.experimentRecordId = experimentRecordId;
         }
 
-        public static class StepRecordRequest {
-            private Long experimentRecordId;
-            private Integer stepIndex;
-            private Boolean completed;
-            private String notes;
-
-            // getter and setter
-            public Long getExperimentRecordId() {
-                return experimentRecordId;
-            }
-
-            public void setExperimentRecordId(Long experimentRecordId) {
-                this.experimentRecordId = experimentRecordId;
-            }
-
-            public Integer getStepIndex() {
-                return stepIndex;
-            }
-
-            public void setStepIndex(Integer stepIndex) {
-                this.stepIndex = stepIndex;
-            }
-
-            public Boolean getCompleted() {
-                return completed;
-            }
-
-            public void setCompleted(Boolean completed) {
-                this.completed = completed;
-            }
-
-            public String getNotes() {
-                return notes;
-            }
-
-            public void setNotes(String notes) {
-                this.notes = notes;
-            }
+        public Integer getStepIndex() {
+            return stepIndex;
         }
 
-        public static class CompleteExperimentRequest {
-            private Long experimentRecordId;
-            private String finalCode;
-            private String finalLanguage;
-            private Object executionResult;
-
-            // getter and setter
-            public Long getExperimentRecordId() {
-                return experimentRecordId;
-            }
-
-            public void setExperimentRecordId(Long experimentRecordId) {
-                this.experimentRecordId = experimentRecordId;
-            }
-
-            public String getFinalCode() {
-                return finalCode;
-            }
-
-            public void setFinalCode(String finalCode) {
-                this.finalCode = finalCode;
-            }
-
-            public String getFinalLanguage() {
-                return finalLanguage;
-            }
-
-            public void setFinalLanguage(String finalLanguage) {
-                this.finalLanguage = finalLanguage;
-            }
-
-            public Object getExecutionResult() {
-                return executionResult;
-            }
-
-            public void setExecutionResult(Object executionResult) {
-                this.executionResult = executionResult;
-            }
+        public void setStepIndex(Integer stepIndex) {
+            this.stepIndex = stepIndex;
         }
 
-        public static class CancelExperimentRequest {
-            private Long experimentRecordId;
-
-            // getter and setter
-            public Long getExperimentRecordId() {
-                return experimentRecordId;
-            }
-
-            public void setExperimentRecordId(Long experimentRecordId) {
-                this.experimentRecordId = experimentRecordId;
-            }
+        public Boolean getCompleted() {
+            return completed;
         }
+
+        public void setCompleted(Boolean completed) {
+            this.completed = completed;
+        }
+
+        public String getNotes() {
+            return notes;
+        }
+
+        public void setNotes(String notes) {
+            this.notes = notes;
+        }
+    }
+
+    public static class CompleteExperimentRequest {
+        private Long experimentRecordId;
+        private String finalCode;
+        private String finalLanguage;
+        private Object executionResult;
+
+        // getter and setter
+        public Long getExperimentRecordId() {
+            return experimentRecordId;
+        }
+
+        public void setExperimentRecordId(Long experimentRecordId) {
+            this.experimentRecordId = experimentRecordId;
+        }
+
+        public String getFinalCode() {
+            return finalCode;
+        }
+
+        public void setFinalCode(String finalCode) {
+            this.finalCode = finalCode;
+        }
+
+        public String getFinalLanguage() {
+            return finalLanguage;
+        }
+
+        public void setFinalLanguage(String finalLanguage) {
+            this.finalLanguage = finalLanguage;
+        }
+
+        public Object getExecutionResult() {
+            return executionResult;
+        }
+
+        public void setExecutionResult(Object executionResult) {
+            this.executionResult = executionResult;
+        }
+    }
+
+    public static class CancelExperimentRequest {
+        private Long experimentRecordId;
+
+        // getter and setter
+        public Long getExperimentRecordId() {
+            return experimentRecordId;
+        }
+
+        public void setExperimentRecordId(Long experimentRecordId) {
+            this.experimentRecordId = experimentRecordId;
+        }
+    }
 
     }

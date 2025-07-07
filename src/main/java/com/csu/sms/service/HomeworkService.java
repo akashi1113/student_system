@@ -149,8 +149,8 @@ public class HomeworkService {
      * 获取教师的课程列表
      */
     @Transactional(readOnly = true)
-    public List<Map<String, Object>> getCoursesByTeacher(Long teacherId) {
-        return homeworkMapper.selectCoursesByTeacherId(teacherId);
+    public List<Map<String, Object>> getCoursesByTeacher(String teacherName) {
+        return homeworkMapper.selectCoursesByTeacherId(teacherName);
     }
 
     /**
