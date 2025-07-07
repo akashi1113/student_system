@@ -7,6 +7,8 @@ import com.csu.sms.vo.CommentVO;
 import com.csu.sms.vo.PostVO;
 import com.csu.sms.vo.ReportVO;
 
+import java.util.List;
+
 public interface ForumPostService {
     PageResult<ReportVO> getPendingReports(int page, int size);
 
@@ -41,4 +43,7 @@ public interface ForumPostService {
     //评论点赞功能
     boolean likeComment(Long commentId, Long userId);
     boolean unlikeComment(Long commentId, Long userId);
+
+    //火贴功能
+    List<PostVO> getHotPosts(int count);
 }
