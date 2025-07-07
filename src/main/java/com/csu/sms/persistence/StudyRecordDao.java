@@ -21,4 +21,5 @@ public interface StudyRecordDao {
                                                 @Param("videoIds") List<Long> videoIds);
 
     List<StudyRecord> findAllByUserId(@Param("userId") Long userId);
+
 }
