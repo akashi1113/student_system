@@ -19,4 +19,6 @@ public interface CourseVideoDao {
     int countAll();
 
     List<CourseVideo> findVideosByPage(@Param("offset") int offset,@Param("pageSize") Integer pageSize);
+
+    List<CourseVideo> findByIds(List<Long> videoIds);
 }
