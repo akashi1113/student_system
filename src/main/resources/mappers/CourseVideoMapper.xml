@@ -57,4 +57,11 @@
         LIMIT #{offset}, #{pageSize}
     </select>
 
+    <select id="findByIds" resultType="com.csu.sms.model.course.Course"> <!-- 注意替换成你的Course实体类路径 -->
+        SELECT * FROM course_video
+        WHERE id IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>
