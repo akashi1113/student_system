@@ -7,7 +7,11 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 public interface StudyRecordService {
-    public boolean saveStudyRecord(@Valid StudyRecordDTO studyRecordDTO);
-    public StudyRecord getStudyRecordByUserIdAndVideoId(Long userId, Long videoId);
-    public List<StudyRecordVO> getStudyRecordsByUserId(Long userId);
+    boolean saveStudyRecord(@Valid StudyRecordDTO studyRecordDTO);
+    StudyRecord getStudyRecordByUserIdAndVideoId(Long userId, Long videoId);
+    List<StudyRecordVO> getStudyRecordsByUserId(Long userId);
+    // StudyRecordService.java (接口)
+    StudyRecordVO getStudyRecordVOByUserIdAndVideoId(Long userId, Long videoId);
+
+
 }
