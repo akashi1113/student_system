@@ -61,7 +61,7 @@ public class VideoServiceImpl implements VideoService {
 
         if (studyRecord != null) {
             vo.setProgress(studyRecord.getProgress());
-            vo.setCompleted(studyRecord.getCompleted() == 1);
+            vo.setCompleted(studyRecord.getIsCompleted() == true);
         } else {
             vo.setProgress(0);
             vo.setCompleted(false);
@@ -95,7 +95,7 @@ public class VideoServiceImpl implements VideoService {
             StudyRecord record = videoStudyMap.get(video.getId());
             if (record != null) {
                 vo.setProgress(record.getProgress());
-                vo.setCompleted(record.getCompleted() == 1);
+                vo.setCompleted(record.getIsCompleted());
             } else {
                 vo.setProgress(0);
                 vo.setCompleted(false);
