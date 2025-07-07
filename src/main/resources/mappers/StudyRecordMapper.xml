@@ -1,55 +1,89 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.csu.sms.persistence.StudyRecordDao">
-    <select id="getStudyRecordByUserIdAndVideoId" resultType="com.csu.sms.model.course.StudyRecord">
-        SELECT * FROM study_record
-        WHERE user_id = #{userId} AND video_id = #{videoId}
-    </select>
+    <resultMap id="StudyRecordResultMap" type="com.csu.sms.model.course.StudyRecord">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="videoId" column="video_id"/>
+        <result property="videoDuration" column="video_duration"/>
+        <!-- ======== 新字段映射 ======== -->
+        <result property="lastPlaybackPosition" column="last_playback_position"/>
+        <result property="maxProgress" column="max_progress"/>
+        <result property="isCompleted" column="is_completed" javaType="java.lang.Boolean"/>
+        <result property="totalWatchTime" column="total_watch_time"/>
+        <!-- ======== 时间字段 ======== -->
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
 
-    <insert id="insertStudyRecord" parameterType="com.csu.sms.model.course.StudyRecord">
+    <!-- 2. 修改 INSERT 语句 -->
+<!--    <insert id="insertStudyRecord" useGeneratedKeys="true" keyProperty="id">-->
+<!--        INSERT INTO study_record (user_id, video_id, video_duration, last_playback_position, max_progress, is_completed, total_watch_time, create_time, update_time)-->
+<!--        VALUES (#{userId}, #{videoId}, #{videoDuration}, #{lastPlaybackPosition}, #{maxProgress}, #{isCompleted}, #{totalWatchTime}, NOW(), NOW())-->
+<!--    </insert>-->
+    <insert id="insertStudyRecord" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO study_record (
-            user_id, video_id, progress, duration,
-            completed, last_study_time, create_time, update_time
+            user_id, video_id, video_duration,
+            last_playback_position, max_progress,
+            is_completed, total_watch_time,
+            create_time, update_time
         )
         VALUES (
-                   #{userId}, #{videoId}, #{progress}, #{duration},
-                   #{completed}, #{lastStudyTime}, #{createTime}, #{updateTime}
+                   #{userId}, #{videoId}, #{videoDuration},
+                   #{lastPlaybackPosition}, #{maxProgress},
+                   #{isCompleted}, #{totalWatchTime},
+                   NOW(), NOW()
                )
+            ON DUPLICATE KEY UPDATE
+                                 video_duration = VALUES(video_duration),
+                                 last_playback_position = VALUES(last_playback_position),
+                                 max_progress = GREATEST(max_progress, VALUES(max_progress)),
+                                 is_completed = VALUES(is_completed),
+                                 total_watch_time = total_watch_time + VALUES(total_watch_time),
+                                 update_time = NOW()
     </insert>
 
-    <select id="findByUserIdAndVideoIds" resultType="com.csu.sms.model.course.StudyRecord">
+    <!-- 3. 修改 UPDATE 语句 -->
+    <update id="updateStudyRecord">
+        UPDATE study_record
+        <set>
+            <if test="lastPlaybackPosition != null">last_playback_position = #{lastPlaybackPosition},</if>
+            <if test="maxProgress != null">max_progress = #{maxProgress},</if>
+            <if test="isCompleted != null">is_completed = #{isCompleted},</if>
+            <if test="totalWatchTime != null">total_watch_time = #{totalWatchTime},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 4. 查询语句也需要更新字段列表 -->
+    <select id="getStudyRecordByUserIdAndVideoId" resultMap="StudyRecordResultMap">
+        SELECT * FROM study_record WHERE user_id = #{userId} AND video_id = #{videoId}
+    </select>
+
+    <select id="findAllByUserId" resultMap="StudyRecordResultMap">
+        SELECT * FROM study_record WHERE user_id = #{userId} ORDER BY update_time DESC
+    </select>
+
+    <!-- 5. 【新增】为计算课程总进度准备的批量查询方法 -->
+    <select id="findByUserIdAndVideoIds" resultMap="StudyRecordResultMap">
         SELECT * FROM study_record
         WHERE user_id = #{userId}
         AND video_id IN
-        <foreach collection="videoIds" item="videoId" open="(" separator="," close=")">
+        <foreach item="videoId" collection="videoIds" open="(" separator="," close=")">
             #{videoId}
         </foreach>
     </select>
 
+    <!-- 6. 【新增】为计算课程总进度准备的批量查询方法 -->
     <select id="countCompletedVideosByUserIdAndVideoIds" resultType="int">
-        SELECT COUNT(*)
-        FROM study_record
+        SELECT COUNT(*) FROM study_record
         WHERE user_id = #{userId}
         AND video_id IN
-        <foreach collection="videoIds" item="videoId" open="(" separator="," close=")">
+        <foreach item="videoId" collection="videoIds" open="(" separator="," close=")">
             #{videoId}
         </foreach>
-        AND completed = 1
-    </select>
-
-    <update id="updateStudyRecord" parameterType="com.csu.sms.model.course.StudyRecord">
-        UPDATE study_record
-        SET progress = #{progress},
-            duration = #{duration},
-            completed = #{completed},
-            last_study_time = #{lastStudyTime},
-            update_time = #{updateTime}
-        WHERE user_id = #{userId} AND video_id = #{videoId}
-    </update>
-
-    <select id="findAllByUserId" resultType="com.csu.sms.model.course.StudyRecord">
-        SELECT * FROM study_record WHERE user_id = #{userId}
+        AND is_completed = TRUE
     </select>
 
 </mapper>
