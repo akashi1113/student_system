@@ -16,7 +16,7 @@ public interface ForumPostService {
     PostVO getPostDetailAndIncreaseView(Long id);
     Long createPost(ForumPostDTO forumPostDTO);
     boolean updatePost(ForumPostDTO forumPostDTO);
-    boolean deletePost(Long id);
+    boolean deletePost(Long id,Long currentUserId,boolean isAdmin);
     boolean likePost(Long postId, Long userId);
     boolean unlikePost(Long postId, Long userId);
 
@@ -37,7 +37,7 @@ public interface ForumPostService {
     // 获取某个评论的回复列表 (楼中楼)
     PageResult<CommentVO> getCommentReplies(Long parentCommentId, Integer page, Integer size, Long currentUserId);
     Long createComment(Long postId, Long userId, ForumCommentDTO commentDTO);
-    boolean deleteComment(Long postId, Long commentId, Long userId);
+    boolean deleteComment(Long postId, Long commentId, Long userId, boolean isAdmin);
     boolean updateComment(Long postId, Long commentId, Long userId, ForumCommentDTO commentDTO);
 
     //评论点赞功能

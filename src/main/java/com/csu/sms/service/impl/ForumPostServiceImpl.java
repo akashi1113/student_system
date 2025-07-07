@@ -1,6 +1,7 @@
 package com.csu.sms.service.impl;
 
 import com.csu.sms.common.PageResult;
+import com.csu.sms.common.ServiceException;
 import com.csu.sms.dto.ForumCommentDTO;
 import com.csu.sms.dto.ForumPostDTO;
 import com.csu.sms.model.post.ForumComment;
@@ -275,7 +276,7 @@ public class ForumPostServiceImpl implements ForumPostService {
         // 查询原帖子
         ForumPost existingPost = forumPostDao.findById(forumPostDTO.getId());
         if (existingPost == null) {
-            return false;
+            throw new ServiceException("帖子不存在");
         }
 
         // 检查权限（只有作者或管理员可以修改）
@@ -283,7 +284,7 @@ public class ForumPostServiceImpl implements ForumPostService {
             // 检查是否为管理员
             User user = userDao.findById(existingPost.getUserId());
             if (user == null || user.getRole() != UserRole.ADMIN.getCode()) {
-                return false;
+                throw new ServiceException("无权限修改帖子");
             }
         }
 
@@ -313,11 +314,15 @@ public class ForumPostServiceImpl implements ForumPostService {
 
     @Override
     @Transactional
-    public boolean deletePost(Long id) {
+    public boolean deletePost(Long id, Long currentUserId, boolean isAdmin) {
         // 查询帖子
         ForumPost post = forumPostDao.findById(id);
         if (post == null) {
-            return false;
+            throw new ServiceException("帖子不存在");
+        }
+
+        if (!isAdmin && !post.getUserId().equals(currentUserId)) {
+            throw new ServiceException("无权限删除帖子");
         }
 
         // 逻辑删除帖子
@@ -518,7 +523,7 @@ public class ForumPostServiceImpl implements ForumPostService {
             // Redis没有，使用DB中的值
             vo.setLikeCount(comment.getLikeCount()); // ForumComment对象自带likeCount
             //     redisTemplate.opsForValue().set(likeCountKey, comment.getLikeCount(), CACHE_TTL_HOURS, TimeUnit.HOURS); // 移除
-            // }
+            //
 
             // 设置用户是否点赞
             vo.setIsLiked(currentUserId != null && finalUserLikedCommentIdsSet.contains(comment.getId())); // 之前是 finalUserLikedCommentIds.contains(comment.getId())
@@ -592,22 +597,28 @@ public class ForumPostServiceImpl implements ForumPostService {
 
     @Override
     @Transactional
-    public boolean deleteComment(Long postId, Long commentId, Long userId) {
+    public boolean deleteComment(Long postId, Long commentId, Long userId,boolean isAdmin) {
         ForumComment comment = forumCommentDao.findById(commentId);
         if (comment == null || !comment.getPostId().equals(postId)) {
             log.warn("删除评论失败：评论 {} 不存在或不属于帖子 {}.", commentId, postId);
-            return false;
+            throw new ServiceException("评论不存在");
         }
 
         ForumPost post = forumPostDao.findById(postId);
-        User user = userDao.findById(userId);
-        //评论的作者，帖子的作者，管理员才有权限删除评论
-        if (!(comment.getUserId().equals(userId) ||
-                (post != null && post.getUserId().equals(userId)) ||
-                (user != null && user.getRole() == UserRole.ADMIN.getCode()))) {
+
+        if (!isAdmin && !comment.getUserId().equals(userId) && !(post != null && post.getUserId().equals(userId))) {
             log.warn("删除评论失败：用户 {} 没有权限删除评论 {}。", userId, commentId);
-            return false;
+            throw new ServiceException("无权限删除评论");
         }
+
+//        User user = userDao.findById(userId);
+//        //评论的作者，帖子的作者，管理员才有权限删除评论
+//        if (!(comment.getUserId().equals(userId) ||
+//                (post != null && post.getUserId().equals(userId)) ||
+//                (user != null && user.getRole() == UserRole.ADMIN.getCode()))) {
+//            log.warn("删除评论失败：用户 {} 没有权限删除评论 {}。", userId, commentId);
+//            return false;
+//        }
 
         // 逻辑删除评论 (更新状态)
         int result = forumCommentDao.updateCommentStatus(commentId, 1);
