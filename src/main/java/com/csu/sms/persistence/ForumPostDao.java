@@ -40,4 +40,6 @@ public interface ForumPostDao {
     void decrementCommentCount(@Param("postId") Long postId);
 
     List<ForumPost> findPostsByIds(@Param("postIds") List<Long> postIds);
+
+    List<ForumPost> findHotPages(@Param("count") Integer count);
 }
