@@ -57,13 +57,17 @@
     <select id="findUsersByIds" resultType="com.csu.sms.model.user.User">
         SELECT * FROM user WHERE id IN
         <foreach item="id" collection="userIds" open="(" separator="," close=")">
-            #{userIds}
+            #{id}
         </foreach>
     </select>
 
     <select id="findUsersByRole" resultType="com.csu.sms.model.user.User">
         SELECT * FROM user WHERE role = #{role}
     </select>
+
+    <delete id="deleteUser" parameterType="long">
+        DELETE FROM user WHERE id = #{id}
+    </delete>
 
 </mapper>
 

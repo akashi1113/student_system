@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.CodeHistoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.csu.sms.model.experiment.CodeHistory">
+        <id column="id" property="id"/>
+        <result column="experiment_record_id" property="experimentRecordId"/>
+        <result column="code" property="code"/>
+        <result column="language" property="language"/>
+        <result column="action_type" property="actionType"/>
+        <result column="execution_result" property="executionResult"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, experiment_record_id, code, language, action_type, execution_result, created_at
+    </sql>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM code_history
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByExperimentRecordId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM code_history
+        WHERE experiment_record_id = #{experimentRecordId}
+        ORDER BY created_at ASC
+    </select>
+
+    <select id="findLatestByExperimentRecordId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM code_history
+        WHERE experiment_record_id = #{experimentRecordId}
+        ORDER BY created_at DESC
+        LIMIT 1
+    </select>
+
+    <insert id="insert" parameterType="com.csu.sms.model.experiment.CodeHistory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO code_history (
+            experiment_record_id, code, language, action_type, execution_result, created_at
+        ) VALUES (
+            #{experimentRecordId}, #{code}, #{language}, #{actionType}, #{executionResult}, NOW()
+        )
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO code_history (
+            experiment_record_id, code, language, action_type, execution_result, created_at
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.experimentRecordId}, #{item.code}, #{item.language}, #{item.actionType}, #{item.executionResult}, NOW())
+        </foreach>
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM code_history WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByExperimentRecordId">
+        DELETE FROM code_history WHERE experiment_record_id = #{experimentRecordId}
+    </delete>
+
+    <select id="countByExperimentRecordId" resultType="int">
+        SELECT COUNT(*)
+        FROM code_history
+        WHERE experiment_record_id = #{experimentRecordId}
+    </select>
+
+</mapper>

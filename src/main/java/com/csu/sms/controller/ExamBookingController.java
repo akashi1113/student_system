@@ -12,6 +12,7 @@ import com.csu.sms.dto.booking.CancelBookingDTO;
 import com.csu.sms.dto.booking.CheckInDTO;
 import com.csu.sms.common.ApiResponse;
 
+import com.csu.sms.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,19 +31,16 @@ public class ExamBookingController {
     @Autowired
     private ExamBookingService examBookingService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     // ============================== 考试时间段管理 ==============================
 
-    /**
-     * 查询考试的可预约时间段
-     */
     @GetMapping("/time-slots/{examId}")
     public ApiResponse<List<ExamTimeSlot>> getAvailableTimeSlots(@PathVariable("examId") Long examId) {
         return examBookingService.getAvailableTimeSlots(examId);
     }
 
-    /**
-     * 查询指定日期的时间段
-     */
     @GetMapping("/time-slots/by-date")
     public ApiResponse<List<ExamTimeSlot>> getTimeSlotsByDate(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
@@ -50,34 +48,31 @@ public class ExamBookingController {
         return examBookingService.getTimeSlotsByDate(date, examMode);
     }
 
-    /**
-     * 创建考试时间段
-     */
     @PostMapping("/time-slots")
-    public ApiResponse<ExamTimeSlot> createTimeSlot(@Valid @RequestBody TimeSlotCreateDTO createDTO) {
+    public ApiResponse<ExamTimeSlot> createTimeSlot(@Valid @RequestBody TimeSlotCreateDTO createDTO,
+                                                    @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
+        createDTO.setCreatedBy(userId);
         return examBookingService.createTimeSlot(createDTO);
     }
 
-    /**
-     * 批量创建时间段
-     */
     @PostMapping("/time-slots/batch")
-    public ApiResponse<List<ExamTimeSlot>> batchCreateTimeSlots(@Valid @RequestBody List<TimeSlotCreateDTO> createDTOs) {
+    public ApiResponse<List<ExamTimeSlot>> batchCreateTimeSlots(@Valid @RequestBody List<TimeSlotCreateDTO> createDTOs,
+                                                                @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
+        createDTOs.forEach(dto -> dto.setCreatedBy(userId));
         return examBookingService.batchCreateTimeSlots(createDTOs);
     }
 
-    /**
-     * 更新时间段信息
-     */
     @PutMapping("/time-slots/{timeSlotId}")
     public ApiResponse<ExamTimeSlot> updateTimeSlot(@PathVariable Long timeSlotId,
-                                                    @Valid @RequestBody TimeSlotCreateDTO updateDTO) {
+                                                    @Valid @RequestBody TimeSlotCreateDTO updateDTO,
+                                                    @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
+        updateDTO.setCreatedBy(userId);
         return examBookingService.updateTimeSlot(timeSlotId, updateDTO);
     }
 
-    /**
-     * 删除时间段
-     */
     @DeleteMapping("/time-slots/{timeSlotId}")
     public ApiResponse<Void> deleteTimeSlot(@PathVariable Long timeSlotId) {
         return examBookingService.deleteTimeSlot(timeSlotId);
@@ -85,70 +80,54 @@ public class ExamBookingController {
 
     // ============================== 考试预约管理 ==============================
 
-    /**
-     * 预约考试
-     */
     @PostMapping("/bookings")
-    public ApiResponse<ExamBooking> bookExam(@Valid @RequestBody BookingRequestDTO bookingRequest) {
+    public ApiResponse<ExamBooking> bookExam(@Valid @RequestBody BookingRequestDTO bookingRequest,
+                                             @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
+        bookingRequest.setUserId(userId);
         return examBookingService.bookExam(bookingRequest);
     }
 
-    /**
-     * 取消预约
-     */
     @PostMapping("/bookings/{bookingId}/cancel")
     public ApiResponse<Void> cancelBooking(@PathVariable Long bookingId,
-                                           @Valid @RequestBody CancelBookingDTO cancelDTO) {
-        return examBookingService.cancelBooking(bookingId, cancelDTO.getUserId(), cancelDTO.getCancelReason());
+                                           @Valid @RequestBody CancelBookingDTO cancelDTO,
+                                           @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
+        return examBookingService.cancelBooking(bookingId, userId, cancelDTO.getCancelReason());
     }
 
-    /**
-     * 确认预约
-     */
     @PostMapping("/bookings/{bookingId}/confirm")
-    public ApiResponse<Void> confirmBooking(@PathVariable Long bookingId) {
+    public ApiResponse<Void> confirmBooking(@PathVariable Long bookingId,
+                                            @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
         return examBookingService.confirmBooking(bookingId);
     }
 
-    /**
-     * 查询用户的预约列表
-     */
-    @GetMapping("/bookings/user/{userId}")
-    public ApiResponse<List<BookingDetailsDTO>> getUserBookings(@PathVariable("userId") Long userId,
+    @GetMapping("/bookings/user")
+    public ApiResponse<List<BookingDetailsDTO>> getUserBookings(@RequestHeader("Authorization") String token,
                                                                 @RequestParam(required = false) String status) {
+        Long userId = jwtUtil.extractUserId(token);
         return examBookingService.getUserBookings(userId, status);
     }
 
-    /**
-     * 查询预约详情
-     */
     @GetMapping("/bookings/{bookingId}")
     public ApiResponse<BookingDetailsDTO> getBookingDetails(@PathVariable("bookingId") Long bookingId) {
         return examBookingService.getBookingDetails(bookingId);
     }
 
-    /**
-     * 根据用户ID和考试ID获取预约ID
-     */
     @GetMapping("/bookings/by-user-exam")
     public ApiResponse<Long> getBookingIdByUserAndExam(
-            @RequestParam("userId") Long userId,
-            @RequestParam("examId") Long examId
-    ) {
+            @RequestParam("examId") Long examId,
+            @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
         return examBookingService.getBookingIdByUserAndExam(userId, examId);
     }
 
-    /**
-     * 通过预约号查询预约详情
-     */
     @GetMapping("/bookings/by-number/{bookingNumber}")
     public ApiResponse<BookingDetailsDTO> getBookingDetailsByNumber(@PathVariable String bookingNumber) {
         return examBookingService.getBookingDetailsByNumber(bookingNumber);
     }
 
-    /**
-     * 签到
-     */
     @PostMapping("/bookings/{bookingId}/check-in")
     public ApiResponse<Void> checkIn(@PathVariable Long bookingId,
                                      @Valid @RequestBody CheckInDTO checkInDTO) {
@@ -157,60 +136,43 @@ public class ExamBookingController {
 
     // ============================== 统计查询 ==============================
 
-    /**
-     * 查询时间段的预约统计
-     */
     @GetMapping("/stats/time-slot/{timeSlotId}")
     public ApiResponse<Map<String, Object>> getTimeSlotStats(@PathVariable Long timeSlotId) {
         return examBookingService.getTimeSlotStats(timeSlotId);
     }
 
-    /**
-     * 查询用户的预约统计
-     */
-    @GetMapping("/stats/user/{userId}")
-    public ApiResponse<Map<String, Object>> getUserBookingStats(@PathVariable("userId") Long userId) {
+    @GetMapping("/stats/user")
+    public ApiResponse<Map<String, Object>> getUserBookingStats(@RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
         return examBookingService.getUserBookingStats(userId);
     }
 
     // ============================== 通知管理 ==============================
 
-    /**
-     * 查询用户通知列表
-     */
-    @GetMapping("/notifications/{userId}")
-    public ApiResponse<List<ExamNotification>> getUserNotifications(@PathVariable("userId") Long userId) {
+    @GetMapping("/notifications")
+    public ApiResponse<List<ExamNotification>> getUserNotifications(@RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
         return examBookingService.getUserNotifications(userId);
     }
 
-    /**
-     * 查询未读通知
-     */
-    @GetMapping("/notifications/unread/{userId}")
-    public ApiResponse<List<ExamNotification>> getUnreadNotifications(@PathVariable Long userId) {
+    @GetMapping("/notifications/unread")
+    public ApiResponse<List<ExamNotification>> getUnreadNotifications(@RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
         return examBookingService.getUnreadNotifications(userId);
     }
 
-    /**
-     * 标记通知为已读
-     */
     @PostMapping("/notifications/{notificationId}/read")
     public ApiResponse<Void> markNotificationAsRead(@PathVariable("notificationId") Long notificationId) {
         return examBookingService.markNotificationAsRead(notificationId);
     }
 
-    /**
-     * 批量标记通知为已读
-     */
     @PostMapping("/notifications/batch-read")
-    public ApiResponse<Void> batchMarkAsRead(@RequestParam Long userId,
-                                             @RequestBody List<Long> notificationIds) {
+    public ApiResponse<Void> batchMarkAsRead(@RequestBody List<Long> notificationIds,
+                                             @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
         return examBookingService.batchMarkAsRead(userId, notificationIds);
     }
 
-    /**
-     * 发送考试提醒通知
-     */
     @PostMapping("/notifications/exam-reminder/{examId}")
     public ApiResponse<Void> sendExamReminder(@PathVariable Long examId) {
         return examBookingService.sendExamReminder(examId);
@@ -218,9 +180,6 @@ public class ExamBookingController {
 
     // ============================== 管理功能 ==============================
 
-    /**
-     * 处理过期预约
-     */
     @PostMapping("/admin/handle-expired")
     public ApiResponse<Void> handleExpiredBookings() {
         return examBookingService.handleExpiredBookings();
@@ -232,31 +191,26 @@ public class ExamBookingController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "20") int pageSize
-    ) {
+            @RequestParam(defaultValue = "20") int pageSize) {
         return examBookingService.getBookings(status, startDate, endDate, pageNum, pageSize);
     }
 
     @GetMapping("/stats")
     public ApiResponse<Map<String, Long>> getBookingStats(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
-    ) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         return examBookingService.getBookingStats(startDate, endDate);
     }
 
-    // 获取考试时间段列表
     @GetMapping("/{examId}/time-slots")
     public ApiResponse<List<ExamTimeSlot>> getTimeSlots(
             @PathVariable("examId") Long examId) {
         return examBookingService.getTimeSlots(examId);
     }
 
-    // 切换时间段状态
     @PostMapping("/time-slots/{timeSlotId}/toggle-status")
     public ApiResponse<Void> toggleTimeSlotStatus(
             @PathVariable("timeSlotId") Long timeSlotId) {
         return examBookingService.toggleTimeSlotStatus(timeSlotId);
     }
-
 }

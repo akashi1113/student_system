@@ -40,4 +40,8 @@ build/
 ### Mac OS ###
 .DS_Store
 
+<<<<<<< HEAD
 logs/*.log
+=======
+logs/*.log
+>>>>>>> 53b34119d4bef64d700afe2dc86c4c11cda8f7e7

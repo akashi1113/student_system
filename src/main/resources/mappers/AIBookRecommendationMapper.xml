@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.AIBookRecommendationMapper">
+    
+    <resultMap id="BaseResultMap" type="com.csu.sms.model.AIBookRecommendation">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="course_id" property="courseId" />
+        <result column="course_name" property="courseName" />
+        <result column="score" property="score" />
+        <result column="book_title" property="bookTitle" />
+        <result column="book_author" property="bookAuthor" />
+        <result column="douban_url" property="doubanUrl" />
+        <result column="recommendation_reason" property="recommendationReason" />
+        <result column="is_read" property="isRead" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, user_id, course_id, course_name, score, book_title, book_author, 
+        douban_url, recommendation_reason, is_read, create_time
+    </sql>
+    
+    <insert id="insert" parameterType="com.csu.sms.model.AIBookRecommendation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ai_book_recommendations (
+            user_id, course_id, course_name, score, book_title, book_author, 
+            douban_url, recommendation_reason, is_read, create_time
+        ) VALUES (
+            #{userId}, #{courseId}, #{courseName}, #{score}, #{bookTitle}, #{bookAuthor}, 
+            #{doubanUrl}, #{recommendationReason}, #{isRead}, #{createTime}
+        )
+    </insert>
+    
+    <update id="updateIsRead">
+        UPDATE ai_book_recommendations 
+        SET is_read = 1 
+        WHERE id = #{id} AND user_id = #{userId}
+    </update>
+    
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM ai_book_recommendations
+        WHERE user_id = #{userId}
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM ai_book_recommendations
+        WHERE id = #{id}
+    </select>
+    
+    <select id="findByCourseIdAndUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM ai_book_recommendations
+        WHERE course_id = #{courseId} AND user_id = #{userId}
+        ORDER BY create_time DESC
+    </select>
+    
+    <delete id="deleteById">
+        DELETE FROM ai_book_recommendations 
+        WHERE id = #{id} AND user_id = #{userId}
+    </delete>
+</mapper> 

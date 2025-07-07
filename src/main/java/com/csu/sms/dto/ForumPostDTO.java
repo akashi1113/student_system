@@ -22,6 +22,6 @@ public class ForumPostDTO {
     @NotBlank(message = "帖子分类不能为空")
     private String category;
 
-    private PostStatus status = PostStatus.PUBLISHED; // 默认为已发布状态
+    private PostStatus status = PostStatus.PENDING_REVIEW; // 默认为待审核状态
 }
 

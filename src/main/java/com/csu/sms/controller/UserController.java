@@ -75,37 +75,9 @@ public class UserController {
     // 前端请求 Content-Type 必须是 multipart/form-data
     @PostMapping("/register")
     @LogOperation(module = "用户管理", operation = "用户注册", description = "用户注册账号")
-    public ApiControllerResponse<Long> register(
-            @NotBlank(message = "用户名不能为空")
-            @Size(min = 3, max = 20, message = "用户名长度需在3到20字符之间")
-            @RequestParam String username,
-
-            @NotBlank(message = "密码不能为空")
-            @Size(min = 6, max = 20, message = "密码长度需在6到20字符之间")
-            @RequestParam String password,
-
-            @NotBlank(message = "邮箱不能为空")
-            @Email(message = "邮箱格式不正确")
-            @RequestParam String email,
-
-            // 接收头像文件，可选
-            @RequestParam(value = "avatarFile", required = false) MultipartFile avatarFile
-    ) {
-        try {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(username);
-            userDTO.setPassword(password);
-            userDTO.setEmail(email);
-
-            Long userId = userService.register(userDTO, avatarFile); // 传递文件
-            return ApiControllerResponse.success("注册成功！", userId);
-        } catch (ServiceException e) {
-            log.warn("Registration failed for user {}: {}", username, e.getMessage());
-            return ApiControllerResponse.error(e.getCode(), e.getMessage());
-        } catch (Exception e) {
-            log.error("An unexpected error occurred during registration for user {}: {}", username, e.getMessage(), e);
-            return ApiControllerResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误，注册失败，请稍后再试。");
-        }
+    public ApiControllerResponse<Long> register(@RequestBody UserDTO userDTO) {
+        Long userId = userService.register(userDTO, null); // 头像如需上传建议单独接口
+        return ApiControllerResponse.success(userId);
     }
 
     // 更新个人信息 (支持头像上传/清除)

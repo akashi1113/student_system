@@ -13,8 +13,18 @@
             LIMIT #{offset}, #{limit}
     </select>
 
+    <select id="findCoursesByPageForAdmin" resultType="com.csu.sms.model.course.Course">
+        SELECT * FROM course
+        ORDER BY create_time DESC
+            LIMIT #{offset}, #{limit}
+    </select>
+
     <select id="countCourses" resultType="int">
         SELECT COUNT(*) FROM course WHERE status = 0
+    </select>
+
+    <select id="countCoursesForAdmin" resultType="int">
+        SELECT COUNT(*) FROM course
     </select>
 
     <update id="updateCourse" parameterType="com.csu.sms.model.course.Course">

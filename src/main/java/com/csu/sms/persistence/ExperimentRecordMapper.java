@@ -1,36 +1,56 @@
 package com.csu.sms.persistence;
 
 import com.csu.sms.model.experiment.ExperimentRecord;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface ExperimentRecordMapper {
 
-    @Select("SELECT * FROM experiment_record WHERE id = #{id}")
-    ExperimentRecord selectById(@Param("id") Long id);
+    /**
+     * 根据ID查询实验记录
+     */
+    ExperimentRecord findById(@Param("id") Long id);
 
-    @Select("SELECT * FROM experiment_record WHERE booking_id = #{bookingId}")
-    ExperimentRecord selectByBookingId(@Param("bookingId") Long bookingId);
+    /**
+     * 查询用户正在进行的实验
+     */
+    ExperimentRecord findRunningByUserAndExperiment(@Param("userId") Long userId, @Param("experimentId") Long experimentId);
 
-    @Select("SELECT * FROM experiment_record WHERE booking_id IN " +
-            "(SELECT id FROM experiment_booking WHERE user_id = #{userId}) " +
-            "ORDER BY created_at DESC")
-    List<ExperimentRecord> selectByUserId(@Param("userId") Long userId);
+    /**
+     * 查询用户实验记录列表
+     */
+    List<ExperimentRecord> findByUserId(@Param("userId") Long userId);
 
-    @Insert("INSERT INTO experiment_record (booking_id, step_data, parameters, result_data, " +
-            "start_time, end_time, created_at) " +
-            "VALUES (#{bookingId}, #{stepData}, #{parameters}, #{resultData}, " +
-            "#{startTime}, #{endTime}, #{createdAt})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insert(ExperimentRecord record);
+    /**
+     * 查询实验的所有记录
+     */
+    List<ExperimentRecord> findByExperimentId(@Param("experimentId") Long experimentId);
 
-    @Update("UPDATE experiment_record SET step_data=#{stepData}, parameters=#{parameters}, " +
-            "result_data=#{resultData}, start_time=#{startTime}, end_time=#{endTime} " +
-            "WHERE id=#{id}")
-    void update(ExperimentRecord record);
+    /**
+     * 插入实验记录
+     */
+    int insert(ExperimentRecord record);
 
-    @Update("UPDATE experiment_record SET end_time=#{endTime} WHERE id=#{id}")
-    void updateEndTime(@Param("id") Long id, @Param("endTime") String endTime);
+    /**
+     * 更新实验记录
+     */
+    int update(ExperimentRecord record);
+
+    /**
+     * 删除实验记录
+     */
+    int deleteById(@Param("id") Long id);
+
+    /**
+     * 统计用户完成的实验数量
+     */
+    int countCompletedByUserId(@Param("userId") Long userId);
+
+    // 根据实验ID和学生ID获取最后一次完成的实验记录
+    ExperimentRecord findLastCompletedByExperimentAndUser(@Param("experimentId") Long experimentId,
+                                                          @Param("userId") Long userId);
+
 }

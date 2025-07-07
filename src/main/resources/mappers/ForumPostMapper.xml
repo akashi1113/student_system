@@ -38,6 +38,14 @@
         SELECT * FROM forum_post WHERE id = #{id}
     </select>
 
+    <select id="findPostsByIds" resultType="com.csu.sms.model.post.ForumPost">
+        SELECT * FROM forum_post
+        WHERE id IN
+        <foreach collection="postIds" item="postId" open="(" separator="," close=")">
+            #{postId}
+        </foreach>
+    </select>
+
     <update id="updatePost">
         UPDATE forum_post
         SET title = #{title},
@@ -52,7 +60,7 @@
         WHERE id = #{id}
     </update>
 
-    <insert id="insertPost" parameterType="com.csu.sms.model.post.ForumPost">
+    <insert id="insertPost" parameterType="com.csu.sms.model.post.ForumPost" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO forum_post (
             title, content, category, user_id, status, create_time, update_time, like_count, view_count
         ) VALUES (
@@ -77,5 +85,17 @@
         SET view_count = #{viewCount}
         WHERE id = #{postId}
     </update>
+
+    <select id="incrementCommentCount" parameterType="long">
+        UPDATE forum_post
+        SET comment_count = comment_count + 1
+        WHERE id = #{postId}
+    </select>
+
+    <select id="decrementCommentCount" parameterType="long">
+        UPDATE forum_post
+        SET comment_count = comment_count - 1
+        WHERE id = #{postId}
+    </select>
 
 </mapper>

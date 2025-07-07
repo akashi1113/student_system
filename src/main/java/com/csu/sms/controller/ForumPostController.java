@@ -8,6 +8,7 @@ import com.csu.sms.service.ForumPostService;
 import com.csu.sms.service.UserService;
 import com.csu.sms.vo.CommentVO;
 import com.csu.sms.vo.PostVO;
+import com.csu.sms.vo.ReportVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -237,6 +238,17 @@ public class ForumPostController {
         return ApiControllerResponse.success(result);
     }
 
+    @GetMapping("/admin/detail/{id}")
+    public ApiControllerResponse<PostVO> getPostDetailForAdmin(
+            @PathVariable Long id
+    ){
+        PostVO postVO = forumPostService.getPostDetailForAdmin(id);
+        if(postVO == null){
+            return ApiControllerResponse.error(404,"该帖子内容为空");
+        }
+        return ApiControllerResponse.success(postVO);
+    }
+
     // 审核通过帖子
     @PostMapping("/admin/{id}/approve")
     public ApiControllerResponse<Boolean> approvePost(
@@ -273,6 +285,19 @@ public class ForumPostController {
             return ApiControllerResponse.error(500, "拒绝帖子操作失败");
         }
     }
+
+    @GetMapping("/admin/reports")
+    public ApiControllerResponse<PageResult<ReportVO>> getPendingReports(
+            @RequestParam Long adminId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        if (!userService.isAdminRole(adminId)) {
+            return ApiControllerResponse.error(403, "无管理员权限");
+        }
+        PageResult<ReportVO> reports = forumPostService.getPendingReports(page, size);
+        return ApiControllerResponse.success(reports);
+    }
+
 
     //管理员处理举报：通过举报并删除帖子
     @PutMapping("/admin/reports/{reportId}/deletePost")

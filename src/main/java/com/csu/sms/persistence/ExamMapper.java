@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ExamMapper {
@@ -97,5 +98,70 @@ public interface ExamMapper {
 
     // 根据状态查询考试记录
     List<ExamRecord> findExamRecordsByStatus(@Param("status") String status);
+
+    // 查询学生成绩较低的考试记录
+    List<ExamRecord> findLowScoreExamsByUserId(@Param("userId") Long userId, @Param("threshold") Double threshold);
+
+    // 根据创建者和状态查询考试列表
+    List<Exam> findByCreatedByAndStatus(@Param("createdBy") Long createdBy, @Param("status") String status);
+
+    // 获取考试的总分（通过题目计算）
+    int getTotalScoreByExamId(@Param("examId") Long examId);
+
+    // 计算考试记录的总分
+    int calculateTotalScoreByExamRecordId(@Param("examRecordId") Long examRecordId);
+
+    // 检查考试是否有题目
+    boolean hasQuestions(@Param("examId") Long examId);
+
+    // 根据考试ID和用户ID查询考试记录
+    ExamRecord findExamRecordByExamAndUser(@Param("examId") Long examId, @Param("userId") Long userId);
+
+    // 检查用户是否可以开始考试
+    boolean canUserStartExam(@Param("examId") Long examId, @Param("userId") Long userId);
+
+    // 获取用户在特定考试的尝试次数
+    int getUserExamAttempts(@Param("examId") Long examId, @Param("userId") Long userId);
+
+    // 获取考试的最大尝试次数
+    int getExamMaxAttempts(@Param("examId") Long examId);
+
+    // 批量更新考试状态
+    int batchUpdateExamsByStatus(
+            @Param("oldStatus") String oldStatus,
+            @Param("newStatus") String newStatus,
+            @Param("createdBy") Long createdBy
+    );
+
+    // 根据课程ID和状态查询考试
+    List<Exam> findByCourseIdAndStatus(@Param("courseId") Long courseId, @Param("status") String status);
+
+    // 查询即将开始的考试（用于提醒）
+    List<Exam> findUpcomingExams(@Param("hours") int hours);
+
+    // 查询过期的考试（用于自动处理）
+    List<Exam> findExpiredExams();
+
+    // 统计教师创建的考试数量
+    int countExamsByCreator(
+            @Param("createdBy") Long createdBy,
+            @Param("status") String status
+    );
+
+    // 获取考试参与统计
+    Map<String, Object> getExamParticipationStats(@Param("examId") Long examId);
+
+    // 软删除考试（标记为删除状态）
+    int softDeleteExam(@Param("examId") Long examId);
+
+    // 恢复软删除的考试
+    int restoreExam(@Param("examId") Long examId);
+
+    // 复制考试
+    void copyExam(
+            @Param("originalExamId") Long originalExamId,
+            @Param("newCreatedBy") Long newCreatedBy,
+            @Param("newExamId") Long newExamId
+    );
 
 }

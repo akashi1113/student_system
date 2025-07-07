@@ -3,8 +3,11 @@ package com.csu.sms.controller;
 import com.csu.sms.dto.AILearningSuggestionDTO;
 import com.csu.sms.service.AIService;
 import com.csu.sms.service.GradeAnalysisService;
+import com.csu.sms.service.AIBookRecommendationService;
 import com.csu.sms.common.ApiResponse;
 import com.csu.sms.util.UserContext;
+import com.csu.sms.annotation.LogOperation;
+import com.csu.sms.vo.AIBookRecommendationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,9 @@ public class AIController {
     
     @Autowired
     private GradeAnalysisService gradeAnalysisService;
+
+    @Autowired
+    private AIBookRecommendationService bookRecommendationService;
 
     /**
      * 获取当前用户的个性化学习建议
@@ -78,6 +84,90 @@ public class AIController {
             return ApiResponse.error(e.getMessage(), "400");
         } catch (Exception e) {
             return ApiResponse.error("获取学习建议失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * 生成AI书籍推荐
+     * @return 生成的书籍推荐列表
+     */
+    @PostMapping("/book-recommendations/generate")
+    @LogOperation(module = "AI服务", operation = "生成书籍推荐")
+    public ApiResponse<List<AIBookRecommendationVO>> generateBookRecommendations() {
+        Long userId = UserContext.getCurrentUserId();
+        if (userId == null) {
+            return ApiResponse.error("用户未登录");
+        }
+        List<AIBookRecommendationVO> recommendations = bookRecommendationService.generateRecommendationsForStudent(userId);
+        return ApiResponse.success(recommendations);
+    }
+
+    /**
+     * 获取当前用户的所有书籍推荐
+     * @return 书籍推荐列表
+     */
+    @GetMapping("/book-recommendations")
+    public ApiResponse<List<AIBookRecommendationVO>> getBookRecommendations() {
+        Long userId = UserContext.getCurrentUserId();
+        if (userId == null) {
+            return ApiResponse.error("用户未登录");
+        }
+        List<AIBookRecommendationVO> recommendations = bookRecommendationService.getRecommendationsForStudent(userId);
+        return ApiResponse.success(recommendations);
+    }
+
+    /**
+     * 获取特定课程的书籍推荐
+     * @param courseId 课程ID
+     * @return 书籍推荐列表
+     */
+    @GetMapping("/book-recommendations/course/{courseId}")
+    public ApiResponse<List<AIBookRecommendationVO>> getBookRecommendationsByCourse(@PathVariable Long courseId) {
+        Long userId = UserContext.getCurrentUserId();
+        if (userId == null) {
+            return ApiResponse.error("用户未登录");
+        }
+        List<AIBookRecommendationVO> recommendations = bookRecommendationService.getRecommendationsByCourse(courseId, userId);
+        return ApiResponse.success(recommendations);
+    }
+
+    /**
+     * 标记推荐为已读
+     * @param id 推荐ID
+     * @return 操作结果
+     */
+    @PostMapping("/book-recommendations/{id}/read")
+    public ApiResponse<Boolean> markRecommendationAsRead(@PathVariable Long id) {
+        Long userId = UserContext.getCurrentUserId();
+        if (userId == null) {
+            return ApiResponse.error("用户未登录");
+        }
+        boolean result = bookRecommendationService.markAsRead(id, userId);
+        return ApiResponse.success(result);
+    }
+
+    /**
+     * 删除推荐记录
+     * @param id 推荐记录ID
+     * @return 操作结果
+     */
+    @DeleteMapping("/book-recommendations/{id}")
+    @LogOperation(module = "AI服务", operation = "删除书籍推荐")
+    public ApiResponse<Boolean> deleteRecommendation(@PathVariable Long id) {
+        Long userId = UserContext.getCurrentUserId();
+        if (userId == null) {
+            return ApiResponse.error("用户未登录");
+        }
+        
+        try {
+            boolean result = bookRecommendationService.deleteRecommendation(id, userId);
+            if (result) {
+                return ApiResponse.success("删除推荐记录成功", true);
+            } else {
+                return ApiResponse.error("删除失败：推荐记录不存在或无权限删除");
+            }
+        } catch (Exception e) {
+            return ApiResponse.error("删除推荐记录失败：" + e.getMessage());
         }
     }
 }

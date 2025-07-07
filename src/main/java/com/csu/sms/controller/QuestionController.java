@@ -5,11 +5,12 @@ import com.csu.sms.dto.exam.QuestionAnalysisDTO;
 import com.csu.sms.dto.exam.QuestionCreateDTO;
 import com.csu.sms.dto.exam.QuestionResponseDTO;
 import com.csu.sms.model.question.Question;
+import com.csu.sms.service.ExamService;
 import com.csu.sms.service.QuestionService;
+import com.csu.sms.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -22,6 +23,12 @@ public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private ExamService examService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     // 根据考试ID获取题目列表（考试用）
     @GetMapping("/exam/{examId}")
@@ -37,10 +44,10 @@ public class QuestionController {
     // 根据考试ID获取题目列表（管理用，含答案）
     @GetMapping("/exam/{examId}/manage")
     public ApiResponse<List<Question>> getQuestionsWithAnswersByExamId(@PathVariable Long examId,
-                                                                       Authentication auth) {
+                                                                       @RequestHeader("Authorization") String token) {
         try {
             // 验证权限：只有教师和管理员可以查看答案
-            if (!hasManagePermission(auth)) {
+            if (!hasManagePermission(token)) {
                 return ApiResponse.error("权限不足", "PERMISSION_DENIED");
             }
 
@@ -53,10 +60,10 @@ public class QuestionController {
 
     // 根据题目ID获取题目详情
     @GetMapping("/{id}")
-    public ApiResponse<Question> getQuestionById(@PathVariable Long id, Authentication auth) {
+    public ApiResponse<Question> getQuestionById(@PathVariable Long id, @RequestHeader("Authorization") String token) {
         try {
             // 检查权限
-            if (!hasManagePermission(auth)) {
+            if (!hasManagePermission(token)) {
                 return ApiResponse.error("权限不足", "PERMISSION_DENIED");
             }
 
@@ -74,10 +81,10 @@ public class QuestionController {
     // 创建题目
     @PostMapping
     public ApiResponse<Question> createQuestion(@Valid @RequestBody QuestionCreateDTO questionDTO,
-                                                Authentication auth) {
+                                                @RequestHeader("Authorization") String token) {
         try {
             // 检查权限
-            if (!hasManagePermission(auth)) {
+            if (!hasManagePermission(token)) {
                 return ApiResponse.error("权限不足", "PERMISSION_DENIED");
             }
 
@@ -93,10 +100,10 @@ public class QuestionController {
     // 批量创建题目
     @PostMapping("/batch")
     public ApiResponse<List<Question>> createQuestions(@Valid @RequestBody List<QuestionCreateDTO> questionDTOs,
-                                                       Authentication auth) {
+                                                       @RequestHeader("Authorization") String token) {
         try {
             // 检查权限
-            if (!hasManagePermission(auth)) {
+            if (!hasManagePermission(token)) {
                 return ApiResponse.error("权限不足", "PERMISSION_DENIED");
             }
 
@@ -116,10 +123,10 @@ public class QuestionController {
     @PutMapping("/{id}")
     public ApiResponse<Question> updateQuestion(@PathVariable Long id,
                                                 @Valid @RequestBody QuestionCreateDTO questionDTO,
-                                                Authentication auth) {
+                                                @RequestHeader("Authorization") String token) {
         try {
             // 检查权限
-            if (!hasManagePermission(auth)) {
+            if (!hasManagePermission(token)) {
                 return ApiResponse.error("权限不足", "PERMISSION_DENIED");
             }
 
@@ -134,10 +141,10 @@ public class QuestionController {
 
     // 删除题目
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> deleteQuestion(@PathVariable Long id, Authentication auth) {
+    public ApiResponse<Void> deleteQuestion(@PathVariable Long id, @RequestHeader("Authorization") String token) {
         try {
             // 检查权限
-            if (!hasManagePermission(auth)) {
+            if (!hasManagePermission(token)) {
                 return ApiResponse.error("权限不足", "PERMISSION_DENIED");
             }
 
@@ -150,10 +157,10 @@ public class QuestionController {
 
     // 批量删除题目
     @DeleteMapping("/batch")
-    public ApiResponse<Void> deleteQuestions(@RequestBody List<Long> ids, Authentication auth) {
+    public ApiResponse<Void> deleteQuestions(@RequestBody List<Long> ids, @RequestHeader("Authorization") String token) {
         try {
             // 检查权限
-            if (!hasManagePermission(auth)) {
+            if (!hasManagePermission(token)) {
                 return ApiResponse.error("权限不足", "PERMISSION_DENIED");
             }
 
@@ -169,10 +176,10 @@ public class QuestionController {
 
     // 根据考试ID删除所有题目
     @DeleteMapping("/exam/{examId}")
-    public ApiResponse<Void> deleteQuestionsByExamId(@PathVariable Long examId, Authentication auth) {
+    public ApiResponse<Void> deleteQuestionsByExamId(@PathVariable Long examId, @RequestHeader("Authorization") String token) {
         try {
             // 检查权限
-            if (!hasManagePermission(auth)) {
+            if (!hasManagePermission(token)) {
                 return ApiResponse.error("权限不足", "PERMISSION_DENIED");
             }
 
@@ -197,11 +204,12 @@ public class QuestionController {
     // 获取答题分析结果
     @GetMapping("/analysis/{examRecordId}")
     public ApiResponse<List<QuestionAnalysisDTO>> getQuestionAnalysis(@PathVariable Long examRecordId,
-                                                                      Authentication auth) {
+                                                                      @RequestHeader("Authorization") String token) {
         try {
             // 学生只能查看自己的分析，教师可以查看所有
-            Long userId = getUserIdFromAuth(auth);
-            if (!hasManagePermission(auth) && !isOwnerOfExamRecord(examRecordId, userId)) {
+            Long userId = jwtUtil.extractUserId(token);
+
+            if (!hasManagePermission(token) && !examService.getExamRecordById(examRecordId).getUserId().equals(userId)) {
                 return ApiResponse.error("权限不足", "PERMISSION_DENIED");
             }
 
@@ -212,33 +220,10 @@ public class QuestionController {
         }
     }
 
-    // ========== 私有辅助方法 ==========
-
     // 检查是否有管理权限
-    private boolean hasManagePermission(Authentication auth) {
-        if (auth == null) return false;
-
-        // 简化处理：从JWT token中获取角色信息
-        // 实际项目中应该从SecurityContext中获取用户角色
-        String role = getRoleFromAuth(auth);
-        return "TEACHER".equals(role) || "ADMIN".equals(role);
-    }
-
-    // 从认证信息中获取用户ID
-    private Long getUserIdFromAuth(Authentication auth) {
-        // 实际项目中应该从JWT token中解析用户ID
-        return 1L; // 简化处理
-    }
-
-    // 从认证信息中获取用户角色
-    private String getRoleFromAuth(Authentication auth) {
-        // 实际项目中应该从JWT token中解析用户角色
-        return "STUDENT"; // 简化处理
-    }
-
-    // 检查用户是否为考试记录的所有者
-    private boolean isOwnerOfExamRecord(Long examRecordId, Long userId) {
-        // 实际项目中应该查询数据库验证
-        return true; // 简化处理
+    private boolean hasManagePermission(String token) {
+        if (token == null) return false;
+        String role = jwtUtil.extractRole(token);
+        return "teacher".equals(role) || "admin".equals(role);
     }
 }

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.ExperimentRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.csu.sms.model.experiment.ExperimentRecord">
+        <id column="id" property="id"/>
+        <result column="experiment_id" property="experimentId"/>
+        <result column="user_id" property="userId"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="status" property="status"/>
+        <result column="final_code" property="finalCode"/>
+        <result column="final_language" property="finalLanguage"/>
+        <result column="execution_result" property="executionResult"/>
+        <result column="report_data" property="reportData"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, experiment_id, user_id, start_time, end_time, status, final_code, final_language,
+        execution_result, report_data, created_at, updated_at
+    </sql>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM experiment_record
+        WHERE id = #{id}
+    </select>
+
+    <select id="findRunningByUserAndExperiment" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM experiment_record
+        WHERE user_id = #{userId}
+          AND experiment_id = #{experimentId}
+          AND status = 'RUNNING'
+        ORDER BY created_at DESC
+        LIMIT 1
+    </select>
+
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM experiment_record
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findByExperimentId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM experiment_record
+        WHERE experiment_id = #{experimentId}
+        ORDER BY created_at DESC
+    </select>
+
+    <insert id="insert" parameterType="com.csu.sms.model.experiment.ExperimentRecord" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO experiment_record (
+            experiment_id, user_id, start_time, end_time, status, final_code, final_language,
+            execution_result, report_data, created_at, updated_at
+        ) VALUES (
+            #{experimentId}, #{userId}, #{startTime}, #{endTime}, #{status}, #{finalCode}, #{finalLanguage},
+            #{executionResult}, #{reportData}, NOW(), NOW()
+        )
+    </insert>
+
+    <update id="update" parameterType="com.csu.sms.model.experiment.ExperimentRecord">
+        UPDATE experiment_record
+        SET experiment_id = #{experimentId},
+            user_id = #{userId},
+            start_time = #{startTime},
+            end_time = #{endTime},
+            status = #{status},
+            final_code = #{finalCode},
+            final_language = #{finalLanguage},
+            execution_result = #{executionResult},
+            report_data = #{reportData},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM experiment_record WHERE id = #{id}
+    </delete>
+
+    <select id="countCompletedByUserId" resultType="int">
+        SELECT COUNT(*)
+        FROM experiment_record
+        WHERE user_id = #{userId} AND status = 'COMPLETED'
+    </select>
+
+    <select id="findLastCompletedByExperimentAndUser" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM experiment_record
+        WHERE experiment_id = #{experimentId}
+        AND user_id = #{userId}
+        AND status = 'COMPLETED'
+        ORDER BY end_time DESC
+        LIMIT 1
+    </select>
+
+</mapper>

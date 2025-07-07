@@ -10,4 +10,6 @@ public interface PostLikeDao {
 
     int deletePostLike(@Param("postId") Long postId,
                        @Param("userId") Long userId);
+
+    int checkUserLiked(@Param("postId") Long postId,@Param("userId") Long userId);
 }

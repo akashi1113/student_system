@@ -125,11 +125,11 @@
         <!--            <artifactId>lombok</artifactId>-->
         <!--            <optional>true</optional>-->
         <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>cn.hutool</groupId>-->
-        <!--            <artifactId>hutool-all</artifactId>-->
-        <!--            <version>${hutool.version}</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-poi</artifactId>
+            <version>5.8.26</version>
+        </dependency>
 
         <!-- AI SDK -->
         <dependency>
@@ -259,6 +259,12 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
             <version>3.5.17</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv-platform -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv-platform</artifactId>
+            <version>1.5.10</version>
         </dependency>
     </dependencies>
 
