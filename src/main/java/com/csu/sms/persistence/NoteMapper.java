@@ -18,7 +18,7 @@ public interface NoteMapper {
      * - update_time → updateTime
      */
     @Insert("INSERT INTO note (user_id, course_id, title, content, drawing_data, create_time, update_time) " +
-            "VALUES (#{userId}, #{courseId}, #{title}, #{content}, #{drawingData}, #{createTime}, NOW())")
+            "VALUES (#{userId}, #{courseId}, #{title}, #{content}, #{drawingData}, NOW(), NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Note note);
 
@@ -27,7 +27,6 @@ public interface NoteMapper {
      */
     @Update({
             "UPDATE note SET",
-            "user_id = #{userId},",
             "course_id = #{courseId},",
             "title = #{title},",
             "content = #{content},",

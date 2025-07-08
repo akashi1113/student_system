@@ -4,6 +4,7 @@ import com.csu.sms.dto.ApiResponse;
 import com.csu.sms.dto.NoteDTO;
 import com.csu.sms.model.note.Note;
 import com.csu.sms.service.NoteService;
+import com.csu.sms.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/notes")
+@RequestMapping("/api/notes")
 public class NoteController {
 
     private final NoteService noteService;
@@ -22,8 +23,13 @@ public class NoteController {
         this.noteService = noteService;
     }
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @PostMapping
-    public ResponseEntity<ApiResponse<NoteDTO>> createNote(@RequestBody Note note) {
+    public ResponseEntity<ApiResponse<NoteDTO>> createNote(@RequestBody Note note,@RequestHeader("Authorization") String token) {
+        Long userId=jwtUtil.extractUserId(token);
+        note.setUserId(userId);
         Note createdNote = noteService.createNote(note);
         return ResponseEntity.ok(ApiResponse.success(convertToDTO(createdNote)));
     }
@@ -35,8 +41,9 @@ public class NoteController {
         return ResponseEntity.ok(ApiResponse.success(convertToDTO(updatedNote)));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<List<NoteDTO>>> getUserNotes(@PathVariable Long userId) {
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<NoteDTO>>> getUserNotes(@RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.extractUserId(token);
         List<Note> notes = noteService.getUserNotes(userId);
         List<NoteDTO> noteDTOs = notes.stream()
                 .map(this::convertToDTO)
