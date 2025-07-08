@@ -199,7 +199,7 @@ public class ExperimentServiceImpl implements ExperimentService {
         booking.setStartTime(timeSlot.getStartTime());
         booking.setEndTime(timeSlot.getEndTime());
         booking.setStatus(1); // 初始状态
-        booking.setApprovalStatus(1); // 待审批
+        booking.setApprovalStatus(0); // 待审批
         booking.setCreatedAt(LocalDateTime.now());
         bookingMapper.insert(booking);
 
@@ -555,5 +555,21 @@ public class ExperimentServiceImpl implements ExperimentService {
         });
 
         return records;
+    }
+
+    @Override
+    public List<ExperimentBookingDTO> getBookingsByUserAndExperiment(Long userId, Long experimentId) {
+        // 参数校验
+        if (userId == null || experimentId == null) {
+            throw new IllegalArgumentException("用户ID和实验ID不能为空");
+        }
+
+        // 查询数据库
+        List<ExperimentBooking> bookings = bookingMapper.selectByUserAndExperiment(userId, experimentId);
+
+        // 转换为DTO并返回
+        return bookings.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csu.sms.persistence.ChatMessageMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="ChatMessageResultMap" type="com.csu.sms.model.chat.ChatMessage">
+        <id property="id" column="id"/>
+        <result property="sessionId" column="session_id"/>
+        <result property="messageType" column="message_type"/>
+        <result property="content" column="content"/>
+        <result property="timestamp" column="timestamp"/>
+    </resultMap>
+
+    <!-- 插入消息 -->
+    <insert id="insertMessage" parameterType="com.csu.sms.model.chat.ChatMessage">
+        INSERT INTO chat_messages (session_id, message_type, content, timestamp)
+        VALUES (#{sessionId}, #{messageType}, #{content}, #{timestamp})
+    </insert>
+
+    <!-- 根据会话ID查询所有消息 -->
+    <select id="findBySessionId" resultMap="ChatMessageResultMap">
+        SELECT id, session_id, message_type, content, timestamp
+        FROM chat_messages
+        WHERE session_id = #{sessionId}
+        ORDER BY timestamp ASC
+    </select>
+
+    <!-- 根据会话ID查询限制数量的消息 -->
+    <select id="findBySessionIdWithLimit" resultMap="ChatMessageResultMap">
+        SELECT id, session_id, message_type, content, timestamp
+        FROM chat_messages
+        WHERE session_id = #{sessionId}
+        ORDER BY timestamp DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 根据会话ID删除消息 -->
+    <delete id="deleteBySessionId">
+        DELETE FROM chat_messages WHERE session_id = #{sessionId}
+    </delete>
+
+    <!-- 统计会话消息数量 -->
+    <select id="countBySessionId" resultType="int">
+        SELECT COUNT(*) FROM chat_messages WHERE session_id = #{sessionId}
+    </select>
+
+    <!-- 查询最新的几条消息 -->
+    <select id="findLatestMessages" resultMap="ChatMessageResultMap">
+        SELECT id, session_id, message_type, content, timestamp
+        FROM chat_messages
+        WHERE session_id = #{sessionId}
+        ORDER BY timestamp DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>

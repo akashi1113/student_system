@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csu.sms.persistence.ChatSessionMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="ChatSessionResultMap" type="com.csu.sms.model.chat.ChatSession">
+        <id property="id" column="id"/>
+        <result property="sessionId" column="session_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="title" column="title"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <!-- 插入会话 -->
+    <insert id="insertSession" parameterType="com.csu.sms.model.chat.ChatSession">
+        INSERT INTO chat_sessions (session_id, user_id, title, created_at, updated_at)
+        VALUES (#{sessionId}, #{userId}, #{title}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <!-- 根据会话ID查询 -->
+    <select id="findBySessionId" resultMap="ChatSessionResultMap">
+        SELECT id, session_id, user_id, title, created_at, updated_at
+        FROM chat_sessions
+        WHERE session_id = #{sessionId}
+    </select>
+
+    <!-- 根据用户ID查询所有会话 -->
+    <select id="findByUserId" resultMap="ChatSessionResultMap">
+        SELECT id, session_id, user_id, title, created_at, updated_at
+        FROM chat_sessions
+        WHERE user_id = #{userId}
+        ORDER BY updated_at DESC
+    </select>
+
+    <!-- 更新会话 -->
+    <update id="updateSession" parameterType="com.csu.sms.model.chat.ChatSession">
+        UPDATE chat_sessions
+        SET title = #{title}, updated_at = #{updatedAt}
+        WHERE session_id = #{sessionId}
+    </update>
+
+    <!-- 删除会话 -->
+    <delete id="deleteSession">
+        DELETE FROM chat_sessions WHERE session_id = #{sessionId}
+    </delete>
+
+    <!-- 更新会话标题 -->
+    <update id="updateSessionTitle">
+        UPDATE chat_sessions
+        SET title = #{title}, updated_at = NOW()
+        WHERE session_id = #{sessionId}
+    </update>
+
+    <!-- 更新会话时间戳 -->
+    <update id="updateSessionTimestamp">
+        UPDATE chat_sessions
+        SET updated_at = NOW()
+        WHERE session_id = #{sessionId}
+    </update>
+
+</mapper>

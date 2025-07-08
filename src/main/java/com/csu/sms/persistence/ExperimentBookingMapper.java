@@ -59,4 +59,9 @@ public interface ExperimentBookingMapper {
             "start_time, end_time, status, approval_status, created_at " +
             "FROM experiment_booking WHERE experiment_id = #{experimentId} ORDER BY created_at DESC")
     List<ExperimentBooking> selectByExperimentId(@Param("experimentId") Long experimentId);
+
+    @Select("SELECT id, experiment_id, time_slot_id, experiment_name, user_id, " +
+            "start_time, end_time, status, approval_status, created_at " +
+            "FROM experiment_booking WHERE experiment_id = #{experimentId} AND user_id = #{userId} ORDER BY created_at DESC")
+    List<ExperimentBooking> selectByUserAndExperiment(@Param("userId") Long userId,@Param("experimentId") Long experimentId);
 }

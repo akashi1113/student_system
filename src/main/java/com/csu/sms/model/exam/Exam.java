@@ -1,5 +1,6 @@
 package com.csu.sms.model.exam;
 
+import com.csu.sms.model.booking.ExamBooking;
 import com.csu.sms.model.question.Question;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class Exam {
     private Integer maxAttempts;
     private String bookingStatus;
     private String examMode;
+    private ExamBooking examBooking;
 
     public Long getId() {
         return id;
@@ -166,5 +168,13 @@ public class Exam {
     }
     public void setExamMode(String examMode) {
         this.examMode = examMode;
+    }
+
+    public ExamBooking getExamBooking() {
+        return examBooking;
+    }
+
+    public void setExamBooking(ExamBooking examBooking) {
+        this.examBooking = examBooking;
     }
 }

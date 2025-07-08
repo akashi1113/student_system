@@ -6,10 +6,12 @@ import com.csu.sms.dto.exam.CreateExamRequest;
 import com.csu.sms.dto.exam.QuestionCreateDTO;
 import com.csu.sms.dto.exam.ViolationRequest;
 import com.csu.sms.dto.ExamListDTO;
+import com.csu.sms.model.booking.ExamBooking;
 import com.csu.sms.model.exam.Exam;
 import com.csu.sms.model.exam.ExamRecord;
 import com.csu.sms.model.exam.ExamScoreResult;
 import com.csu.sms.model.question.Question;
+import com.csu.sms.service.ExamBookingService;
 import com.csu.sms.service.ExamService;
 import com.csu.sms.service.QuestionService;
 import com.csu.sms.util.JwtUtil;
@@ -28,6 +30,9 @@ public class ExamController {
 
     @Autowired
     private ExamService examService;
+
+    @Autowired
+    private ExamBookingService examBookingService;
 
     @Autowired
     private QuestionService questionService;
@@ -58,7 +63,13 @@ public class ExamController {
     @GetMapping("/booked")
     public ApiResponse<List<Exam>> getBookedExams(@RequestHeader("Authorization") String token) {
         Long userId = jwtUtil.extractUserId(token);
-        return ApiResponse.success(examService.getBookedExams(userId));
+        List<Exam> exams=examService.getBookedExams(userId);
+        exams.forEach(exam -> {
+            ExamBooking booking = examBookingService.getBookingByUserAndExam(userId,exam.getId());
+            booking.setTimeSlot(examBookingService.getTimeSlotById(booking.getTimeSlotId()));
+            exam.setExamBooking(booking);
+        });
+        return ApiResponse.success(exams);
     }
 
     @GetMapping("/{examId}")

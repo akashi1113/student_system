@@ -33,6 +33,10 @@ public class ExamBookingService {
     @Autowired
     private ExamMapper examMapper;
 
+    public ExamTimeSlot getTimeSlotById(Long timeSlotId) {
+        return examBookingMapper.findTimeSlotById(timeSlotId);
+    }
+
     public ApiResponse<List<ExamTimeSlot>> getAvailableTimeSlots(Long examId) {
         try {
             // 验证考试是否存在
@@ -362,6 +366,10 @@ public class ExamBookingService {
         }
     }
 
+    public ExamBooking getBookingByUserAndExam(Long userId, Long examId){
+        return examBookingMapper.findBookingByUserAndExam(userId, examId);
+    }
+
     public ApiResponse<Long> getBookingIdByUserAndExam(Long userId, Long examId) {
         try {
             ExamBooking booking = examBookingMapper.findBookingByUserAndExam(userId, examId);
@@ -429,6 +437,7 @@ public class ExamBookingService {
             return ApiResponse.error("查询统计失败：" + e.getMessage());
         }
     }
+
 
     public ApiResponse<Map<String, Object>> getUserBookingStats(Long userId) {
         try {

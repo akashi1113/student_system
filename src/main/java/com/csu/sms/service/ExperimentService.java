@@ -111,4 +111,11 @@ public interface ExperimentService {
      */
     List<ExperimentRecord> getExperimentRecords(Long experimentId);
 
+    /**
+     * 获取用户对特定实验的预约记录
+     * @param userId 用户ID
+     * @param experimentId 实验ID
+     * @return 预约记录列表
+     */
+    List<ExperimentBookingDTO> getBookingsByUserAndExperiment(Long userId, Long experimentId);
 }
