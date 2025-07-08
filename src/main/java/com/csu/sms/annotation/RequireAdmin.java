@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 需要管理员权限注解
- * 标记此注解的方法只有管理员（role=1）可以访问
+ * 标记此注解的方法只有管理员（role=2）可以访问
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

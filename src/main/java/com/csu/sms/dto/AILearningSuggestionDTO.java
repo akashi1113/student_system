@@ -60,7 +60,7 @@ public class AILearningSuggestionDTO {
         private String courseTitle;
         private String videoTitle;
         private Double progressPercentage;
-        private Long duration;
+        private Long progress;
         private LocalDateTime lastStudyTime;
 
         // Getters and Setters
@@ -76,8 +76,8 @@ public class AILearningSuggestionDTO {
         public Double getProgressPercentage() { return progressPercentage; }
         public void setProgressPercentage(Double progressPercentage) { this.progressPercentage = progressPercentage; }
 
-        public Long getDuration() { return duration; }
-        public void setDuration(Long duration) { this.duration = duration; }
+        public Long getProgress() { return progress; }
+        public void setProgress(Long progress) { this.progress = progress; }
 
         public LocalDateTime getLastStudyTime() { return lastStudyTime; }
         public void setLastStudyTime(LocalDateTime lastStudyTime) { this.lastStudyTime = lastStudyTime; }

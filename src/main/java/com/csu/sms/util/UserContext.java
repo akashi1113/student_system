@@ -198,7 +198,7 @@ public class UserContext {
      */
     public static boolean isAdmin() {
         Integer role = getCurrentUserRole();
-        return role != null && role == 1;
+        return role != null && role == 2;
     }
 
     /**
@@ -206,7 +206,7 @@ public class UserContext {
      */
     public static boolean isTeacher() {
         Integer role = getCurrentUserRole();
-        return role != null && role == 2;
+        return role != null && role == 1;
     }
 
     /**

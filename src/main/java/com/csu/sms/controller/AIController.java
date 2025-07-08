@@ -8,6 +8,7 @@ import com.csu.sms.common.ApiResponse;
 import com.csu.sms.util.UserContext;
 import com.csu.sms.annotation.LogOperation;
 import com.csu.sms.vo.AIBookRecommendationVO;
+import com.csu.sms.dto.StudyRecordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -57,8 +58,21 @@ public class AIController {
             request.setTotalStudyTime(analysis.getTotalStudyDuration() != null ? analysis.getTotalStudyDuration() : 0L);
             request.setExamPassRate(analysis.getPassRate() != null ? analysis.getPassRate().doubleValue() : 0.0);
             
-            // 获取学习记录和考试记录（这里简化处理，实际可以根据需要获取详细数据）
-            // 可以调用gradeAnalysisService的相关方法获取详细的学习和考试记录
+            // 获取学习记录和考试记录（补充详细数据）
+            List<StudyRecordDTO> studyRecordDTOs = gradeAnalysisService.getUserStudyRecords(userId, 1, 10, startDate, endDate).getList();
+            List<AILearningSuggestionDTO.StudyRecordInfo> studyRecords = new java.util.ArrayList<>();
+            for (StudyRecordDTO dto : studyRecordDTOs) {
+                AILearningSuggestionDTO.StudyRecordInfo info = new AILearningSuggestionDTO.StudyRecordInfo();
+                info.setId(dto.getVideoId());
+                info.setCourseTitle(dto.getCourseTitle());
+                info.setVideoTitle(dto.getVideoTitle());
+                info.setProgress(dto.getProgress() != null ? dto.getProgress().longValue() : 0L);
+                // 进度百分比可选
+                info.setProgressPercentage(dto.getVideoDuration() != null && dto.getVideoDuration() > 0 ? (dto.getProgress() * 100.0 / dto.getVideoDuration()) : 0.0);
+                info.setLastStudyTime(dto.getLastStudyTime());
+                studyRecords.add(info);
+            }
+            request.setStudyRecords(studyRecords);
             
             List<AILearningSuggestionDTO.Suggestion> suggestions = aiService.getLearningSuggestions(request);
             return ApiResponse.success("获取学习建议成功", suggestions);
