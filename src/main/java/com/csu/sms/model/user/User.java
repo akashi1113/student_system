@@ -11,7 +11,7 @@ public class User {
     private String email;
     private String avatar;
     private int status; // 状态 0-正常 1-禁用
-    private int role;   // 角色 0-普通用户 1-管理员 2-老师
+    private int role;   // 角色 0-普通用户 1-老师 2-管理员
     private int tokenVersion = 0; // 新增：令牌版本，用于强制失效
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
@@ -19,9 +19,9 @@ public class User {
     public String getRoleString() {
         switch (role){
             case 1:
-                return "admin";
+                return "teacher";
                 case 2:
-                    return "teacher";
+                    return "admin";
             default:
                 return "student";
         }

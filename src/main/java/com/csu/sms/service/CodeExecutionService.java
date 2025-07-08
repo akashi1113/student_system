@@ -343,7 +343,6 @@ public class CodeExecutionService {
         return code;
     }
 
-    // 临时调试方法，添加到 CodeExecutionService 中
     private void debugBase64Decode(String base64String) {
         if (base64String != null && !base64String.isEmpty()) {
             try {
@@ -355,7 +354,6 @@ public class CodeExecutionService {
         }
     }
 
-    // 其他内部类保持不变...
     public static class ApiExecutionResult {
         private String stdout;
         private String time;

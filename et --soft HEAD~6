@@ -1,0 +1,52 @@
+* [33m10a2051[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Revert "修改bug"
+* [33m52284de[m 修改bug
+*   [33m8c37b8c[m Merge remote-tracking branch 'origin/main'
+[32m|[m[33m\[m  
+[32m|[m * [33m96dc63a[m[33m ([m[1;31morigin/main[m[33m)[m Add files via upload
+* [33m|[m [33m6e2aaf0[m 修改bug
+* [33m|[m [33m7ce47a9[m 修改bug
+[33m|[m[33m/[m  
+* [33m6609b29[m 修改配置文件和GlobalExceptionHandler
+* [33m75928f3[m 阿里云密钥处理
+* [33mc7d4b4e[m 课程，视频，用户，通知，帖子
+* [33m7d400d3[m 课程，视频，用户，通知，帖子
+* [33m883b239[m Update application.yml
+* [33ma1b6c08[m 课程，视频，用户，通知，帖子
+* [33m186e729[m 课程，视频，用户，通知，帖子
+* [33m644e74b[m 课程，视频，用户，通知，帖子
+* [33mf473241[m 课程，视频，用户，通知，帖子
+* [33m4b12dfc[m 课程，视频，用户，通知，帖子
+* [33mdf6a90e[m 课程，视频，用户，通知，帖子
+* [33m7987d28[m 课程，视频，用户，通知，帖子
+* [33mdd3c1a5[m 课程，视频，用户，通知，帖子
+* [33md2214e4[m 课程，视频，用户，通知，帖子
+* [33m9bfec66[m 课程，视频，用户，通知，帖子
+* [33macd6419[m 课程，视频，用户，通知，帖子
+* [33m1c788a7[m 课程，视频，用户，通知，帖子
+* [33m3962fbb[m 课程，视频，用户，通知，帖子
+* [33mc32698a[m 课程，视频，用户，通知，帖子
+* [33m2809d6e[m Delete src/main/java/com/csu/sms/model/course
+* [33md015e18[m Create course
+* [33meb8dcdd[m 课程，视频，用户，通知，帖子
+* [33m2cf28a1[m 课程，视频，用户，通知，帖子
+* [33mfe06aed[m Add files via upload
+* [33mde0f523[m Update UserController.java
+* [33m05443e7[m Add files via upload
+* [33m6fcbb48[m Update SecurityConfig.java
+* [33mb9a1efd[m Add files via upload
+* [33m3a0f667[m Update RedisConfig.java
+* [33m8ab32d8[m Add files via upload
+* [33mf4619f2[m Delete src/main/resources/application.properties
+* [33m5466152[m 数据库
+* [33m98e2334[m Delete student_knowledge_system2.sql
+* [33m791ec15[m 修改homeworkmapper
+*   [33mafb6328[m jwt and email
+[34m|[m[35m\[m  
+[34m|[m *   [33m2c87101[m fix: 解决 main 分支合并冲突，合并依赖和配置
+[34m|[m [36m|[m[1;31m\[m  
+[34m|[m [36m|[m * [33m8a10987[m exam and homework
+[34m|[m * [33m90228fa[m 成绩管理，学习分析，知识库
+[34m|[m * [33mbfd7819[m Add CORS configuration to fix cross-origin issues
+[34m|[m * [33mf820048[m Add knowledge base management system with Spring Boot and MyBatis
+[34m|[m * [33m5e00b11[m Initial commit: Basic project structure
+* [33maa84d84[m jwt and email
