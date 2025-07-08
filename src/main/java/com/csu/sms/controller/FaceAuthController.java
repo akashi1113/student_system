@@ -4,9 +4,12 @@ import com.csu.sms.dto.FaceRegisterRequest;
 import com.csu.sms.dto.FaceLoginRequest;
 import com.csu.sms.service.FaceAuthService;
 import com.csu.sms.common.ApiResponse;
+import com.csu.sms.common.ApiControllerResponse;
+import com.csu.sms.common.ServiceException;
 import com.csu.sms.annotation.LogOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/face")
@@ -27,12 +30,14 @@ public class FaceAuthController {
 
     @LogOperation(module = "用户认证", operation = "人脸登录", description = "用户通过人脸识别登录系统")
     @PostMapping("/login")
-    public ApiResponse<String> login(@RequestBody FaceLoginRequest request) {
-        String result = faceAuthService.login(request);
-        if ("登录成功".equals(result)) {
-            return ApiResponse.success(result);
-        } else {
-            return ApiResponse.error(result);
+    public ApiControllerResponse<Map<String, Object>> login(@RequestBody FaceLoginRequest request) {
+        try {
+            Map<String, Object> result = faceAuthService.login(request);
+            return ApiControllerResponse.success(result);
+        } catch (ServiceException e) {
+            return ApiControllerResponse.error(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            return ApiControllerResponse.error(500, "服务器内部错误，人脸登录失败，请稍后再试。");
         }
     }
 } 

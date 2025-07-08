@@ -10,6 +10,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.csu.sms.service.UserService;
+import com.csu.sms.common.ServiceException;
+import java.util.Map;
 
 @Service
 public class FaceAuthService {
@@ -19,6 +22,8 @@ public class FaceAuthService {
     private BaiduFaceApiUtil baiduFaceApiUtil;
     @Autowired(required = false)
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private UserService userService;
 
     /**
      * 人脸注册
@@ -55,10 +60,10 @@ public class FaceAuthService {
     /**
      * 人脸登录
      */
-    public String login(FaceLoginRequest request) {
+    public Map<String, Object> login(FaceLoginRequest request) {
         User user = userDao.findByUsername(request.getUsername());
         if (user == null) {
-            return "用户不存在";
+            throw new ServiceException(400, "用户不存在");
         }
         try {
             JsonNode result = baiduFaceApiUtil.faceSearch(request.getFaceImage());
@@ -72,18 +77,21 @@ public class FaceAuthService {
                         UserContext.setCurrentUserId(user.getId());
                         UserContext.setCurrentUsername(user.getUsername());
                         UserContext.setLoginType("FACE_LOGIN");
-                        return "登录成功";
+                        // 直接调用账号密码登录逻辑，保证返回结构一致
+                        return userService.login(user.getUsername(), user.getPassword());
                     } else {
-                        return "人脸匹配度不足，得分:" + score + "，需要70分以上";
+                        throw new ServiceException(401, "人脸匹配度不足，得分:" + score + "，需要70分以上");
                     }
                 } else {
-                    return "未检测到匹配人脸";
+                    throw new ServiceException(401, "未检测到匹配人脸");
                 }
             } else {
-                return "人脸识别失败:" + result.get("error_msg").asText();
+                throw new ServiceException(500, "人脸识别失败:" + result.get("error_msg").asText());
             }
+        } catch (ServiceException e) {
+            throw e;
         } catch (Exception e) {
-            return "人脸识别异常:" + e.getMessage();
+            throw new ServiceException(500, "人脸识别异常:" + e.getMessage());
         }
     }
 } 
