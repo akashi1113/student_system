@@ -34,6 +34,8 @@ public class ExamBooking {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
+    private ExamTimeSlot timeSlot;
+
     public ExamBooking() {}
 
     // Getters and Setters
@@ -90,4 +92,7 @@ public class ExamBooking {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public ExamTimeSlot getTimeSlot() { return timeSlot; }
+    public void setTimeSlot(ExamTimeSlot timeSlot) { this.timeSlot = timeSlot; }
 }
