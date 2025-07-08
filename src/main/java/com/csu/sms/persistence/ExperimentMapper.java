@@ -1,6 +1,7 @@
 package com.csu.sms.persistence;
 
 import com.csu.sms.model.experiment.Experiment;
+import com.csu.sms.model.experiment.ExperimentBooking;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -54,6 +55,5 @@ public interface ExperimentMapper {
 
     @Select("SELECT * FROM experiment WHERE is_published = true AND status = #{status} ORDER BY created_at DESC")
     List<Experiment> selectPublishedByStatus(@Param("status") Integer status);
-
 
 }

@@ -43,13 +43,13 @@ public class ExperimentController {
 
     // 获取所有实验项目
     @GetMapping("/projects")
-    public ApiResponse<List<ExperimentDTO>> getAllExperiments() {
+    public ApiResponse<List<ExperimentDTO>> getAllExperiments(@RequestHeader("Authorization") String token) {
         List<ExperimentDTO> experiments = experimentService.getAllExperiments();
         // 为每个实验添加预约状态信息
+        Long userId=jwtUtil.extractUserId(token);
         experiments.forEach(exp -> {
-            List<ExperimentBookingDTO> bookings = experimentService.getBookingsByExperimentId(exp.getId());
+            List<ExperimentBookingDTO> bookings = experimentService.getBookingsByUserAndExperiment(userId,exp.getId());
             if (!bookings.isEmpty()) {
-                // 假设我们只关心最新的预约状态
                 exp.setStatus(bookings.get(0).getStatus());
                 exp.setApprovalStatus(bookings.get(0).getApprovalStatus());
             }
@@ -67,11 +67,12 @@ public class ExperimentController {
     // 新增基于时间段的预约方法
     @PostMapping("/book-with-slot")
     @LogOperation(module = "实验管理", operation = "预约实验(时间段)", description = "学生通过时间段预约实验")
-    public ApiResponse<ExperimentBookingDTO> bookExperimentWithSlot(@RequestBody BookingWithSlotRequest request) {
+    public ApiResponse<ExperimentBookingDTO> bookExperimentWithSlot(@RequestBody BookingWithSlotRequest request,@RequestHeader("Authorization") String token) {
         System.out.println("Received: " + request);
+        Long userId=jwtUtil.extractUserId(token);
         return ApiResponse.success(experimentService.bookExperimentWithTimeSlot(
                 request.getExperimentId(),
-                request.getUserId(),
+                userId,
                 request.getTimeSlotId()
         ));
     }
@@ -105,8 +106,6 @@ public class ExperimentController {
                 request.getEndTime()
         ));
     }
-
-
 
     // 获取单个实验详情
     @GetMapping("/{id}")
