@@ -100,6 +100,7 @@
 
     <select id="findHotPages"  parameterType="int" resultType="com.csu.sms.model.post.ForumPost">
             SELECT * FROM forum_post
+            WHERE status = "PUBLISHED"
             ORDER BY view_count DESC
             LIMIT #{count}
     </select>

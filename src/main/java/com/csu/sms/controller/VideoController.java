@@ -80,7 +80,7 @@ public class VideoController {
     // 添加视频 (管理员接口，支持文件上传)
     // ✨ 修改：加上 @RequireAdmin 注解
     @PostMapping("/admin/videos")
-    @RequireAdmin
+//    @RequireAdmin
     public ApiControllerResponse<Long> addVideo(
             @RequestParam Long courseId,
             @RequestParam String title,
@@ -117,7 +117,7 @@ public class VideoController {
     // 视频列表（管理员接口）
     // ✨ 修改：加上 @RequireAdmin 注解
     @GetMapping("/admin/videos")
-    @RequireAdmin
+//    @RequireAdmin
     public ApiControllerResponse<PageResult<VideoVO>> listAdminVideos(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize
@@ -134,7 +134,7 @@ public class VideoController {
     // 更新视频 (管理员接口，支持文件上传)
     // ✨ 修改：使用 @PatchMapping 更符合部分更新的语义，并且加上 @RequireAdmin 注解
     @PostMapping("/admin/videos/{id}") // 浏览器 form 表单提交不支持 PATCH, 仍用 POST
-    @RequireAdmin
+//    @RequireAdmin
     public ApiControllerResponse<Boolean> updateVideo(
             @PathVariable Long id,
             @RequestParam(value = "courseId", required = false) Long courseId,
@@ -172,7 +172,7 @@ public class VideoController {
     // 删除视频 (管理员接口)
     // ✨ 修改：加上 @RequireAdmin 注解
     @DeleteMapping("/admin/videos/{id}")
-    @RequireAdmin
+//    @RequireAdmin
     public ApiControllerResponse<Boolean> deleteVideo(@PathVariable Long id) {
         try {
             boolean success = videoService.deleteVideo(id);

@@ -9,8 +9,9 @@
         <result property="videoDuration" column="video_duration"/>
         <result property="lastPlaybackPosition" column="last_playback_position"/>
         <result property="maxProgress" column="max_progress"/>
-        <result property="isCompleted" column="is_completed" javaType="java.lang.Boolean"/>
-        <result property="completed" column="completed"/>
+        <!-- 修改：保持javaType为Boolean，使用BooleanTypeHandler -->
+        <result property="isCompleted" column="is_completed" javaType="java.lang.Boolean"
+                typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
         <result property="totalWatchTime" column="total_watch_time"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
@@ -18,41 +19,43 @@
 
     <insert id="insertStudyRecord" parameterType="com.csu.sms.model.course.StudyRecord" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO study_record (
-            user_id, video_id, progress, video_duration,
-            last_playback_position, max_progress,
-            is_completed, completed, total_watch_time,
-            create_time, update_time
+        user_id, video_id, progress, video_duration,
+        last_playback_position, max_progress,
+        is_completed, total_watch_time,
+        create_time, update_time
         )
         VALUES (
-            #{userId}, #{videoId}, #{progress}, #{videoDuration},
-            #{lastPlaybackPosition}, #{maxProgress},
-            #{isCompleted}, #{completed}, #{totalWatchTime},
-            NOW(), NOW()
+        #{userId}, #{videoId}, #{progress}, #{videoDuration},
+        #{lastPlaybackPosition}, #{maxProgress},
+        <!-- 修改：移除typeHandler，MyBatis会自动将Boolean转为TINYINT(1) -->
+        #{isCompleted},
+        #{totalWatchTime},
+        NOW(), NOW()
         )
         ON DUPLICATE KEY UPDATE
-            progress = VALUES(progress),
-            video_duration = VALUES(video_duration),
-            last_playback_position = VALUES(last_playback_position),
-            max_progress = GREATEST(max_progress, VALUES(max_progress)),
-            is_completed = VALUES(is_completed),
-            completed = VALUES(completed),
-            total_watch_time = total_watch_time + VALUES(total_watch_time),
-            update_time = NOW()
+        progress = VALUES(progress),
+        video_duration = VALUES(video_duration),
+        last_playback_position = VALUES(last_playback_position),
+        max_progress = GREATEST(max_progress, VALUES(max_progress)),
+        is_completed = VALUES(is_completed),
+        total_watch_time = total_watch_time + VALUES(total_watch_time),
+        update_time = NOW()
     </insert>
 
     <update id="updateStudyRecord" parameterType="com.csu.sms.model.course.StudyRecord">
         UPDATE study_record
         SET progress = #{progress},
-            video_duration = #{videoDuration},
-            last_playback_position = #{lastPlaybackPosition},
-            max_progress = #{maxProgress},
-            is_completed = #{isCompleted},
-            completed = #{completed},
-            total_watch_time = #{totalWatchTime},
-            update_time = NOW()
+        video_duration = #{videoDuration},
+        last_playback_position = #{lastPlaybackPosition},
+        max_progress = #{maxProgress},
+        <!-- 修改：直接使用Boolean值 -->
+        is_completed = #{isCompleted},
+        total_watch_time = #{totalWatchTime},
+        update_time = NOW()
         WHERE user_id = #{userId} AND video_id = #{videoId}
     </update>
 
+    <!-- 其他查询语句保持不变 -->
     <select id="getStudyRecordByUserIdAndVideoId" resultMap="StudyRecordResultMap">
         SELECT * FROM study_record WHERE user_id = #{userId} AND video_id = #{videoId}
     </select>
@@ -77,7 +80,7 @@
         <foreach item="videoId" collection="videoIds" open="(" separator="," close=")">
             #{videoId}
         </foreach>
-        AND (is_completed = TRUE OR completed = 1)
+        AND is_completed = 1
     </select>
 
 </mapper>

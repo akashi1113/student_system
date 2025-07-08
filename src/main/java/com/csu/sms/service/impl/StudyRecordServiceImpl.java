@@ -136,6 +136,62 @@ public class StudyRecordServiceImpl implements StudyRecordService {
 //        }
 //    }
 
+//    @Override
+//    public boolean saveStudyRecord(StudyRecordDTO dto) {
+//        // 1. 获取已有的学习记录，如果没有，说明是首次上报，需要先创建
+//        StudyRecord record = studyRecordDao.getStudyRecordByUserIdAndVideoId(dto.getUserId(), dto.getVideoId());
+//
+//        CourseVideo video = courseVideoDao.getVideoById(dto.getVideoId());
+//        if (video == null) {
+//            log.warn("学习记录保存失败，视频不存在, videoId: {}", dto.getVideoId());
+//            return false;
+//        }
+//
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        // 查询是否已有学习记录
+//        StudyRecord existingRecord = studyRecordDao.getStudyRecordByUserIdAndVideoId(
+//                dto.getUserId(), dto.getVideoId());
+//
+//        if (existingRecord == null) {
+//            // 创建新记录
+//            StudyRecord newRecord = new StudyRecord();
+//            newRecord.setUserId(dto.getUserId());
+//            newRecord.setVideoId(dto.getVideoId());
+//            newRecord.setProgress(dto.getProgress());
+//            newRecord.setVideoDuration(video.getDuration());
+////            newRecord.setIsCompleted(false);
+//            newRecord.setLastStudyTime(now);
+//            record.setLastPlaybackPosition(0);
+//            record.setMaxProgress(0);
+//            record.setTotalWatchTime(0);
+//            newRecord.setCreateTime(now);
+//            newRecord.setUpdateTime(now);
+//
+//            // 判断是否完成学习
+//            boolean isCompleted = dto.getProgress() >= video.getDuration()*0.9;
+//            newRecord.setIsCompleted(isCompleted ? true : false);
+//
+//            int rows = studyRecordDao.insertStudyRecord(newRecord);
+//            return rows > 0;
+//        } else {
+//            // 更新记录
+//            existingRecord.setProgress(dto.getProgress());
+//            existingRecord.setVideoDuration(existingRecord.getVideoDuration() + dto.getVideoDuration());
+//            existingRecord.setLastStudyTime(now);
+//            existingRecord.setUpdateTime(now);
+//
+//            // 判断是否完成学习
+//            boolean isCompleted = dto.getProgress() >= video.getDuration();
+//            if (isCompleted) {
+//                existingRecord.setCompleted(1);
+//            }
+//
+//            int rows = studyRecordDao.updateStudyRecord(existingRecord);
+//            return rows > 0;
+//        }
+//    }
+
     @Override
     public boolean saveStudyRecord(StudyRecordDTO dto) {
         // 1. 获取已有的学习记录，如果没有，说明是首次上报，需要先创建
@@ -147,45 +203,73 @@ public class StudyRecordServiceImpl implements StudyRecordService {
             return false;
         }
 
-        LocalDateTime now = LocalDateTime.now();
-
-        // 查询是否已有学习记录
-        StudyRecord existingRecord = studyRecordDao.getStudyRecordByUserIdAndVideoId(
-                dto.getUserId(), dto.getVideoId());
-
-        if (existingRecord == null) {
-            // 创建新记录
-            StudyRecord newRecord = new StudyRecord();
-            newRecord.setUserId(dto.getUserId());
-            newRecord.setVideoId(dto.getVideoId());
-            newRecord.setProgress(dto.getProgress());
-            newRecord.setVideoDuration(dto.getVideoDuration());
-            newRecord.setLastStudyTime(now);
-            newRecord.setCreateTime(now);
-            newRecord.setUpdateTime(now);
-
-            // 判断是否完成学习
-            boolean isCompleted = dto.getProgress() >= video.getDuration();
-            newRecord.setCompleted(isCompleted ? 1 : 0);
-
-            int rows = studyRecordDao.insertStudyRecord(newRecord);
-            return rows > 0;
-        } else {
-            // 更新记录
-            existingRecord.setProgress(dto.getProgress());
-            existingRecord.setVideoDuration(existingRecord.getVideoDuration() + dto.getVideoDuration());
-            existingRecord.setLastStudyTime(now);
-            existingRecord.setUpdateTime(now);
-
-            // 判断是否完成学习
-            boolean isCompleted = dto.getProgress() >= video.getDuration();
-            if (isCompleted) {
-                existingRecord.setCompleted(1);
-            }
-
-            int rows = studyRecordDao.updateStudyRecord(existingRecord);
-            return rows > 0;
+        // 如果记录不存在（可能是get接口没预创建，或者并发等情况），在这里创建一条
+        if (record == null) {
+            record = new StudyRecord();
+            record.setUserId(dto.getUserId());
+            record.setVideoId(dto.getVideoId());
+            record.setVideoDuration(video.getDuration());
+            record.setIsCompleted(false);
+            record.setProgress(dto.getProgress());
+            record.setLastPlaybackPosition(0);
+            record.setMaxProgress(0);
+            record.setTotalWatchTime(0);
+            // 对于新记录，我们走插入逻辑
+            return createNewRecord(record, dto);
         }
+
+        // 2. 如果视频已经标记为“已完成”，则不再更新进度和完成状态
+        //    只更新“最后播放位置”和“累计观看时长”，以便了解用户是否在复习
+        if (record.getIsCompleted()) {
+            record.setProgress(dto.getProgress());
+            record.setLastPlaybackPosition(dto.getCurrentPlaybackPosition());
+            record.setTotalWatchTime(record.getTotalWatchTime() + dto.getWatchDurationSinceLastSave());
+            record.setUpdateTime(LocalDateTime.now());
+            return studyRecordDao.updateStudyRecord(record) > 0;
+        }
+
+        // 3. 更新常规信息
+        record.setLastPlaybackPosition(dto.getCurrentPlaybackPosition());
+        record.setTotalWatchTime(record.getTotalWatchTime() + dto.getWatchDurationSinceLastSave());
+
+        // 4. 更新最远进度（只增不减）
+        if (dto.getCurrentPlaybackPosition() > record.getMaxProgress()) {
+            record.setMaxProgress(dto.getCurrentPlaybackPosition());
+        }
+
+        // 5. 判断是否达到完成阈值
+        //    通常我们不要求100%，比如95%，因为片尾可能很长。这里我用95%举例。
+        double completionThreshold = record.getVideoDuration() * 0.95;
+        if (!record.getIsCompleted() && record.getMaxProgress() >= completionThreshold) {
+            record.setIsCompleted(true);
+            // 标记完成后，可以将最远进度直接设置为视频总时长，让其显示为100%
+            record.setMaxProgress(record.getVideoDuration());
+        }
+
+        record.setUpdateTime(LocalDateTime.now());
+
+        // 6. 保存到数据库
+        return studyRecordDao.updateStudyRecord(record) > 0;
+    }
+
+    // 辅助方法，用于处理首次创建记录的逻辑
+    private boolean createNewRecord(StudyRecord newRecord, StudyRecordDTO dto) {
+        // 更新从DTO来的初始信息
+        newRecord.setLastPlaybackPosition(dto.getCurrentPlaybackPosition());
+        newRecord.setTotalWatchTime(dto.getWatchDurationSinceLastSave());
+        newRecord.setMaxProgress(dto.getCurrentPlaybackPosition());
+
+        // 首次上报时也可能直接拖到最后完成了
+        double completionThreshold = newRecord.getVideoDuration() * 0.95;
+        if (newRecord.getMaxProgress() >= completionThreshold) {
+            newRecord.setIsCompleted(true);
+            newRecord.setMaxProgress(newRecord.getVideoDuration());
+        }
+
+        newRecord.setCreateTime(LocalDateTime.now());
+        newRecord.setUpdateTime(LocalDateTime.now());
+
+        return studyRecordDao.insertStudyRecord(newRecord) > 0;
     }
 
     //    @Override
@@ -309,6 +393,7 @@ public class StudyRecordServiceImpl implements StudyRecordService {
         vo.setIsCompleted(record.getIsCompleted());
         vo.setVideoDuration(record.getVideoDuration());
         vo.setTotalWatchTime(record.getTotalWatchTime());
+        vo.setProgress(record.getProgress());
 
         // 格式化最后学习时间
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
