@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(List.of("*"));  // 允许的前端
-                    config.setAllowedOrigins(List.of("http://localhost:5173"));  // 允许的前端源
+                    config.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:5174"));  // 允许的前端源
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // 允许的HTTP方法
                     config.setAllowedHeaders(List.of("*"));  // 允许所有请求头
                     config.setAllowCredentials(true); // 允许携带cookie

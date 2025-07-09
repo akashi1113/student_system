@@ -96,4 +96,5 @@ public class ChatController {
     public ApiResponse<String> healthCheck() {
         return ApiResponse.success("聊天服务运行正常", "OK");
     }
+
 }

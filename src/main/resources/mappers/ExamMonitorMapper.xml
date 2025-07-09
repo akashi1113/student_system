@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.ExamMonitorMapper">
+
+    <resultMap id="BaseResultMap" type="com.csu.sms.model.ExamMonitor">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="exam_id" property="examId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="image_path" property="imagePath" jdbcType="VARCHAR"/>
+        <result column="timestamp" property="timestamp" jdbcType="BIGINT"/>
+        <result column="monitor_result" property="monitorResult" jdbcType="LONGVARCHAR"/>
+        <result column="abnormal_count" property="abnormalCount" jdbcType="INTEGER"/>
+        <result column="abnormal_type" property="abnormalType" jdbcType="VARCHAR"/>
+        <result column="face_score" property="faceScore" jdbcType="DECIMAL"/>
+        <result column="yaw_angle" property="yawAngle" jdbcType="DECIMAL"/>
+        <result column="pitch_angle" property="pitchAngle" jdbcType="DECIMAL"/>
+        <result column="roll_angle" property="rollAngle" jdbcType="DECIMAL"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, exam_id, user_id, image_path, timestamp, monitor_result, abnormal_count,
+        abnormal_type, face_score, yaw_angle, pitch_angle, roll_angle, status,
+        create_time, update_time
+    </sql>
+
+    <insert id="insert" parameterType="com.csu.sms.model.ExamMonitor" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO exam_monitor (
+            exam_id, user_id, image_path, timestamp, monitor_result, abnormal_count,
+            abnormal_type, face_score, yaw_angle, pitch_angle, roll_angle, status
+        ) VALUES (
+                     #{examId}, #{userId}, #{imagePath}, #{timestamp}, #{monitorResult}, #{abnormalCount},
+                     #{abnormalType}, #{faceScore}, #{yawAngle}, #{pitchAngle}, #{rollAngle}, #{status}
+                 )
+    </insert>
+
+    <update id="update" parameterType="com.csu.sms.model.ExamMonitor">
+        UPDATE exam_monitor
+        <set>
+            <if test="examId != null">exam_id = #{examId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="imagePath != null">image_path = #{imagePath},</if>
+            <if test="timestamp != null">timestamp = #{timestamp},</if>
+            <if test="monitorResult != null">monitor_result = #{monitorResult},</if>
+            <if test="abnormalCount != null">abnormal_count = #{abnormalCount},</if>
+            <if test="abnormalType != null">abnormal_type = #{abnormalType},</if>
+            <if test="faceScore != null">face_score = #{faceScore},</if>
+            <if test="yawAngle != null">yaw_angle = #{yawAngle},</if>
+            <if test="pitchAngle != null">pitch_angle = #{pitchAngle},</if>
+            <if test="rollAngle != null">roll_angle = #{rollAngle},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM exam_monitor WHERE id = #{id}
+    </delete>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM exam_monitor
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByExamId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM exam_monitor
+        WHERE exam_id = #{examId}
+        ORDER BY timestamp DESC
+    </select>
+
+    <select id="selectByExamIdAndUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM exam_monitor
+        WHERE exam_id = #{examId} AND user_id = #{userId}
+        ORDER BY timestamp DESC
+    </select>
+
+    <select id="selectAbnormalRecords" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM exam_monitor
+        WHERE exam_id = #{examId}
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
+        AND status = 0
+        ORDER BY timestamp DESC
+    </select>
+
+    <select id="countByExamIdAndUserId" resultType="int">
+        SELECT COUNT(*)
+        FROM exam_monitor
+        WHERE exam_id = #{examId} AND user_id = #{userId}
+    </select>
+
+    <select id="countAbnormalByExamIdAndUserId" resultType="int">
+        SELECT COUNT(*)
+        FROM exam_monitor
+        WHERE exam_id = #{examId} AND user_id = #{userId} AND status = 0
+    </select>
+
+    <select id="selectByTimeRange" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM exam_monitor
+        WHERE exam_id = #{examId} AND user_id = #{userId}
+        AND timestamp BETWEEN #{startTime} AND #{endTime}
+        ORDER BY timestamp DESC
+    </select>
+
+</mapper>

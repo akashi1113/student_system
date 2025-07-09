@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csu.sms.persistence.ExamMonitorSummaryMapper">
+
+    <resultMap id="BaseResultMap" type="com.csu.sms.model.ExamMonitorSummary">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="exam_id" property="examId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="total_count" property="totalCount" jdbcType="INTEGER"/>
+        <result column="abnormal_count" property="abnormalCount" jdbcType="INTEGER"/>
+        <result column="no_face_count" property="noFaceCount" jdbcType="INTEGER"/>
+        <result column="multiple_faces_count" property="multipleFacesCount" jdbcType="INTEGER"/>
+        <result column="looking_away_count" property="lookingAwayCount" jdbcType="INTEGER"/>
+        <result column="unknown_person_count" property="unknownPersonCount" jdbcType="INTEGER"/>
+        <result column="risk_level" property="riskLevel" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, exam_id, user_id, total_count, abnormal_count, no_face_count,
+        multiple_faces_count, looking_away_count, unknown_person_count,
+        risk_level, create_time, update_time
+    </sql>
+
+    <insert id="insert" parameterType="com.csu.sms.model.ExamMonitorSummary" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO exam_monitor_summary (
+            exam_id, user_id, total_count, abnormal_count, no_face_count,
+            multiple_faces_count, looking_away_count, unknown_person_count, risk_level
+        ) VALUES (
+                     #{examId}, #{userId}, #{totalCount}, #{abnormalCount}, #{noFaceCount},
+                     #{multipleFacesCount}, #{lookingAwayCount}, #{unknownPersonCount}, #{riskLevel}
+                 )
+    </insert>
+
+    <update id="update" parameterType="com.csu.sms.model.ExamMonitorSummary">
+        UPDATE exam_monitor_summary
+        <set>
+            <if test="totalCount != null">total_count = #{totalCount},</if>
+            <if test="abnormalCount != null">abnormal_count = #{abnormalCount},</if>
+            <if test="noFaceCount != null">no_face_count = #{noFaceCount},</if>
+            <if test="multipleFacesCount != null">multiple_faces_count = #{multipleFacesCount},</if>
+            <if test="lookingAwayCount != null">looking_away_count = #{lookingAwayCount},</if>
+            <if test="unknownPersonCount != null">unknown_person_count = #{unknownPersonCount},</if>
+            <if test="riskLevel != null">risk_level = #{riskLevel},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM exam_monitor_summary WHERE id = #{id}
+    </delete>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM exam_monitor_summary
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByExamIdAndUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM exam_monitor_summary
+        WHERE exam_id = #{examId} AND user_id = #{userId}
+    </select>
+
+    <select id="selectByExamId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM exam_monitor_summary
+        WHERE exam_id = #{examId}
+        ORDER BY abnormal_count DESC
+    </select>
+
+    <insert id="upsert" parameterType="com.csu.sms.model.ExamMonitorSummary">
+        INSERT INTO exam_monitor_summary (
+            exam_id, user_id, total_count, abnormal_count, no_face_count,
+            multiple_faces_count, looking_away_count, unknown_person_count, risk_level
+        ) VALUES (
+                     #{examId}, #{userId}, #{totalCount}, #{abnormalCount}, #{noFaceCount},
+                     #{multipleFacesCount}, #{lookingAwayCount}, #{unknownPersonCount}, #{riskLevel}
+                 )
+            ON DUPLICATE KEY UPDATE
+                                 total_count = #{totalCount},
+                                 abnormal_count = #{abnormalCount},
+                                 no_face_count = #{noFaceCount},
+                                 multiple_faces_count = #{multipleFacesCount},
+                                 looking_away_count = #{lookingAwayCount},
+                                 unknown_person_count = #{unknownPersonCount},
+                                 risk_level = #{riskLevel}
+    </insert>
+
+</mapper>
