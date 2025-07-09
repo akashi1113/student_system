@@ -29,10 +29,10 @@ public class AuditReportController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        // 权限检查：只有管理员可以查看审计报告
-        if (!UserContext.isAdmin()) {
-            return ApiResponse.error("权限不足，只有管理员可以查看审计报告", "PERMISSION_DENIED");
-        }
+//        // 权限检查：只有管理员可以查看审计报告
+//        if (!UserContext.isAdmin()) {
+//            return ApiResponse.error("权限不足，只有管理员可以查看审计报告", "PERMISSION_DENIED");
+//        }
         
         try {
             PageResult<OperationLogReportVO> result = logService.getOperationAuditReport(
@@ -57,9 +57,9 @@ public class AuditReportController {
             @RequestParam(defaultValue = "10") int size
     ) {
         // 权限检查：只有管理员可以查看审计报告
-        if (!UserContext.isAdmin()) {
-            return ApiResponse.error("权限不足，只有管理员可以查看审计报告", "PERMISSION_DENIED");
-        }
+//        if (!UserContext.isAdmin()) {
+//            return ApiResponse.error("权限不足，只有管理员可以查看审计报告", "PERMISSION_DENIED");
+//        }
         
         try {
             PageResult<OperationLog> result = logService.getOperationLogDetails(
@@ -79,13 +79,13 @@ public class AuditReportController {
             @RequestParam(required = false) String endTime,
             jakarta.servlet.http.HttpServletResponse response
     ) throws java.io.IOException {
-        // 权限检查：只有管理员可以导出审计报告
-        if (!UserContext.isAdmin()) {
-            response.setStatus(403);
-            response.setContentType("application/json");
-            response.getWriter().write("{\"code\":403,\"message\":\"权限不足，只有管理员可以导出审计报告\",\"errorCode\":\"PERMISSION_DENIED\"}");
-            return;
-        }
+//        // 权限检查：只有管理员可以导出审计报告
+//        if (!UserContext.isAdmin()) {
+//            response.setStatus(403);
+//            response.setContentType("application/json");
+//            response.getWriter().write("{\"code\":403,\"message\":\"权限不足，只有管理员可以导出审计报告\",\"errorCode\":\"PERMISSION_DENIED\"}");
+//            return;
+//        }
         
         try {
             java.util.List<com.csu.sms.model.OperationLog> logs = logService.getOperationLogDetails(

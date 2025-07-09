@@ -38,7 +38,7 @@
     <!-- 更新会话 -->
     <update id="updateSession" parameterType="com.csu.sms.model.chat.ChatSession">
         UPDATE chat_sessions
-        SET title = #{title}, updated_at = #{updatedAt}
+        SET title = #{title}, updated_at = NOW()
         WHERE session_id = #{sessionId}
     </update>
 
