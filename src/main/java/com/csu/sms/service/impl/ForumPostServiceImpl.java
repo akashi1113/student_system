@@ -14,9 +14,12 @@ import com.csu.sms.model.enums.UserRole;
 import com.csu.sms.persistence.*;
 import com.csu.sms.service.ForumPostService;
 import com.csu.sms.service.NotificationService;
+import com.csu.sms.service.SparkAIService;
 import com.csu.sms.vo.CommentVO;
 import com.csu.sms.vo.PostVO;
 import com.csu.sms.vo.ReportVO;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -40,10 +43,149 @@ public class ForumPostServiceImpl implements ForumPostService {
     private final ForumCommentDao forumCommentDao;
     private final CommentLikeDao commentLikeDao;
     private final NotificationService notificationService;
+    private final SparkAIService sparkAIService;
 
     // 定义通知类型常量
     private static final int NOTIFICATION_TYPE_POST = 2; // 帖子相关通知
     private static final int NOTIFICATION_TYPE_COMMENT = 3; // 评论相关通知
+
+    // 实现语义搜索方法
+    @Override
+    public PageResult<PostVO> semanticSearch(String query, int count) {
+        // 1. 使用AI生成关键词
+        String keywords = sparkAIService.generateKeywords(query);
+        log.info("Generated keywords for '{}': {}", query, keywords);
+
+        // 2. 使用生成的关键词进行搜索
+        return listPosts(null, keywords, 1, count);
+    }
+
+    // 实现相关帖子推荐
+    @Override
+    public List<PostVO> getRelatedPosts(Long postId, int count) {
+        // 1. 获取当前帖子内容
+        ForumPost post = forumPostDao.findById(postId);
+        if (post == null) {
+            return Collections.emptyList();
+        }
+
+        // 2. 使用AI查找相关帖子ID
+        List<Long> relatedPostIds = sparkAIService.findRelatedPosts(
+                postId, post.getTitle() + " " + post.getContent(), count);
+
+        log.info("Related posts for {}: {}", postId, relatedPostIds);
+
+        // 3. 获取相关帖子详情
+        if (relatedPostIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<ForumPost> posts = forumPostDao.findPostsByIds(relatedPostIds);
+        return convertToPostVOs(posts);
+    }
+
+    // 辅助方法：将ForumPost列表转换为PostVO列表
+    private List<PostVO> convertToPostVOs(List<ForumPost> posts) {
+        if (posts == null || posts.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // 获取用户信息
+        List<Long> userIds = posts.stream()
+                .map(ForumPost::getUserId)
+                .distinct()
+                .collect(Collectors.toList());
+
+        Map<Long, User> userMap = userDao.findUsersByIds(userIds).stream()
+                .collect(Collectors.toMap(User::getId, user -> user));
+
+        return posts.stream().map(post -> {
+            PostVO vo = new PostVO();
+            BeanUtils.copyProperties(post, vo);
+            vo.setStatus(post.getStatus().getCode());
+            vo.setStatusDesc(post.getStatus().getDescription());
+
+            User user = userMap.get(post.getUserId());
+            if (user != null) {
+                vo.setUserId(user.getId());
+                vo.setUserName(user.getUsername());
+                vo.setUserAvatar(user.getAvatar());
+            }
+
+            vo.setIsLiked(false);
+            return vo;
+        }).collect(Collectors.toList());
+    }
+
+    // 辅助类用于存储分类和计数
+    @Data
+    @AllArgsConstructor
+    private static class CategoryCount {
+        private String category;
+        private long count;
+    }
+
+    private PostVO convertToPostVO(ForumPost post) {
+        PostVO vo = new PostVO();
+        BeanUtils.copyProperties(post, vo);
+
+        // 设置用户信息
+        User user = userDao.findById(post.getUserId());
+        if (user != null) {
+            vo.setUserId(user.getId());
+            vo.setUserName(user.getUsername());
+            vo.setUserAvatar(user.getAvatar());
+        }
+
+        return vo;
+    }
+
+    // 实现个性化推荐（简化版）
+    @Override
+    public List<PostVO> getRecommendedPosts(Long userId, int count) {
+        // 1. 获取用户发帖类型分布
+        List<Map<String, Object>> userCategoryCounts = forumPostDao.getUserPostCategories(userId);
+
+        // 2. 确定推荐策略
+        List<PostVO> recommendations = new ArrayList<>();
+
+        // 2. 如果用户有发帖历史
+        if (userCategoryCounts != null && !userCategoryCounts.isEmpty()) {
+            // 2.1 将结果转换为可排序的列表
+            List<CategoryCount> sortedCategories = userCategoryCounts.stream()
+                    .map(map -> new CategoryCount(
+                            (String) map.get("category"),
+                            ((Number) map.get("count")).longValue()
+                    ))
+                    .sorted(Comparator.comparingLong(CategoryCount::getCount).reversed())
+                    .limit(2)
+                    .collect(Collectors.toList());
+
+            // 2.2 为每个类型推荐1个帖子
+            for (CategoryCount category : sortedCategories) {
+                List<ForumPost> categoryPosts = forumPostDao.getTopPostsByCategory(category.getCategory(), 1);
+                if (!categoryPosts.isEmpty()) {
+                    recommendations.add(convertToPostVO(categoryPosts.get(0)));
+                }
+            }
+
+            // 2.3 如果推荐不足，补充热门帖子
+            if (recommendations.size() < count) {
+                int needed = count - recommendations.size();
+                List<PostVO> hotPosts = getHotPosts(needed);
+                recommendations.addAll(hotPosts);
+            }
+        }
+        // 用户没有发帖历史
+        else {
+            // 2.4 直接推荐热榜前三
+            List<PostVO> hotPosts = getHotPosts(Math.min(count, 3));
+            recommendations.addAll(hotPosts);
+        }
+
+        // 3. 确保数量正确
+        return recommendations.stream().limit(count).collect(Collectors.toList());
+    }
 
     @Override
     public List<PostVO> getHotPosts(int count){

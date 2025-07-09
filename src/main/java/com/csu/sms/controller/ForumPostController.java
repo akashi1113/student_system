@@ -1,13 +1,10 @@
 package com.csu.sms.controller;
 
-import com.csu.sms.annotation.RequireAdmin;
 import com.csu.sms.common.ApiControllerResponse;
 import com.csu.sms.common.PageResult;
 import com.csu.sms.dto.ForumCommentDTO;
 import com.csu.sms.dto.ForumPostDTO;
 import com.csu.sms.service.ForumPostService;
-// 💡 优化：移除了 UserService，因为权限判断已经交给了注解和 UserContext
-// import com.csu.sms.service.UserService;
 import com.csu.sms.util.UserContext;
 import com.csu.sms.vo.CommentVO;
 import com.csu.sms.vo.PostVO;
@@ -26,8 +23,35 @@ import java.util.List;
 @Slf4j
 public class ForumPostController {
     private final ForumPostService forumPostService;
-    // 💡 优化：移除了 UserService，因为权限判断已经交给了注解和 UserContext
-    // private final UserService userService;
+    // 语义搜索接口
+    @GetMapping("/semantic-search")
+    public ApiControllerResponse<PageResult<PostVO>> semanticSearch(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "5") int count
+    ) {
+        PageResult<PostVO> result = forumPostService.semanticSearch(query, count);
+        return ApiControllerResponse.success(result);
+    }
+
+    // 相关帖子推荐接口
+    @GetMapping("/{postId}/related")
+    public ApiControllerResponse<List<PostVO>> getRelatedPosts(
+            @PathVariable Long postId,
+            @RequestParam(defaultValue = "3") int count
+    ) {
+        List<PostVO> relatedPosts = forumPostService.getRelatedPosts(postId, count);
+        return ApiControllerResponse.success(relatedPosts);
+    }
+
+    // 个性化推荐接口
+    @GetMapping("/recommendations")
+    public ApiControllerResponse<List<PostVO>> getRecommendations(
+            @RequestParam(defaultValue = "2") int count
+    ) {
+        Long currentUserId = UserContext.getCurrentUserId(); // 可为null
+        List<PostVO> recommendations = forumPostService.getRecommendedPosts(currentUserId, count);
+        return ApiControllerResponse.success(recommendations);
+    }
 
     // ===================================
     //  公开访问接口 (Public APIs)

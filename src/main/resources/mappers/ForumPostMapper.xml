@@ -105,4 +105,18 @@
             LIMIT #{count}
     </select>
 
+    <select id="getUserPostCategories" resultType="map">
+        SELECT category, COUNT(*) as count
+        FROM forum_post
+        WHERE user_id = #{userId}
+        GROUP BY category
+    </select>
+
+    <select id="getTopPostsByCategory" resultType="com.csu.sms.model.post.ForumPost">
+        SELECT * FROM forum_post
+        WHERE category = #{category}
+        ORDER BY (view_count + like_count * 2) DESC
+        LIMIT #{i}
+    </select>
+
 </mapper>

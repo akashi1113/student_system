@@ -2,10 +2,13 @@ package com.csu.sms.persistence;
 
 import com.csu.sms.model.post.ForumPost;
 import com.csu.sms.model.enums.PostStatus;
+import com.csu.sms.vo.PostVO;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ForumPostDao {
@@ -42,4 +45,8 @@ public interface ForumPostDao {
     List<ForumPost> findPostsByIds(@Param("postIds") List<Long> postIds);
 
     List<ForumPost> findHotPages(@Param("count") Integer count);
+
+    List<Map<String, Object>> getUserPostCategories(@Param("userId") Long userId);
+
+    List<ForumPost> getTopPostsByCategory(@Param("category") String category,@Param("i") int i);
 }
