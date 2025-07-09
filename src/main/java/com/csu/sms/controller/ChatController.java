@@ -63,7 +63,7 @@ public class ChatController {
     /**
      * 获取用户的所有会话
      */
-    @GetMapping("/sessions/{userId}")
+    @GetMapping("/sessions")
     public ApiResponse<List<ChatSession>> getUserSessions(@RequestHeader("Authorization") String token) {
         Long userId=jwtUtil.extractUserId(token);
         logger.info("获取用户会话列表，用户ID: {}", userId);
