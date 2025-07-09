@@ -21,7 +21,7 @@ spring:
 #    url: "jdbc:mysql://localhost:3306/student_knowledge_system?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8"
     url: jdbc:mysql://127.0.0.1:3306/student_system
     username: root
-    password: amy20041113  # 请根据实际情况修改
+    password: q18834366303  # 请根据实际情况修改
 
     hikari:
       minimum-idle: 5
