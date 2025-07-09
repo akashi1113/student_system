@@ -1,0 +1,164 @@
+package com.csu.sms.service;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.csu.sms.config.SparkConfig;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class SparkAIService {
+    private final SparkConfig sparkConfig;
+
+    public String generateKeywords(String query) {
+        try {
+            // 构建请求URL
+            URL url = new URL("https://spark-api-open.xf-yun.com/v1/chat/completions");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer " + sparkConfig.getApiPassword());
+            conn.setDoOutput(true);
+
+            // 构建请求体
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("model", sparkConfig.getModel()); // "lite"
+            requestBody.put("user", "forum_search");
+
+            JSONArray messages = new JSONArray();
+            JSONObject systemMsg = new JSONObject();
+            systemMsg.put("role", "system");
+            systemMsg.put("content", "你是一个专业的关键词提取器，请根据用户问题生成3-5个最适合的关键词，用空格分隔");
+            messages.add(systemMsg);
+
+            JSONObject userMsg = new JSONObject();
+            userMsg.put("role", "user");
+            userMsg.put("content", query);
+            messages.add(userMsg);
+
+            requestBody.put("messages", messages);
+            requestBody.put("temperature", 0.1);
+            requestBody.put("max_tokens", 100);
+
+            // 发送请求
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = requestBody.toJSONString().getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            // 读取响应
+            if (conn.getResponseCode() != 200) {
+                log.error("Spark API request failed: {}", conn.getResponseCode());
+                return query; // 失败时返回原始查询
+            }
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+
+                // 解析响应
+                JSONObject jsonResponse = JSON.parseObject(response.toString());
+                JSONArray choices = jsonResponse.getJSONArray("choices");
+                if (choices != null && !choices.isEmpty()) {
+                    JSONObject firstChoice = choices.getJSONObject(0);
+                    JSONObject message = firstChoice.getJSONObject("message");
+                    return message.getString("content");
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error calling Spark API", e);
+        }
+        return query;
+    }
+
+    public List<Long> findRelatedPosts(Long postId, String postContent, int count) {
+        List<Long> relatedPostIds = new ArrayList<>();
+        try {
+            // 构建请求URL
+            URL url = new URL("https://spark-api-open.xf-yun.com/v1/chat/completions");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer " + sparkConfig.getApiPassword());
+            conn.setDoOutput(true);
+
+            // 构建请求体
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("model", sparkConfig.getModel()); // "lite"
+            requestBody.put("user", "forum_related");
+
+            JSONArray messages = new JSONArray();
+            JSONObject systemMsg = new JSONObject();
+            systemMsg.put("role", "system");
+            systemMsg.put("content", "你是一个内容匹配专家，请根据提供的帖子内容，推荐"+count+"个最相关的帖子ID。"
+                    + "只返回ID列表，格式如：[123, 456, 789]");
+            messages.add(systemMsg);
+
+            JSONObject userMsg = new JSONObject();
+            userMsg.put("role", "user");
+            userMsg.put("content", "帖子内容：" + postContent);
+            messages.add(userMsg);
+
+            requestBody.put("messages", messages);
+            requestBody.put("temperature", 0.2);
+            requestBody.put("max_tokens", 100);
+
+            // 发送请求
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = requestBody.toJSONString().getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            // 读取响应
+            if (conn.getResponseCode() != 200) {
+                log.error("Spark API request failed: {}", conn.getResponseCode());
+                return relatedPostIds;
+            }
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+
+                // 解析响应
+                JSONObject jsonResponse = JSON.parseObject(response.toString());
+                JSONArray choices = jsonResponse.getJSONArray("choices");
+                if (choices != null && !choices.isEmpty()) {
+                    JSONObject firstChoice = choices.getJSONObject(0);
+                    JSONObject message = firstChoice.getJSONObject("message");
+                    String content = message.getString("content");
+
+                    // 解析ID列表
+                    if (content.startsWith("[") && content.endsWith("]")) {
+                        JSONArray idArray = JSON.parseArray(content);
+                        for (int i = 0; i < idArray.size(); i++) {
+                            relatedPostIds.add(idArray.getLong(i));
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error finding related posts", e);
+        }
+        return relatedPostIds;
+    }
+}

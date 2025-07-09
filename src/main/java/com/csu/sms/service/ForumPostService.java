@@ -46,4 +46,9 @@ public interface ForumPostService {
 
     //火贴功能
     List<PostVO> getHotPosts(int count);
+
+    //AI智能推荐
+    List<PostVO> getRelatedPosts(Long postId, int count);
+    PageResult<PostVO> semanticSearch(String query, int count);
+    List<PostVO> getRecommendedPosts(Long userId, int count);
 }
