@@ -106,7 +106,7 @@ public class SparkAIService {
             JSONArray messages = new JSONArray();
             JSONObject systemMsg = new JSONObject();
             systemMsg.put("role", "system");
-            systemMsg.put("content", "你是一个内容匹配专家，请根据提供的帖子内容，推荐"+count+"个最相关的帖子ID。"
+            systemMsg.put("content", "你是一个内容匹配专家，请根据提供的帖子内容，推荐" + count + "个最相关的帖子ID。"
                     + "只返回ID列表，格式如：[123, 456, 789]");
             messages.add(systemMsg);
 
@@ -290,4 +290,82 @@ public class SparkAIService {
         return "总结生成失败";
     }
 
+    public String reviewPostContent(String content) {
+        try {
+            // 简化内容（保留前3000字）
+            String simplifiedContent = content.length() > 3000
+                    ? content.substring(0, 3000) + "..."
+                    : content;
+
+            // 构建请求URL
+            URL url = new URL("https://spark-api-open.xf-yun.com/v1/chat/completions");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer " + sparkConfig.getApiPassword());
+            conn.setDoOutput(true);
+
+            // 构建请求体
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("model", sparkConfig.getModel());
+            requestBody.put("user", "forum_review");
+
+            JSONArray messages = new JSONArray();
+
+            JSONObject systemMsg = new JSONObject();
+            systemMsg.put("role", "system");
+            systemMsg.put("content", "你是一个论坛内容审核助手。请仔细阅读以下帖子内容并判断："
+                    + "1. 是否包含违法违规内容（暴力、色情、赌博、毒品等）\n"
+                    + "2. 是否包含恶意攻击、侮辱、诽谤他人内容\n"
+                    + "3. 是否包含广告、垃圾信息\n"
+                    + "4. 是否与论坛主题（学习交流）相关\n\n"
+                    + "请用以下格式回答：\n"
+                    + "【审核结果】通过/不通过/建议人工审核\n"
+                    + "【原因】简要说明原因（1-2句话）");
+            messages.add(systemMsg);
+
+            JSONObject userMsg = new JSONObject();
+            userMsg.put("role", "user");
+            userMsg.put("content", "帖子内容：" + simplifiedContent);
+            messages.add(userMsg);
+
+            requestBody.put("messages", messages);
+            requestBody.put("temperature", 0.1);
+            requestBody.put("max_tokens", 200);
+
+            // 发送请求
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = requestBody.toJSONString().getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            // 读取响应
+            if (conn.getResponseCode() != 200) {
+                log.error("总结请求失败: {}", conn.getResponseCode());
+                return "总结生成失败，请稍后再试";
+            }
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+
+                // 解析响应
+                JSONObject jsonResponse = JSON.parseObject(response.toString());
+                JSONArray choices = jsonResponse.getJSONArray("choices");
+                if (choices != null && !choices.isEmpty()) {
+                    JSONObject firstChoice = choices.getJSONObject(0);
+                    JSONObject message = firstChoice.getJSONObject("message");
+                    return message.getString("content");
+                }
+            }
+        } catch (Exception e) {
+            log.error("AI审核异常", e);
+            return "审核失败：" + e.getMessage();
+        }
+        return "审核失败，未知错误";
+    }
 }
