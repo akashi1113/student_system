@@ -39,6 +39,20 @@ public class ForumPostController {
         return ApiControllerResponse.success("获取总结成功",summary);
     }
 
+    // ForumPostController.java
+    @GetMapping("/admin/{postId}/ai-review")
+    public ApiControllerResponse<String> getAIReview(
+            @PathVariable Long postId
+    ) {
+        PostVO post = forumPostService.getPostDetailForAdmin(postId);
+        if (post == null || post.getContent() == null) {
+            return ApiControllerResponse.error(404, "帖子不存在或内容为空");
+        }
+
+        String reviewResult = sparkAIService.reviewPostContent(post.getContent());
+        return ApiControllerResponse.success("AI审核成功",reviewResult);
+    }
+
     // 语义搜索接口
     @GetMapping("/semantic-search")
     public ApiControllerResponse<PageResult<PostVO>> semanticSearch(
