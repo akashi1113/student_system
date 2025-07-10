@@ -223,4 +223,71 @@ public class SparkAIService {
         }
         return "网络请求异常，请稍后再试";
     }
+
+    public String summarizeContent(String content) {
+        try {
+            // 简化内容（保留前3000字）
+            String simplifiedContent = content.length() > 3000
+                    ? content.substring(0, 3000) + "..."
+                    : content;
+
+            URL url = new URL("https://spark-api-open.xf-yun.com/v1/chat/completions");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer " + sparkConfig.getApiPassword());
+            conn.setDoOutput(true);
+
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("model", sparkConfig.getModel());
+            requestBody.put("user", "forum_summary");
+
+            JSONArray messages = new JSONArray();
+
+            JSONObject systemMsg = new JSONObject();
+            systemMsg.put("role", "system");
+            systemMsg.put("content", "你是一个内容总结助手，请用简洁的语言总结以下帖子内容，控制在100字以内");
+            messages.add(systemMsg);
+
+            JSONObject userMsg = new JSONObject();
+            userMsg.put("role", "user");
+            userMsg.put("content", "帖子内容：" + simplifiedContent);
+            messages.add(userMsg);
+
+            requestBody.put("messages", messages);
+            requestBody.put("temperature", 0.2);
+            requestBody.put("max_tokens", 150);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = requestBody.toJSONString().getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            if (conn.getResponseCode() != 200) {
+                log.error("总结请求失败: {}", conn.getResponseCode());
+                return "总结生成失败，请稍后再试";
+            }
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+
+                JSONObject jsonResponse = JSON.parseObject(response.toString());
+                JSONArray choices = jsonResponse.getJSONArray("choices");
+                if (choices != null && !choices.isEmpty()) {
+                    return choices.getJSONObject(0)
+                            .getJSONObject("message")
+                            .getString("content");
+                }
+            }
+        } catch (Exception e) {
+            log.error("内容总结异常", e);
+        }
+        return "总结生成失败";
+    }
+
 }

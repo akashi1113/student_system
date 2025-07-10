@@ -5,6 +5,7 @@ import com.csu.sms.common.PageResult;
 import com.csu.sms.dto.ForumCommentDTO;
 import com.csu.sms.dto.ForumPostDTO;
 import com.csu.sms.service.ForumPostService;
+import com.csu.sms.service.SparkAIService;
 import com.csu.sms.util.UserContext;
 import com.csu.sms.vo.CommentVO;
 import com.csu.sms.vo.PostVO;
@@ -23,6 +24,21 @@ import java.util.List;
 @Slf4j
 public class ForumPostController {
     private final ForumPostService forumPostService;
+    private final SparkAIService sparkAIService;
+
+    @GetMapping("/{postId}/summary")
+    public ApiControllerResponse<String> getPostSummary(
+            @PathVariable Long postId
+    ) {
+        PostVO post = forumPostService.getPostDetailAndIncreaseView(postId);
+        if (post == null || post.getContent() == null) {
+            return ApiControllerResponse.error(404, "帖子不存在或内容为空");
+        }
+
+        String summary = sparkAIService.summarizeContent(post.getContent());
+        return ApiControllerResponse.success("获取总结成功",summary);
+    }
+
     // 语义搜索接口
     @GetMapping("/semantic-search")
     public ApiControllerResponse<PageResult<PostVO>> semanticSearch(
