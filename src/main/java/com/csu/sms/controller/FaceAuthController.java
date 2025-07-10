@@ -40,4 +40,4 @@ public class FaceAuthController {
             return ApiControllerResponse.error(500, "服务器内部错误，人脸登录失败，请稍后再试。");
         }
     }
-} 
+}

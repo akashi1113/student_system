@@ -94,4 +94,4 @@ public class FaceAuthService {
             throw new ServiceException(500, "人脸识别异常:" + e.getMessage());
         }
     }
-} 
+}
