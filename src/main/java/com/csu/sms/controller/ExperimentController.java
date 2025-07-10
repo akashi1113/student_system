@@ -50,8 +50,10 @@ public class ExperimentController {
         experiments.forEach(exp -> {
             List<ExperimentBookingDTO> bookings = experimentService.getBookingsByUserAndExperiment(userId,exp.getId());
             if (!bookings.isEmpty()) {
-                exp.setStatus(bookings.get(0).getStatus());
                 exp.setApprovalStatus(bookings.get(0).getApprovalStatus());
+            }
+            else{
+                exp.setApprovalStatus(-1);
             }
         });
         return ApiResponse.success(experiments);
