@@ -66,8 +66,10 @@ public class ExamController {
         List<Exam> exams=examService.getBookedExams(userId);
         exams.forEach(exam -> {
             ExamBooking booking = examBookingService.getBookingByUserAndExam(userId,exam.getId());
-            booking.setTimeSlot(examBookingService.getTimeSlotById(booking.getTimeSlotId()));
-            exam.setExamBooking(booking);
+            if(booking!=null){
+                booking.setTimeSlot(examBookingService.getTimeSlotById(booking.getTimeSlotId()));
+                exam.setExamBooking(booking);
+            }
         });
         return ApiResponse.success(exams);
     }
