@@ -1,10 +1,12 @@
 package com.csu.sms.controller;
 
+import com.csu.sms.common.ApiControllerResponse;
 import com.csu.sms.dto.AILearningSuggestionDTO;
 import com.csu.sms.service.AIService;
 import com.csu.sms.service.GradeAnalysisService;
 import com.csu.sms.service.AIBookRecommendationService;
 import com.csu.sms.common.ApiResponse;
+import com.csu.sms.service.SparkAIService;
 import com.csu.sms.util.UserContext;
 import com.csu.sms.annotation.LogOperation;
 import com.csu.sms.vo.AIBookRecommendationVO;
@@ -34,6 +36,12 @@ public class AIController {
 
     @Autowired
     private AIBookRecommendationService bookRecommendationService;
+
+    private final SparkAIService sparkAIService;
+
+    public AIController(SparkAIService sparkAIService) {
+        this.sparkAIService = sparkAIService;
+    }
 
     /**
      * 获取当前用户的个性化学习建议
@@ -182,6 +190,16 @@ public class AIController {
             }
         } catch (Exception e) {
             return ApiResponse.error("删除推荐记录失败：" + e.getMessage());
+        }
+    }
+
+    @PostMapping("/chat")
+    public ApiControllerResponse<String> chatWithAI(@RequestBody String userMessage) {
+        try {
+            String response = sparkAIService.chatWithAI(userMessage);
+            return ApiControllerResponse.success(response);
+        } catch (Exception e) {
+            return ApiControllerResponse.error(500, "AI服务暂时不可用");
         }
     }
 }

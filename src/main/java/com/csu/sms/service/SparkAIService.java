@@ -161,4 +161,66 @@ public class SparkAIService {
         }
         return relatedPostIds;
     }
+
+    public String chatWithAI(String userMessage) {
+        try {
+            URL url = new URL("https://spark-api-open.xf-yun.com/v1/chat/completions");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer " + sparkConfig.getApiPassword());
+            conn.setDoOutput(true);
+
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("model", sparkConfig.getModel()); // "lite"
+
+            JSONArray messages = new JSONArray();
+
+            // 系统角色设定
+            JSONObject systemMsg = new JSONObject();
+            systemMsg.put("role", "system");
+            systemMsg.put("content", "你是视频学习助手小光球，专注解答课程相关问题");
+            messages.add(systemMsg);
+
+            // 用户消息
+            JSONObject userMsg = new JSONObject();
+            userMsg.put("role", "user");
+            userMsg.put("content", userMessage);
+            messages.add(userMsg);
+
+            requestBody.put("messages", messages);
+            requestBody.put("temperature", 0.7);
+            requestBody.put("max_tokens", 1024);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = requestBody.toJSONString().getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            if (conn.getResponseCode() != 200) {
+                log.error("Spark API request failed: {}", conn.getResponseCode());
+                return "抱歉，我暂时无法回答这个问题";
+            }
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+
+                JSONObject jsonResponse = JSON.parseObject(response.toString());
+                JSONArray choices = jsonResponse.getJSONArray("choices");
+                if (choices != null && !choices.isEmpty()) {
+                    JSONObject firstChoice = choices.getJSONObject(0);
+                    JSONObject message = firstChoice.getJSONObject("message");
+                    return message.getString("content");
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error calling Spark API", e);
+        }
+        return "网络请求异常，请稍后再试";
+    }
 }
