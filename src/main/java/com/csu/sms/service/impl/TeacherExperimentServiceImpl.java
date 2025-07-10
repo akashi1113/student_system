@@ -128,6 +128,7 @@ public class TeacherExperimentServiceImpl implements TeacherExperimentService {
             if (Objects.equals(timeSlot.getCurrentCapacity(),timeSlot.getMaxCapacity())){
                 throw new RuntimeException("预约人数已满");
             }
+
             bookingMapper.updateApproveStatus(booking.getId(), 1,2);
         } else {
             bookingMapper.updateApproveStatus(booking.getId(), 2,1);
