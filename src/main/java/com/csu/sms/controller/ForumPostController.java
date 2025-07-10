@@ -30,7 +30,7 @@ public class ForumPostController {
     public ApiControllerResponse<String> getPostSummary(
             @PathVariable Long postId
     ) {
-        PostVO post = forumPostService.getPostDetailAndIncreaseView(postId);
+        PostVO post = forumPostService.getPostDetailForAdmin(postId);
         if (post == null || post.getContent() == null) {
             return ApiControllerResponse.error(404, "帖子不存在或内容为空");
         }
