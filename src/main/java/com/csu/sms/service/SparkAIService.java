@@ -179,7 +179,7 @@ public class SparkAIService {
             // 系统角色设定
             JSONObject systemMsg = new JSONObject();
             systemMsg.put("role", "system");
-            systemMsg.put("content", "你是视频学习助手小光球，专注解答课程相关问题");
+            systemMsg.put("content", "你是视频学习助手小光球，专注解答计算机网络课程相关问题");
             messages.add(systemMsg);
 
             // 用户消息
