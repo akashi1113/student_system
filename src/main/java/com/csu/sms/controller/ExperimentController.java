@@ -49,6 +49,7 @@ public class ExperimentController {
         Long userId=jwtUtil.extractUserId(token);
         experiments.forEach(exp -> {
             List<ExperimentBookingDTO> bookings = experimentService.getBookingsByUserAndExperiment(userId,exp.getId());
+            System.out.println("bookings"+bookings);
             if (!bookings.isEmpty()) {
                 exp.setApprovalStatus(bookings.get(0).getApprovalStatus());
             }

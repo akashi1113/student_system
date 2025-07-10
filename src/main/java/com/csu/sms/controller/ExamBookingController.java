@@ -99,7 +99,6 @@ public class ExamBookingController {
     @PostMapping("/bookings/{bookingId}/confirm")
     public ApiResponse<Void> confirmBooking(@PathVariable Long bookingId,
                                             @RequestHeader("Authorization") String token) {
-        Long userId = jwtUtil.extractUserId(token);
         return examBookingService.confirmBooking(bookingId);
     }
 
