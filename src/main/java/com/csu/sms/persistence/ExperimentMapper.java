@@ -56,4 +56,5 @@ public interface ExperimentMapper {
     @Select("SELECT * FROM experiment WHERE is_published = true AND status = #{status} ORDER BY created_at DESC")
     List<Experiment> selectPublishedByStatus(@Param("status") Integer status);
 
+
 }

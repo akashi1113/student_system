@@ -52,6 +52,9 @@ public class ExperimentController {
             if (!bookings.isEmpty()) {
                 exp.setApprovalStatus(bookings.get(0).getApprovalStatus());
             }
+            else{
+                exp.setApprovalStatus(-1);
+            }
         });
         return ApiResponse.success(experiments);
     }
